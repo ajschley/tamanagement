@@ -12,7 +12,7 @@ class TestInit(TestRational):
         self.rational.__init__(1, 2)
 
     def test_zero(self):
-        self.rational.__init__(0, 0)
+        self.rational.__mul__(0)
 
 
 class TestStr(TestRational):
@@ -21,7 +21,7 @@ class TestStr(TestRational):
 
     def testStrAGreaterThanB(self):
         self.rational.__init__(5, 1)
-        self.assertEqual( "5/1", self.rational.__str__())
+        self.assertEqual("5/1", self.rational.__str__())
 
     def testStrBGreaterThanA(self):
         self.rational.__init__(1, 5)

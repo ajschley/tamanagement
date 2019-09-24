@@ -1,1 +1,1 @@
-print("Hack the planet!")
+print("hack the planet!")

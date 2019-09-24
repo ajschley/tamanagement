@@ -4,7 +4,7 @@ class Rational:
    Numerator and denominator reduced to lowest terms.
    Denominator must be positive.
    """
-   def __init__ ( self, a=0, b=0 ):
+   def __init__ ( self, a=0, b=1 ):
       if b == 0:
          raise(ZeroDivisionError("Denom may not be zero."))
       else:

@@ -12,17 +12,17 @@ class TestRational(unittest.TestCase):
 class TestAdd(TestRational):
     def test_zero(self):
         self.rational.__init__(2, 1)
-        self.rational.__mul__(0)
+        self.rational.__add__(0)
         self.assertTrue(self.rational.n == 2)
 
     def test_negative(self):
         self.rational.__init__(2, 1)
-        self.rational.__mul__(-1)
+        self.rational.__add__(-1)
         self.assertTrue(self.rational.n == 1)
 
     def test_number(self):
         self.rational.__init__(5, 1)
-        self.rational.__mul__(5)
+        self.rational.__add__(5)
         self.assertTrue(self.rational.n == 10)
 
 
@@ -73,5 +73,5 @@ class TestDiv(TestRational):
 
     def test_number(self):
         self.rational.__init__(5, 1)
-        self.rational.__mul__(5)
+        self.rational.__div__(5)
         self.assertTrue(self.rational.n == 1)

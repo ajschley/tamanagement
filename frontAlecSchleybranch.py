@@ -1,1 +1,0 @@
-print("Hack the planet!")

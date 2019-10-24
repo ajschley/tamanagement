@@ -3,7 +3,7 @@ from unittest import TestCase
 from ApplicationFramework import ApplicationFramework
 
 
-class TestApplicationFramework(TestCase):
+class TestApplicationFramework(TestCase):   ## TA: This should be unittest.testcase  to inherit
     def setUp(self):
         self.ApplicationFramework = ApplicationFramework()
 
@@ -57,7 +57,7 @@ class TestLogin(TestApplicationFramework):
     # Fails if the username is not a valid UWM email address
     def test_loginUWMPass(self):
         self.ApplicationFramework.login("test@gmail.com", "password")
-        self.assertEquals(str, "Login Failed.")
+        self.assertEquals(str, "Login Failed.")               ###TA: str is defined as what?
 
     # Passes if the username is a valid UWM email address
     def test_loginUWMFail(self):
@@ -69,16 +69,15 @@ class TestCreateCourse(TestApplicationFramework):
 
     def test_empty(self):
         self.ApplicationFramework.createCourse("course1")  # Where there are no courses.
-        assert "Course added."
+        assert "Course added."   ### TA: assert check the syntax​? what is it doing?
 
     def test_proper(self):
         self.ApplicationFramework.createCourse("course2")  # Where there is one non-conflicting course.
-        assert "Course added."
+        assert "Course added."  ### TA: assert check the syntax 
 
     def test_conflicting(self):
         self.ApplicationFramework.createCourse("course2")  # Where there is a conflicting course.
-        assert "Conflicting course found, could not add."
-
+        assert "Conflicting course found, could not add."  ### TA: assert check the syntax 
 
 class TestApplicationFramework(TestApplicationFramework):
     # def test_createUser(self):

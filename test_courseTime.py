@@ -3,7 +3,7 @@ from unittest import TestCase
 from CourseTime import CourseTime
 
 
-class TestCourseTime(TestCase):
+class TestCourseTime(TestCase):      ##TA: unittest.Test case to inherit
 
     def test_init_valid(self):
         CourseTime.__init__("12:00 14:00 S")
@@ -32,7 +32,7 @@ class TestCourseTime(TestCase):
 
     def test_init_invalid2(self):
         try:
-            CourseTime.__init__("13:00 16:00 7")
+            CourseTime.__init__("13:00 16:00 7") ##TA :  why are you using 7 here???
             assert False
         except (ValueError):
             assert True, "Exception thrown."
@@ -81,3 +81,5 @@ class TestCourseTime(TestCase):
 
     if __name__ == '__main__':
         unittest.main()
+
+###TA: Try to write test suite and Texttest runner. Come up with even more test cases.

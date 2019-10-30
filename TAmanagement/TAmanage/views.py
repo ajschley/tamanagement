@@ -1,26 +1,24 @@
 from django.shortcuts import render
 from django.views import View
-from django.http import HttpResponse
+from .models import User
 from .models import Course
 
 
 # Create your views here.
-def index(request):
-    myQuery = Course.objects.all()
-    context = {'myCourses': myQuery}
-    return render(request, "main/index.html", context)
-
-
-# Create your views here.
 class Home(View):
+
     def get(self, request):
-        return render(request, 'main/index.html')
+        return render(request, 'index.html')
 
     def post(self, request):
-        yourInstance = Course()
+        yourInstance = User()
         commandInput = request.POST["command"]
-        if commandInput:
-            response = yourInstance.command(commandInput)
+        if commandInput[0:5] == 'login':
+            inputted = commandInput[6:]
+            inputs = inputted.split(' ')
+            response = yourInstance.login(inputs[0], inputs[1])
+        elif commandInput == 'logout':
+            response = yourInstance.logout()
         else:
-            response = ""
-        return render(request, 'main/index.html', {"message": response})
+            response = "Invalid Command"
+        return render(request, 'index.html', {"message": response})

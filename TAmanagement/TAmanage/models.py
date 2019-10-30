@@ -1,8 +1,5 @@
 from django.db import models
 
-# Global variable to determine if user is logged in or not
-loggedIn = False
-
 
 # Create your models here.
 class Course(models.Model):
@@ -11,14 +8,10 @@ class Course(models.Model):
 
     # Return if the class is full for TA's & Graders or not
     def isfull(self):
-        if not self.loggedIn:
-            return 'Not logged in. Cannot run function.'
         pass
 
     # Return the course name
     def coursename(self):
-        if not self.loggedIn:
-            return 'Not logged in. Cannot run function.'
         pass
 
 
@@ -31,6 +24,7 @@ class User(models.Model):
         ('TA', 'TA / Grader'),
     ]
     user_type = models.CharField(max_length=5, choices=USER_TYPES, default='TA')
+    loggedIn = False
 
     # User login
     def login(self, username, password):
@@ -52,7 +46,7 @@ class User(models.Model):
     def username(self):
         if not self.loggedIn:
             return 'Not logged in. Cannot run function.'
-        pass
+        return self.username
 
     # Reset the user's password
     def resetpassword(self):

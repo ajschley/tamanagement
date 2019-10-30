@@ -1,5 +1,5 @@
 from django.test import TestCase
-from TAmanagement.TAmanage.models import Course, User
+from models import Course, User
 
 
 class CourseTestCase(TestCase):

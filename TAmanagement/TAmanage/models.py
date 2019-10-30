@@ -8,11 +8,11 @@ class Course(models.Model):
 
     # Return if the class is full for TA's & Graders or not
     def isfull(self):
-        pass
+        return self.isFull;
 
     # Return the course name
     def coursename(self):
-        pass
+        return self.courseName;
 
 
 class User(models.Model):

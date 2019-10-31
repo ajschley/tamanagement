@@ -81,8 +81,8 @@ class User(models.Model):
 
     # Return the user's email/username
     def username(self):
-        if not self.loggedIn:
-            return 'Not logged in. Cannot run function.'
+        #if not self.loggedIn:
+        #    return 'Not logged in. Cannot run function.'
         return self.userEmail
 
     # Reset the user's password

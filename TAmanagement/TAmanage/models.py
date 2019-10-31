@@ -96,3 +96,7 @@ class User(models.Model):
         if not self.loggedIn:
             return 'Not logged in. Cannot run function.'
         return self.user_type
+
+# this will take 3 arguments ie(compsci,361,803) and give out a string of the course
+# created. It will verify the inputs are correct.
+# returns: a string of course created

@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import Course, User
+from .models import Course, User, CourseCreation
 
 
 class CourseTestCase(TestCase):
@@ -18,3 +18,4 @@ class CourseTestCase(TestCase):
     def test_course_full(self):
         course2 = Course.objects.get(name="CS395")
         self.assertTrue(course2.isFull())
+

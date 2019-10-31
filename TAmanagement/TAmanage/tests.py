@@ -9,12 +9,12 @@ class CourseTestCase(TestCase):
 
     def test_course_return(self):
         course1 = Course.objects.get(courseName="CS361")
-        self.assertEqual(course1.coursename(), 'CS361')
+        self.assertEqual(course1.courseName(), 'CS361')
 
     def test_course_not_full(self):
         course1 = Course.objects.get(courseName="CS361")
-        self.assertFalse(course1.isfull())
+        self.assertFalse(course1.isFull())
 
     def test_course_full(self):
         course2 = Course.objects.get(courseName="CS395")
-        self.assertTrue(course2.isfull())
+        self.assertTrue(course2.isFull())

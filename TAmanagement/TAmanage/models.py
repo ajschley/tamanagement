@@ -1,3 +1,5 @@
+from datetime import timezone, datetime
+
 from django.db import models
 
 
@@ -10,8 +12,8 @@ class Course(models.Model):
     isFull = models.BooleanField(default=False)
 
     # Start and End Times for Each Course
-    startTime = models.TimeField('Start Time:')
-    endTime = models.TimeField('Start Time:')
+    startTime = models.TimeField('Start Time:', default=datetime.now)
+    endTime = models.TimeField('Start Time:', default=datetime.now)
 
     # Date Field for Dates, if it's online, it is "online" instead of a combination of M, T, W, R, F, or S
     # Date cannot include Sundays, as classes are not on Sundays

@@ -6,10 +6,10 @@ from django.db import models
 # Create your models here.
 class Course(models.Model):
     # Each course has a name
-    courseName = models.CharField(max_length=20, null=False, default='CS361')
+    name = models.CharField(max_length=20, default='CS361')
 
     # Boolean field defining if a class is full or not
-    isFull = models.BooleanField(default=False)
+    isCourseFull = models.BooleanField(default=False)
 
     # Start and End Times for Each Course
     startTime = models.TimeField('Start Time:', default=datetime.now)
@@ -21,12 +21,12 @@ class Course(models.Model):
 
     # Return if the class is full for TA's & Graders or not
     def isFull(self):
-        return self.isFull
+        return self.isCourseFull
 
     # Set the course to be full or not
     # b is a Boolean value
     def setIsFull(self, b):
-        self.isFull = b
+        self.isCourseFull = b
 
     # Return the course name
     def courseName(self):

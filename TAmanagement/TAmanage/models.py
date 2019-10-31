@@ -30,7 +30,7 @@ class Course(models.Model):
 
     # Return the course name
     def courseName(self):
-        return self.courseName
+        return self.name
 
     # Check if a course is online or not
     def isOnline(self):

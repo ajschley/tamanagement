@@ -6,7 +6,6 @@ from .models import Course
 
 # Create your views here.
 class Home(View):
-
     loggedIn = False
 
     def get(self, request):
@@ -38,6 +37,26 @@ class Home(View):
             if commandInput == 'logout':
                 response = "Successful logout."
                 return render(request, 'login.html', {"message": response})
+            elif commandInput == 'listCourses':
+                courseList = Course.objects.all()
+                response = "Courses: "
+                i = 0
+                for course in courseList:
+                    if i == 0:
+                        response += course.courseName()
+                    else:
+                        response += ", " + course.courseName()
+                    i += 1
+            elif commandInput == 'listUsers':
+                userList = User.objects.all()
+                response = "Users: "
+                i = 0
+                for user in userList:
+                    if i == 0:
+                        response += user.username()
+                    else:
+                        response += ", " + user.username()
+                    i += 1
             elif commandInput[0:12] == 'createCourse':
                 inputted = commandInput[13:]
                 inputs = inputted.split(' ')

@@ -35,3 +35,24 @@ class Home(View):
         else:
             response = "Invalid Command"
         return render(request, 'index.html', {"message": response})
+
+
+class Login(View):
+
+    def get(self, request):
+        return render(request, 'login.html')
+
+    def post(self, request):
+        yourInstance = User()
+
+        commandInput = request.POST["command"]
+        commandInput2 = request.POST["command2"]
+
+        user = User.objects.get(userEmail=commandInput)
+
+        if user.userPassword == commandInput2:
+            response = "Successful Login"
+            return render(request, 'index.html', {"message": response})
+        else:
+            response = "Invalid Login"
+            return render(request, 'login.html', {"message": response})

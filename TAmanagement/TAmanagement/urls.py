@@ -19,7 +19,8 @@ from django.urls import path
 from TAmanage import views
 
 urlpatterns = [
-  url(r'^admin/', admin.site.urls),
-  path("", views.Login.as_view()),
-  path("home/", views.Home.as_view()),
+    url(r'^admin/', admin.site.urls),
+    #  path('', views.Login.as_view()),
+    #  path('home/', views.Home.as_view()),
+    path('', views.Home.as_view()),
 ]

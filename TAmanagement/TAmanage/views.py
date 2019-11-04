@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from .models import User
 from .models import Course
@@ -7,52 +7,49 @@ from .models import Course
 # Create your views here.
 class Home(View):
 
+    loggedIn = False
+
     def get(self, request):
-        return render(request, 'index.html')
-
-    def post(self, request):
-        yourInstance = User()
-
-        commandInput = request.POST["command"]
-        if commandInput[0:5] == 'login':
-            inputted = commandInput[6:]
-            inputs = inputted.split(' ')
-            response = yourInstance.login(inputs[0], inputs[1])
-        elif commandInput == 'logout':
-            response = yourInstance.logout()
-        elif commandInput[0:12] == 'createCourse':
-            inputted = commandInput[13:]
-            inputs = inputted.split(' ')
-            yourInstance2 = Course(name=inputs[0], startTime=inputs[1], endTime=inputs[2], dates=inputs[3])
-            yourInstance2.save()
-            response = yourInstance2.courseName() + ' was created.'
-        elif commandInput[0:10] == 'createUser':
-            inputted = commandInput[11:]
-            inputs = inputted.split(' ')
-            yourInstance3 = User(userEmail=inputs[0], userPassword=inputs[1], user_type=inputs[2])
-            yourInstance3.save()
-            response = yourInstance3.username() + ' was created.'
+        if Home.loggedIn:
+            return render(request, 'index.html')
         else:
-            response = "Invalid Command"
-        return render(request, 'index.html', {"message": response})
-
-
-class Login(View):
-
-    def get(self, request):
-        return render(request, 'login.html')
+            return render(request, 'login.html')
 
     def post(self, request):
-        yourInstance = User()
 
-        commandInput = request.POST["command"]
-        commandInput2 = request.POST["command2"]
-
-        user = User.objects.get(userEmail=commandInput)
-
-        if user.userPassword == commandInput2:
-            response = "Successful Login"
+        if not Home.loggedIn:
+            commandInput = request.POST["command"]
+            try:
+                user = User.objects.get(userEmail=commandInput)
+            except:
+                response = "Invalid Login"
+                return render(request, 'login.html', {"message": response})
+            commandInput = request.POST["command2"]
+            if user.userPassword == commandInput:
+                Home.loggedIn = True
+                response = "Logged In Successfully"
+                return render(request, 'index.html', {"message": response})
+            else:
+                response = "Invalid Login"
+                return render(request, 'login.html', {"message": response})
+        else:
+            # yourInstance = User()
+            commandInput = request.POST["command"]
+            if commandInput == 'logout':
+                response = "Successful logout."
+                return render(request, 'login.html', {"message": response})
+            elif commandInput[0:12] == 'createCourse':
+                inputted = commandInput[13:]
+                inputs = inputted.split(' ')
+                yourInstance2 = Course(name=inputs[0], startTime=inputs[1], endTime=inputs[2], dates=inputs[3])
+                yourInstance2.save()
+                response = yourInstance2.courseName() + ' was created.'
+            elif commandInput[0:10] == 'createUser':
+                inputted = commandInput[11:]
+                inputs = inputted.split(' ')
+                yourInstance3 = User(userEmail=inputs[0], userPassword=inputs[1], user_type=inputs[2])
+                yourInstance3.save()
+                response = yourInstance3.username() + ' was created.'
+            else:
+                response = "Invalid Command"
             return render(request, 'index.html', {"message": response})
-        else:
-            response = "Invalid Login"
-            return render(request, 'login.html', {"message": response})

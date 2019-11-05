@@ -27,13 +27,22 @@ class UserTestCase(TestCase):
         user11 = User()
         user11.userEmail = "hossain8@uwm.edu"
         self.assertEqual(user11.username(), "hossain8@uwm.edu")
+        self.assertNotEqual(user11.username(), "pqr@uwm.edu")
 
     def test_userType(self):
-        user11 = User()
-        user11.user_type = 'MA'
-        self.assertEqual(user11.USER_TYPES.__contains__(user11.userType()), False)
-        user12 = User()
-        user12.user_type = ('TA', 'TA / Grader')
-        self.assertTrue(user12.USER_TYPES.__contains__(user12.userType()))
-        self.assertFalse(user12.USER_TYPES.__contains__(('MA', 'ma')))
-        self.assertFalse(user12.USER_TYPES.__contains__(('ta', 'TA')))
+        user21 = User()
+        user21.user_type = 'MA'
+        self.assertEqual(user21.USER_TYPES.__contains__(user21.userType()), False)
+        user21.user_type = ('TA', 'TA / Grader')
+        self.assertTrue(user21.USER_TYPES.__contains__(user21.userType()))
+        self.assertFalse(user21.USER_TYPES.__contains__(('MA', 'ma')))
+        self.assertFalse(user21.USER_TYPES.__contains__(('ta', 'TA')))
+        self.assertNotEqual(user21.userType(), ('ADMIN', 'Admin'))
+
+    def test_loggedIn(self):
+        user31 = User()
+        self.assertFalse(user31.loggedIn)
+        user31.loggedIn=True
+        self.assertTrue(user31.loggedIn)
+
+

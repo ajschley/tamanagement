@@ -3,6 +3,7 @@ from .models import Course, User
 
 
 class CourseTestCase(TestCase):
+    # Simon: Course Test Cases
     def setUp(self):
         Course.objects.create(name="CS361", isCourseFull=False)
         Course.objects.create(name="CS395", isCourseFull=True)
@@ -18,3 +19,21 @@ class CourseTestCase(TestCase):
     def test_course_full(self):
         course2 = Course.objects.get(name="CS395")
         self.assertTrue(course2.isFull())
+
+
+class UserTestCase(TestCase):
+    # Arif: User Unit Tests
+    def test_user(self):
+        user11 = User()
+        user11.userEmail = "hossain8@uwm.edu"
+        self.assertEqual(user11.username(), "hossain8@uwm.edu")
+
+    def test_userType(self):
+        user11 = User()
+        user11.user_type = 'MA'
+        self.assertEqual(user11.USER_TYPES.__contains__(user11.userType()), False)
+        user12 = User()
+        user12.user_type = ('TA', 'TA / Grader')
+        self.assertTrue(user12.USER_TYPES.__contains__(user12.userType()))
+        self.assertFalse(user12.USER_TYPES.__contains__(('MA', 'ma')))
+        self.assertFalse(user12.USER_TYPES.__contains__(('ta', 'TA')))

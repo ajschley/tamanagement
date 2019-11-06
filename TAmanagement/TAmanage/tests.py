@@ -55,7 +55,31 @@ class UserTestCase(TestCase):
     def test_loggedIn(self):
         user31 = User()
         self.assertFalse(user31.loggedIn)
-        user31.loggedIn=True
+        user31.loggedIn = True
         self.assertTrue(user31.loggedIn)
+
+    # Saad: more user Unit test
+
+    # test for setting a password for a new user
+    def test_password(self):
+        user41 = User()
+        user41.userPassword = "Stc123"
+        self.assertEqual(user41.resetPassword(), "Stc123")
+        self.assertNotEqual(user41.resetPassword(), "Stc124")
+        user41.userPassword = None
+        self.assertFalse(user41.resetPassword(), "error: enter a password")
+
+    # test user email only valid uwm email
+
+    def tes_userEmail(self):
+        user51 = User()
+        user51.userEmail = "saad_q95@gamil.com"
+        self.assertFalse(user51.username(), "use a valid uwm email")
+        user51.userEmail = "alqaht78@uwm.edu"
+        self.assertEqual(user51.username(), "alqaht78@uwm.edu")
+        user51.userEmail = None
+        self.assertRaises(user51.username(), TypeError)
+        self.assertFalse(user51.username(), "error: enter a valid email")
+
 
 

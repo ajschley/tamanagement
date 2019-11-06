@@ -33,6 +33,28 @@ class CourseTestCase(TestCase):
         course361 = Course.objects.get(name="CS361")
         self.assertEqual(course361.getDates(), 'TR')
 
+# Alec: Course Test Cases
+    # test start time for a course
+    def test_course_start(self):
+        course361 = Course()
+        course361.startTime = "11:00"
+        self.assertEqual(course361.getStartTime(), "11:00")
+        self.assertNotEqual(course361.getStartTime(), "11:50")
+
+    # test end time for a course
+    def test_course_end(self):
+        course361 = Course()
+        course361.endTime = "11:50"
+        self.assertEqual(course361.getEndTime(), "11:50")
+        self.assertNotEqual(course361.getEndTime(), "11:00")
+
+    # test the online class doesn't have start or end time
+    def test_course_online_time(self):
+        course482 = Course()
+        course482.dates = "Online"
+        self.assertEqual(course482.getStartTime(), None)
+        self.assertEqual(course482.getEndTime(), None)
+
 
 class UserTestCase(TestCase):
     # Arif: User Unit Tests

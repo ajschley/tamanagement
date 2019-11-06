@@ -38,10 +38,14 @@ class Course(models.Model):
 
     # Getter method for startTime
     def getStartTime(self):
+        if self.dates == "Online":
+            return None
         return self.startTime
 
     # Getter method for endTime
     def getEndTime(self):
+        if self.dates == "Online":
+            return None
         return self.endTime
 
     # Getter method for dates

@@ -5,20 +5,33 @@ from .models import Course, User
 class CourseTestCase(TestCase):
     # Simon: Course Test Cases
     def setUp(self):
-        Course.objects.create(name="CS361", isCourseFull=False)
-        Course.objects.create(name="CS395", isCourseFull=True)
+        Course.objects.create(name="CS361", isCourseFull=False, dates="TR")
+        Course.objects.create(name="CS395", isCourseFull=True, dates="MW")
+        Course.objects.create(name="CS482", isCourseFull=False, dates="Online")
 
     def test_course_return(self):
-        course1 = Course.objects.get(name="CS361")
-        self.assertEqual(course1.courseName(), 'CS361')
+        course361 = Course.objects.get(name="CS361")
+        self.assertEqual(course361.courseName(), 'CS361')
 
     def test_course_not_full(self):
-        course1 = Course.objects.get(name="CS361")
-        self.assertFalse(course1.isFull())
+        course361 = Course.objects.get(name="CS361")
+        self.assertFalse(course361.isFull())
 
     def test_course_full(self):
-        course2 = Course.objects.get(name="CS395")
-        self.assertTrue(course2.isFull())
+        course395 = Course.objects.get(name="CS395")
+        self.assertTrue(course395.isFull())
+
+    def test_course_online(self):
+        course482 = Course.objects.get(name="CS482")
+        self.assertTrue(course482.isOnline())
+
+    def test_course_not_online(self):
+        course395 = Course.objects.get(name="CS395")
+        self.assertFalse(course395.isOnline())
+
+    def test_course_dates(self):
+        course361 = Course.objects.get(name="CS361")
+        self.assertEqual(course361.getDates(), 'TR')
 
 
 class UserTestCase(TestCase):

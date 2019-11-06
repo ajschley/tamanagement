@@ -15,7 +15,7 @@ class Course(models.Model):
     startTime = models.TimeField('Start Time:', default=datetime.now)
     endTime = models.TimeField('Start Time:', default=datetime.now)
 
-    # Date Field for Dates, if it's online, it is "online" instead of a combination of M, T, W, R, F, or S
+    # Date Field for Dates, if it's online, it is "Online" instead of a combination of M, T, W, R, F, or S
     # Date cannot include Sundays, as classes are not on Sundays
     dates = models.CharField(max_length=6, default='MTWRFS')
 

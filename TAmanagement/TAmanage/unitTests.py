@@ -1,4 +1,6 @@
+from django.http import request
 from django.test import TestCase
+
 from .models import Course, User
 
 
@@ -61,8 +63,8 @@ class UserTestCase(TestCase):
     def test_user(self):
         user11 = User()
         user11.userEmail = "hossain8@uwm.edu"
-        self.assertEqual(user11.username(), "hossain8@uwm.edu")
-        self.assertNotEqual(user11.username(), "pqr@uwm.edu")
+        self.assertEqual(user11.getUsername(), "hossain8@uwm.edu")
+        self.assertNotEqual(user11.getUsername(), "pqr@uwm.edu")
 
     def test_userType(self):
         user21 = User()
@@ -93,15 +95,30 @@ class UserTestCase(TestCase):
 
     # test user email only valid uwm email
 
-    def tes_userEmail(self):
+    def test_userEmail(self):
         user51 = User()
         user51.userEmail = "saad_q95@gamil.com"
-        self.assertFalse(user51.username(), "use a valid uwm email")
+        self.assertFalse(user51.getUsername(), "use a valid uwm email")
         user51.userEmail = "alqaht78@uwm.edu"
-        self.assertEqual(user51.username(), "alqaht78@uwm.edu")
+        self.assertEqual(user51.getUsername(), "alqaht78@uwm.edu")
         user51.userEmail = None
-        self.assertRaises(user51.username(), TypeError)
-        self.assertFalse(user51.username(), "error: enter a valid email")
+        self.assertRaises(user51.getUsername(), TypeError)
+        self.assertFalse(user51.getUsername(), "error: enter a valid email")
+
+class LoginTestCase(TestCase):
+    #Chris:Login Test Cases
+    def setUp(self):
+        User.objects.create(userEmail="test@test.com", userPassword="test")
+
+    def test_login(self):
+        testUser = User.objects.get(userEmail="test@test.com")
+        self.assertFalse(testUser.loggedIn)
+        testUser.setLoginState(True)
+        self.assertTrue(testUser.loggedIn)
+        testUser.setLoginState(False)
+        self.assertFalse(testUser.loggedIn)
+
+
 
 
 

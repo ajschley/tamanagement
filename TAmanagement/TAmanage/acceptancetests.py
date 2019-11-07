@@ -8,7 +8,7 @@ class CourseTestCase(TestCase):
         #Home.POST("createCourse CS361 11:00 11:50 TR")
         #self.assertEqual(Home.response, 'CS361 was created.')
         Home.post.__init__("createCourse CS361 11:00 11:50 TR")
-        self.assertEqual(Home.get, "CS361 was created.")
+        self.assertEqual(Home.post, "CS361 was created.")
 
     def test_createCourseNoDates(self):
         #Home.POST("createCourse CS361 11:00 11:50")

@@ -7,6 +7,8 @@ from .models import Course
 # Create your views here.
 class Home(View):
     loggedIn = False
+    commandInput = ""
+    commandList = ('logout', 'listCourses', 'listUsers', 'createCourse', 'createUser', 'help')
 
     def get(self, request):
         if Home.loggedIn:
@@ -15,7 +17,6 @@ class Home(View):
             return render(request, 'login.html')
 
     def post(self, request):
-
         if not Home.loggedIn:
             commandInput = request.POST["command"]
             try:
@@ -27,6 +28,7 @@ class Home(View):
             if user.userPassword == commandInput:
                 Home.loggedIn = True
                 response = "Logged In Successfully"
+                user.setLoginState(True)
                 return render(request, 'index.html', {"message": response})
             else:
                 response = "Invalid Login"
@@ -36,6 +38,7 @@ class Home(View):
             commandInput = request.POST["command"]
             if commandInput == 'logout':
                 response = "Successful logout."
+                User.objects.get(userEmail=User.userEmail).setLoginState(False)
                 return render(request, 'login.html', {"message": response})
             elif commandInput == 'listCourses':
                 courseList = Course.objects.all()
@@ -53,9 +56,9 @@ class Home(View):
                 i = 0
                 for user in userList:
                     if i == 0:
-                        response += user.username()
+                        response += user.userEmail
                     else:
-                        response += ", " + user.username()
+                        response += ", " + user.userEmail
                     i += 1
             elif commandInput[0:12] == 'createCourse':
                 inputted = commandInput[13:]
@@ -68,7 +71,15 @@ class Home(View):
                 inputs = inputted.split(' ')
                 yourInstance3 = User(userEmail=inputs[0], userPassword=inputs[1], user_type=inputs[2])
                 yourInstance3.save()
-                response = yourInstance3.username() + ' was created.'
+                response = yourInstance3.userEmail + ' was created.'
+            # Chris: Help command
+            elif commandInput == 'help':
+                response = "Commands: "
+                commandList = ('logout', 'listCourses', 'listUsers', 'createCourse', 'createUser', 'help')
+
+                for command in commandList:
+                    response += command + "\n"
+
             else:
                 response = "Invalid Command"
             return render(request, 'index.html', {"message": response})

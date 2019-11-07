@@ -67,8 +67,12 @@ class User(models.Model):
     user_type = models.CharField(max_length=5, choices=USER_TYPES, default='TA')
     loggedIn = False
 
+    # Set value of loggedIn
+    def setLoginState(self, login):
+        self.loggedIn = login
+
     # Return the user's email/username
-    def username(self):
+    def getUsername(self):
         return self.userEmail
 
     # Reset the user's password

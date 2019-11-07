@@ -23,6 +23,7 @@ class CourseTestCase(TestCase):
         course395 = Course.objects.get(name="CS395")
         self.assertTrue(course395.isFull())
 
+    # Ben: Course Test Cases
     def test_course_online(self):
         course482 = Course.objects.get(name="CS482")
         self.assertTrue(course482.isOnline())
@@ -35,7 +36,7 @@ class CourseTestCase(TestCase):
         course361 = Course.objects.get(name="CS361")
         self.assertEqual(course361.getDates(), 'TR')
 
-# Alec: Course Test Cases
+    # Alec: Course Test Cases
     # test start time for a course
     def test_course_start(self):
         course361 = Course()
@@ -105,8 +106,9 @@ class UserTestCase(TestCase):
         self.assertRaises(user51.getUsername(), TypeError)
         self.assertFalse(user51.getUsername(), "error: enter a valid email")
 
+
 class LoginTestCase(TestCase):
-    #Chris:Login Test Cases
+    # Chris: Login Test Cases
     def setUp(self):
         User.objects.create(userEmail="test@test.com", userPassword="test")
 
@@ -117,8 +119,3 @@ class LoginTestCase(TestCase):
         self.assertTrue(testUser.loggedIn)
         testUser.setLoginState(False)
         self.assertFalse(testUser.loggedIn)
-
-
-
-
-

@@ -17,6 +17,7 @@ class Home(View):
             return render(request, 'login.html')
 
     def post(self, request):
+        # Simon: login code
         if not Home.loggedIn:
             commandInput = request.POST["command"]
             try:
@@ -36,10 +37,12 @@ class Home(View):
         else:
             # yourInstance = User()
             commandInput = request.POST["command"]
+            # Simon: logout command
             if commandInput == 'logout':
                 response = "Successful logout."
                 User.objects.get(userEmail=User.userEmail).setLoginState(False)
                 return render(request, 'login.html', {"message": response})
+            # Simon: listCourses command
             elif commandInput == 'listCourses':
                 courseList = Course.objects.all()
                 response = "Courses: "
@@ -50,6 +53,7 @@ class Home(View):
                     else:
                         response += ", " + course.courseName()
                     i += 1
+            # Simon: listUsers command
             elif commandInput == 'listUsers':
                 userList = User.objects.all()
                 response = "Users: "
@@ -60,12 +64,14 @@ class Home(View):
                     else:
                         response += ", " + user.userEmail
                     i += 1
+            # Simon: createCourse command
             elif commandInput[0:12] == 'createCourse':
                 inputted = commandInput[13:]
                 inputs = inputted.split(' ')
                 yourInstance2 = Course(name=inputs[0], startTime=inputs[1], endTime=inputs[2], dates=inputs[3])
                 yourInstance2.save()
                 response = yourInstance2.courseName() + ' was created.'
+            # Simon: createUser command
             elif commandInput[0:10] == 'createUser':
                 inputted = commandInput[11:]
                 inputs = inputted.split(' ')

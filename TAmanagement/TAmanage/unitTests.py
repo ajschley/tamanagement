@@ -119,3 +119,18 @@ class LoginTestCase(TestCase):
         self.assertTrue(testUser.loggedIn)
         testUser.setLoginState(False)
         self.assertFalse(testUser.loggedIn)
+
+    # no more than one user can be logged in
+    def test_login1(self):
+        user1 = User();
+        user2 = User();
+        user1.userEmail = "sam@uwm.edu"
+        user1.userPassword = "123"
+        user2.userEmail = "adam@uwm.edu"
+        user2.userPassword = "456"
+        user1.loggedIn = True
+        user2.loggedIn = True
+        self.assertTrue(user1.loggedIn)
+        self.assertFalse(user2.loggedIn)
+        user1.loggedIn = False
+        self.assertTrue(user2.loggedIn)

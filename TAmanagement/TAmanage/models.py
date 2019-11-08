@@ -13,7 +13,7 @@ class Course(models.Model):
 
     # Start and End Times for Each Course
     startTime = models.TimeField('Start Time:', default=datetime.now)
-    endTime = models.TimeField('Start Time:', default=datetime.now)
+    endTime = models.TimeField('End Time:', default=datetime.now)
 
     # Date Field for Dates, if it's online, it is "Online" instead of a combination of M, T, W, R, F, or S
     # Date cannot include Sundays, as classes are not on Sundays
@@ -42,11 +42,17 @@ class Course(models.Model):
             return None
         return self.startTime
 
+    def setStartTime(self, start):
+        self.startTime = start
+
     # Getter method for endTime
     def getEndTime(self):
         if self.dates == "Online":
             return None
         return self.endTime
+
+    def setEndTime(self, end):
+        self.endTime = end
 
     # Getter method for dates
     def getDates(self):

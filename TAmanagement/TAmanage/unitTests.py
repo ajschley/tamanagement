@@ -1,14 +1,12 @@
-from django.http import request
 from django.test import TestCase
-
 from .models import Course, User
 
 
 class CourseTestCase(TestCase):
     # Simon: Course Test Cases
     def setUp(self):
-        Course.objects.create(name="CS361", isCourseFull=False, dates="TR")
-        Course.objects.create(name="CS395", isCourseFull=True, dates="MW")
+        Course.objects.create(name="CS361", isCourseFull=False, dates="TR", startTime='11:00', endTime='11:50')
+        Course.objects.create(name="CS395", isCourseFull=True, dates="MW", startTime='1:00', endTime='2:00')
         Course.objects.create(name="CS482", isCourseFull=False, dates="Online")
 
     def test_course_return(self):
@@ -38,6 +36,7 @@ class CourseTestCase(TestCase):
 
     # Alec: Course Test Cases
     # test start time for a course
+
     def test_course_start(self):
         course361 = Course()
         course361.startTime = "11:00"
@@ -57,6 +56,33 @@ class CourseTestCase(TestCase):
         course482.dates = "Online"
         self.assertEqual(course482.getStartTime(), None)
         self.assertEqual(course482.getEndTime(), None)
+
+    # test the online class doesn't have dates
+    def test_course_online_dates(self):
+        course = Course.objects.get(name='CS361')
+        dates = course.getDates()
+        self.assertEqual(dates, None)
+
+    # test invalid start time for course
+    def test_course_start_invalid(self):
+        course = Course.objects.get(name='CS395')
+        start = course.getStartTime()
+        course.setStartTime('13:00')
+        self.assertEqual(course.getStartTime(), start)
+
+    # test invalid end time for course
+    def test_course_end_invalid(self):
+        course = Course.objects.get(name='CS395')
+        end = course.getEndTime()
+        course.setEndTime('14:00')
+        self.assertEqual(course.getEndTime(), end)
+
+    # test invalid dates for course
+    def test_course_invalid_dates(self):
+        course = Course.objects.get(name='CS361')
+        dates = course.getDates()
+        course.setDates('XZ')
+        self.assertEqual(course.getDates(), dates)
 
 
 class UserTestCase(TestCase):
@@ -111,6 +137,7 @@ class LoginTestCase(TestCase):
     # Chris: Login Test Cases
     def setUp(self):
         User.objects.create(userEmail="test@test.com", userPassword="test")
+        User.objects.create(userEmail="email", userPassword="password")
 
     def test_login(self):
         testUser = User.objects.get(userEmail="test@test.com")
@@ -119,3 +146,11 @@ class LoginTestCase(TestCase):
         self.assertTrue(testUser.loggedIn)
         testUser.setLoginState(False)
         self.assertFalse(testUser.loggedIn)
+
+# Alec: Login Test Case
+    def test_login_1(self):
+        test_user = User.objects.get(userEmail="email")
+        test_user_1 = User.objects.get(userEmail="test@test.com")
+        test_user.setLoginState(True)
+        test_user_1.setLoginState(True)
+        self.assertFalse(test_user.loggedIn)

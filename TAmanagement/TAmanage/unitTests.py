@@ -147,10 +147,43 @@ class LoginTestCase(TestCase):
         testUser.setLoginState(False)
         self.assertFalse(testUser.loggedIn)
 
-# Alec: Login Test Case
+    # Alec: Login Test Case
     def test_login_1(self):
         test_user = User.objects.get(userEmail="email")
         test_user_1 = User.objects.get(userEmail="test@test.com")
         test_user.setLoginState(True)
         test_user_1.setLoginState(True)
         self.assertFalse(test_user.loggedIn)
+
+    # Saad: no more than one user can be logged in
+
+    def test_login_2(self):
+        user1 = User.objects.create(userEmail="user1@uwm.edu", userPassword="124test")
+        user2 = User.objects.create(userEmail="user2@uwm.edu", userPassword="user2124")
+        user1.setLoginState(True)
+        user2.setLoginState(True)
+        self.assertFalse(user2.loggedIn)
+        user1.setLoginState(False)
+        self.assertTrue(user2.loggedIn)
+
+    # test admin login & logout
+    def test_admin_login(self):
+        admin = User.objects.create(user_type="admin", userPassword="admin123", userEmail="admin@uwm.edu")
+        admin.setLoginState(True)
+        self.assertTrue(admin.loggedIn)
+        admin.setLoginState(False)
+        self.assertFalse(admin.loggedIn)
+        admin1 = User.objects.create(user_type="ADMIN", userPassword="ADMIN123", userEmail="ADMIN@uwm.edu")
+        admin1.setLoginState(True)
+        self.assertTrue(admin.loggedIn)
+        admin1.setLoginState(False)
+        self.assertFalse(admin1.loggedIn)
+
+    # test TA login & logout
+
+    def test_TA_login(self):
+        TA = User.objects.create(user_type="TA", userPassword="TA123", userEmail="TA@uwm.edu")
+        TA.setLoginState(True)
+        self.assertTrue(TA.loggedIn)
+        TA.setLoginState(False)
+        self.assertFalse(TA.loggedIn)

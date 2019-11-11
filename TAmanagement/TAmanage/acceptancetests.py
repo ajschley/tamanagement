@@ -77,22 +77,29 @@ class CreateUserTest(TestCase):
         self.admin = User.objects.create(email='admin@test.com', role=3)
         self.worker.currentUser = self.admin
         self.ta = User.objects.create(email='ta@uwm.com', role=1)
+        self.prof = User.objects.create(email='prof@test.com', role=2)
 
     def test_create_a_user(self):
         u = User.objects.filter(email="user@uwm.edu")
         self.assertEqual(u.count(), 0)
-        msg = self.worker.executeCommand("create user 'user@uwm.edu' 'pickles4breakfast'")
+        msg = self.worker.executeCommand("create user user@uwm.edu pickles4breakfast")
         self.assertEqual(msg, 'User added')
-        u = User.objects.filter(email='user@uwm.edu')
         self.assertEqual(u.count(), 1)
 
-    def test_create_a_user_as_ta(self):
+    def test_create_a_user_1(self):
         self.worker.currentUser = self.ta
         u = User.objects.filter(email="user2@uwm.edu")
         self.assertEqual(u.count(), 0)
-        msg = self.worker.executeCommand("create user 'user2@uwm.edu' 'pickles4breakfast'")
+        msg = self.worker.executeCommand("create user user2@uwm.edu pickles4breakfast")
         self.assertEqual(msg, 'Only an Administrator can create a user')
-        u = User.objects.filter(email='user2@uwm.edu')
+        self.assertEqual(u.count(), 0)
+
+    def test_create_a_user_2(self):
+        self.worker.currentUser = self.prof
+        u = User.objects.filter(email="user3@uwm.edu")
+        self.assertEqual(u.count(), 0)
+        msg = self.worker.executeCommand("create user user3@uwm.edu pickles4breakfast")
+        self.assertEqual(msg, 'Only an Administrator can create a user')
         self.assertEqual(u.count(), 0)
 
 

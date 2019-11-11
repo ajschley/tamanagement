@@ -111,19 +111,6 @@ class CommandWorker:
             u.save()
             return 'Logged in as %s, your new password has been saved' % cmd[0]
 
-        #
-        # u = User.objects.filter(email=cmd[0])
-        # # if u.password != '':
-        # #     if u.password == cmd[1]:
-        # self.currentUser = u
-        # return 'Logged in as %s' % cmd[0]
-        # #     else:
-        # #         return 'Invalid credentials'
-        # # else:
-        # #     u.password = cmd[1]
-        # #     u.save()
-        # #     return 'Logged in as %s, your new password has been saved' % cmd[0]
-
     def logout(self, cmd: [str]):
         if len(cmd) != 0:
             return 'Invalid number of parameters'

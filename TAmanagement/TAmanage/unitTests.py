@@ -87,11 +87,20 @@ class CourseTestCase(TestCase):
 
 class UserTestCase(TestCase):
     # Arif: User Unit Tests
-    def test_user(self):
+    def test_user1(self):
         user11 = User()
         user11.userEmail = "hossain8@uwm.edu"
         self.assertEqual(user11.getUsername(), "hossain8@uwm.edu")
         self.assertNotEqual(user11.getUsername(), "pqr@uwm.edu")
+
+    def test_user2(self):
+        user31 = User()
+        user31.userEmail = None
+        self.assertRaises(Exception, user31.getUsername())
+        user31.userEmail = "hossain8"
+        self.assertEqual(user31.getUsername(), "hossain8@uwm.edu", 'Not valid username')
+        user31.userEmail = 5
+        self.assertRaises(Exception, user31.getUsername())
 
     def test_userType(self):
         user21 = User()
@@ -99,9 +108,20 @@ class UserTestCase(TestCase):
         self.assertEqual(user21.USER_TYPES.__contains__(user21.userType()), False)
         user21.user_type = ('TA', 'TA / Grader')
         self.assertTrue(user21.USER_TYPES.__contains__(user21.userType()))
-        self.assertFalse(user21.USER_TYPES.__contains__(('MA', 'ma')))
-        self.assertFalse(user21.USER_TYPES.__contains__(('ta', 'TA')))
-        self.assertNotEqual(user21.userType(), ('ADMIN', 'Admin'))
+
+    def test_userType2(self):
+        user41 = User()
+        user41.user_type = ('TA', 'TA / Grader')
+        self.assertFalse(user41.USER_TYPES.__contains__(('MA', 'ma')))
+        self.assertFalse(user41.USER_TYPES.__contains__(('ta', 'TA')))
+        self.assertNotEqual(user41.userType(), ('ADMIN', 'Admin'))
+
+    def test_userType3(self):
+        user51 = User()
+        user51.user_type = None
+        self.assertRaises(Exception, user51.getUsername())
+        user51.user_type = 5
+        self.assertRaises(TypeError, user51.getUsername())
 
     def test_loggedIn(self):
         user31 = User()

@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
-  <form method="post" action="/"> 
+  <form method="post" action="/">
   {% csrf_token %}
-    Username: <input type="text" name="command"><br/>
-      Password: <input type="text" name="command2"><br/>
-    <input type="submit">
+        Username : <input  type="text" name="command"><br/>
+        Password : <input  type="text" name="command2"><br/>
+    <input style="background-color: aquamarine; height: 35px; width: 110px; border-color: green; border-style: solid;
+  border-width: 3px; border-radius: 25px; padding: 6px; text-align: center;  " type="submit">
   </form>
-  <p>{{message}}</p>
+  <p style="position: absolute; bottom: 30px; right: 30px; color:lightcoral"> The Red Dragon </p>
 {% endblock content %}

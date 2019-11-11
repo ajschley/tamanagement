@@ -1,6 +1,5 @@
 from django.http import HttpResponse, JsonResponse
 from django.views import View
-from django.views.decorators.http import require_http_methods
 from django.template import loader
 from .commands import *
 from .forms import *
@@ -31,7 +30,6 @@ class Home(View):
             context['cmds'] = cmds.getCmds(req.session['current_role'])
 
         return HttpResponse(template.render(context, req))
-
 
 
 class CreateCourse(View):
@@ -94,9 +92,7 @@ class Login(View):
             context['cmds'] = []
         return HttpResponse(template.render(context, req))
 
-    # this function is so gross because of the extra cases for logging in vs normal commands
     def post(self, req):
-        print("**************\n")
         form = LoginForm(req.POST)
         if form.is_valid():
             out = worker.executeCommand(f'login {form.cleaned_data["email"]} "{form.cleaned_data["password"]}"')

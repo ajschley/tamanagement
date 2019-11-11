@@ -18,7 +18,7 @@ class CreateCourseTest(TestCase):
         self.assertEqual(msg, 'Course added')
         course = Course.objects.filter(name='CS999')
         self.assertEquals(course.count(), 1)
-
+        
 class LoginTest(TestCase):
     def setUp(self):
         self.worker = CommandWorker()

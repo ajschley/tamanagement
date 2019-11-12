@@ -16,14 +16,17 @@ input{
 }
 
 .label1{
-
 	 font-size: 20px;
 	 font-weight: bold;
+}
+.label2{
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .label3{
 	position: static;
-	padding: 170px;
+	padding: 120px;
 }
 
 .label5{
@@ -40,7 +43,7 @@ input{
   max-width: 400px;
   min-width: 100px;
   width: 100%;
-  margin: 90px auto;
+  margin: 20px auto;
   border: 5px solid green;
   background-color: aliceblue;
   border-radius: 25px;

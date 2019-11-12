@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     path('createCourse', views.CreateCourse.as_view()),
     path('createUser', views.CreateUser.as_view()),
-    path('', views.Home.as_view()),
+    path('', views.Login.as_view()),
     path('login', views.Login.as_view()),
     path('logout', views.Logout.as_view())
 

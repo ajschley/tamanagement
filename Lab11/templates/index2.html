@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form id="content" method="post" action="/">
+{% csrf_token %}
+<table>
+{{form.as_table}}
+</table>
+<input type="submit">
+</form>
+<div class = content>
+{% for i in ticket3 %}
+{{i.0}} <label class="label1">{{ i.1 }}</label><br/>
+{% endfor %}</div>
+{% endblock content %}

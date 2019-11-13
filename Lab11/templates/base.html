@@ -1,0 +1,16 @@
+{% load staticfiles %}
+        <!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello Django</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=320, initial-scale=1"/>
+    <link rel="stylesheet" href="{% static "css/styles.css" %}">
+</head>
+<body>
+  <br/>
+    {% block content %}{% endblock content %}
+</body>
+</html>

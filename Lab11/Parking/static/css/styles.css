@@ -1,0 +1,26 @@
+body {
+    background: lightcoral;
+    width: 320px;
+    text-align: center;
+}
+
+.label1 {
+    color: red;
+    font-family: monospace;
+}
+
+#content {
+  max-width: 320px;
+  margin: 20px auto;
+    width: 100%;
+    padding: 12px 600px 12px 600px;
+    text-align: center;
+}
+
+.content {
+  max-width: 320px;
+  margin: 20px auto;
+    width: 100%;
+    padding: 12px 600px 12px 600px;
+    text-align: center;
+}

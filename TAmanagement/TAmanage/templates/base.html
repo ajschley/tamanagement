@@ -1,24 +1,50 @@
 {% load staticfiles %}
         <!DOCTYPE html>
 
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>TAManagement</title>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" href="{% static "css/style.css" %}">
-    <!--<link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" href="style.css"> -->
     <h1>UWMilwaukee</h1>
     <h2>COLLEGE OF Engineering & Applied Science</h2>
     <h3>Department of Computer Science</h3>
 
-
 </head>
-<body class="body">
-    {% block content %}
+<body>
+    <header>
+                {% if request.session.current_user %}
+                    <li >
+                        <lable1 class="label1">
+                            <a href='/logout'>logout</a>
+                        </lable1>
+                    </li>
+                {% else %}
+                    <label1 class="label1">
+                        <li>
+                            <a href='/login' rel="nofollow">Login</a>
+                        </li>
+                        <br>
+                    </label1>
 
-    {% endblock content %}
+                {% endif %}
+
+    </header>
+    {% if request.session.current_user %}
+                <ul><label2>
+                    {% for cmd in cmds %}
+                        <li>
+                            <a href='{{ cmd.cmdUrl }}'>
+                                <span>{{ cmd.cmdTxt }}</span>
+                            </a>
+                        </li>
+                    {% endfor %}
+                    </label2>
+                </ul>
+    {% endif %}
+    {% block content %}{% endblock content %}
+
 </body>
 </html>

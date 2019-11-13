@@ -1,14 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-  <form id="command" method="post" action="/">
-  {% csrf_token %}
-      <label5 class="label5">
-          Command: <input type="text" name="command3" placeholder="Help"><br/>
-      </label5>
-    <br>
-     <label4 class="label4">
-          <input  type="submit">
-     </label4>
-  </form>
-    <p> The Red Dragons</p>
+    <div class="out">
+        {{ out | linebreaks }}
+    </div>
+    <p id="DragonText">The Red Dragons</p>
 {% endblock content %}

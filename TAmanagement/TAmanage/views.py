@@ -12,7 +12,7 @@ cmds = Commands()
 
 class Home(View):
     def get(self, req):
-        template = loader.get_template('login.html')
+        template = loader.get_template('base.html')
         context = {}
 
         if 'current_role' in req.session:
@@ -24,7 +24,7 @@ class Home(View):
         return HttpResponse(template.render(context, req))
 
     def post(self, req):
-        template = loader.get_template('login.html')
+        template = loader.get_template('base.html')
         context = {}
         if 'current_role' in req.session:
             context['cmds'] = cmds.getCmds(req.session['current_role'])

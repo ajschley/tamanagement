@@ -11,27 +11,27 @@
 </head>
 <body>
     <header>
-                {% if request.session.current_user %}
-                    <li >
-                        <a href='/logout'>logout</a>
-                    </li>
-                {% else %}
-                    <li><a href='/login' rel="nofollow">Login</a></li>
-                {% endif %}
+        {% if request.session.current_user %}
+            <li >
+                <a href='/logout'>logout</a>
+            </li>
+        {% else %}
+            <li><a href='/login' rel="nofollow">Login</a></li>
+        {% endif %}
 
     </header>
-    {% if request.session.current_user %}
-                <ul>
-                    {% for cmd in cmds %}
-                        <li>
-                            <a href='{{ cmd.cmdUrl }}'>
-                                <span>{{ cmd.cmdTxt }}</span>
-                            </a>
-                        </li>
-                    {% endfor %}
+        {% if request.session.current_user %}
+            <ul>
+                {% for cmd in cmds %}
+                    <li>
+                        <a href='{{ cmd.cmdUrl }}'>
+                            <span>{{ cmd.cmdTxt }}</span>
+                        </a>
+                    </li>
+                {% endfor %}
 
-                </ul>
-    {% endif %}
+            </ul>
+        {% endif %}
     {% block content %}{% endblock content %}
 </body>
 </html>

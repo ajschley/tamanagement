@@ -55,3 +55,37 @@ class Course(models.Model):
     dates = models.CharField(max_length=6, default='MTWRFS', blank=False, null=False)
     graderTAs = models.ManyToManyField("User", blank=True, related_name='courses')
 
+    # Return the course name
+    def courseName(self):
+        return self.name
+
+    # Check if a course is online or not
+    def isOnline(self):
+        return self.dates == 'Online'
+
+    # Getter method for startTime
+    def getStartTime(self):
+        if self.dates == "Online":
+            return None
+        return self.startTime
+
+    def setStartTime(self, start):
+        self.startTime = start
+
+    # Getter method for endTime
+    def getEndTime(self):
+        if self.dates == "Online":
+            return None
+        return self.endTime
+
+    def setEndTime(self, end):
+        self.endTime = end
+
+    # Getter method for dates
+    def getDates(self):
+        return self.dates
+
+    def setDates(self, dates):
+        self.dates = dates
+
+

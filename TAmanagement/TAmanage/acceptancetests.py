@@ -16,11 +16,23 @@ class WorkerTest(TestCase):
         self.assertEqual(msg, "Not a valid command")
 
 
+class InvalidCommandTest(TestCase):
+
+    def setUp(self):
+        self.worker = CommandWorker()
+
+    def test_invalid_command(self):
+        msg = self.worker.executeCommand("asdfdsf")
+        self.assertEqual(msg, "Not a valid command")
+
+
 class CreateCourseTest(TestCase):
 
     def setUp(self):
         self.worker = CommandWorker()
         self.admin = User.objects.create(email='admin@test.com', role=3)
+        self.ta = User.objects.create(email='ta@uwm.com', role=1)
+        self.prof = User.objects.create(email='prof@test.com', role=2)
         self.worker.currentUser = self.admin
 
     def test_create_a_course(self):
@@ -54,11 +66,22 @@ class CreateCourseTest(TestCase):
         self.assertEqual(msg, 'Course already exists')
         self.assertEqual(course.count(), 1)
 
+    def test_create_a_course_4(self):
+        self.worker.currentUser = self.ta
+        msg = self.worker.executeCommand("create course CS999")
+        self.assertEqual(msg, "Only an Administrator can create a course")
+
+    def test_create_a_course_5(self):
+        self.worker.currentUser = self.prof
+        msg = self.worker.executeCommand("create course CS999")
+        self.assertEqual(msg, "Only an Administrator can create a course")
+
 
 class LoginTest(TestCase):
     def setUp(self):
         self.worker = CommandWorker()
         self.admin = User.objects.create(email='admin@test.com', password='so_very_simple', role=3)
+        self.ta = User.objects.create(email='ta@uwm.com', password='password', role=1)
         self.worker.currentUser = self.admin
 
     def test_login(self):
@@ -68,6 +91,20 @@ class LoginTest(TestCase):
     def test_login_1(self):
         msg = self.worker.executeCommand("login admin@test.com so_very_simple")
         self.assertEqual("Logged in as admin@test.com", msg)
+
+    def test_login_2(self):
+        msg = self.worker.executeCommand("login admin@test.com so_very_simple")
+        self.assertEqual("Logged in as admin@test.com", msg)
+        msg = self.worker.executeCommand("logout")
+        self.assertEqual("Logged out", msg)
+
+    def test_login_3(self):
+        msg = self.worker.executeCommand("login admin@test.com so_very_simple")
+        self.assertEqual("Logged in as admin@test.com", msg)
+        msg = self.worker.executeCommand("logout")
+        self.assertEqual("Logged out", msg)
+        msg = self.worker.executeCommand("login ta@uwm.com password")
+        self.assertEqual("Logged in as ta@uwm.com", msg)
 
 
 class CreateUserTest(TestCase):
@@ -102,8 +139,28 @@ class CreateUserTest(TestCase):
         self.assertEqual(msg, 'Only an Administrator can create a user')
         self.assertEqual(u.count(), 0)
 
+    def test_create_a_user_3(self):
+        #u = User.objects.filter(email="user@uwm.edu")
+        msg = self.worker.executeCommand("create user")
+        self.assertEqual(msg, "Invalid number of parameters")
 
-class ListUserTest(TestCase):
+    def test_create_a_user_4(self):
+        u = User.objects.filter(email="user@uwm.edu")
+        msg = self.worker.executeCommand("create user alec@uwm.edu")
+        self.assertEqual(msg, "Invalid number of parameters")
+
+    def test_create_a_user_5(self):
+        u = User.objects.filter(email="user@uwm.edu")
+        msg = self.worker.executeCommand("create user alec@uwm.edu banana banana")
+        self.assertEqual(msg, "Invalid number of parameters")
+
+    def test_create_a_user_5(self):
+        u = User.objects.filter(email="user@uwm.edu")
+        msg = self.worker.executeCommand("create user ta@uwm.com shiloop")
+        self.assertEqual(msg, "User already exists")
+
+
+class EditCourseTest(TestCase):
 
     def setUp(self):
         self.worker = CommandWorker()
@@ -111,17 +168,10 @@ class ListUserTest(TestCase):
         self.worker.currentUser = self.admin
         self.prof = User.objects.create(email='prof@uwm.edu', role=2)
         self.ta = User.objects.create(email='ta@uwm.com', role=1)
+        self.course1 = Course.objects.create(name="CS999")
 
-    def test_list_users(self):
-        u = User.objects.filter(email="ta@uwm.edu")
-        User.delete(u)
-        u = User.objects.all()
-        self.assertEqual(u.count(), 2)
-        msg = self.worker.executeCommand("list users")
-        self.assertEqual(msg, "")
+    def test_edit_course(self):
+        msg = self.worker.executeCommand("edit course CS999")
+        self.assertEqual(msg, "Course already up to date")
 
-    def test_list_users_1(self):
-        u = User.objects.all()
-        self.assertEqual(u.count(), 3)
-        msg = self.worker.executeCommand("list users")
-        self.assertEqual(msg, "")
+

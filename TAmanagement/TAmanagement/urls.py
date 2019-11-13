@@ -24,8 +24,7 @@ urlpatterns = [
     path('createUser', views.CreateUser.as_view()),
     path('', views.Home.as_view()),
     path('login', views.Login.as_view()),
-    path('logout', views.Logout.as_view())
-
-
+    path('logout', views.Logout.as_view()),
+    path('editCourse', views.EditCourse.as_view()),
 ]
 

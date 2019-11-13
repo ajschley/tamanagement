@@ -7,9 +7,7 @@ class Commands:
         self.cmdList = []
         self.addCmd(Role.Administrator, "Create Course", "/createCourse")
         self.addCmd(Role.Administrator, "Create User", "/createUser")
-        # self.addCmd([Role.Instructor, Role.TA], "Edit User", "/editUser")
-
-
+        self.addCmd([Role.Administrator], "Edit Course", "/editCourse")
 
 
     def addCmd(self, cmdrole: Role, cmdtxt, cmdurl):
@@ -28,6 +26,7 @@ class Commands:
                 cmdList.append(i)
         return cmdList
 
+
 class CommandWorker:
     def __init__(self, currentUserEmail = None):
         u = User.objects.filter(email=currentUserEmail).first()
@@ -35,7 +34,7 @@ class CommandWorker:
 
     def executeCommand(self, cmdstring: str) -> str:
         try:
-            cmd = shlex.split(cmdstring)  # don't split quoted substrings
+            cmd = shlex.split(cmdstring)
         except:
             return 'Badly formatted command'
 
@@ -43,6 +42,9 @@ class CommandWorker:
             'create': {
                 'course': self.create_course,
                 'user': self.create_user,
+            },
+            'edit': {
+                'course': self.edit_course,
             },
             'login': self.login,
             'logout': self.logout,
@@ -70,6 +72,35 @@ class CommandWorker:
         c.save()
         return 'Course added'
 
+    # def edit_course(self, cmd: [str]):
+    #     if not self.currentUser or not self.currentUser.has_role(Role.Administrator):
+    #         return 'Only an Administrator can edit a course'
+    #     if len(cmd) == 6:
+    #         return 'Invalid number of parameters'
+    #     c = Course.objects.filter(name=cmd[0])
+    #     if c:
+    #         if cmd[1]:
+    #             i = User.objects.filter(email=cmd[1])
+    #             if i:
+    #                 c.instructor = i
+    #                 c.save()
+    #         if cmd[2]:
+    #             c.location = cmd[2]
+    #             c.save()
+    #         if cmd[3]:
+    #             c.startTime = cmd[3]
+    #             c.save()
+    #         if cmd[4]:
+    #             c.endTime = cmd[4]
+    #             c.save()
+    #         if cmd[5]:
+    #             c.dates = cmd[5]
+    #             c.save()
+    #     else:
+    #         return 'Course does not yet exist'
+    #     c.save()
+    #     return 'Course updated'
+
     def create_user(self, cmd: [str]):
         if not self.currentUser or not self.currentUser.has_role(Role.Administrator):
             return 'Only an Administrator can create a user'
@@ -82,16 +113,16 @@ class CommandWorker:
         u.save()
         return 'User added'
 
-    def list_courses(self, cmd: [str]):
-        if not self.currentUser:
-            return 'Need to be logged in to list courses'
-        if len(cmd) != 0:
-            return 'Invalid number of parameters'
-        courses = Course.objects.all()
-        courseList = ""
-        for c in courses:
-            courseList += (c.name + '\n')
-        return courseList
+    # def list_courses(self, cmd: [str]):
+    #     if not self.currentUser:
+    #         return 'Need to be logged in to list courses'
+    #     if len(cmd) != 0:
+    #         return 'Invalid number of parameters'
+    #     courses = Course.objects.all()
+    #     courseList = ""
+    #     for c in courses:
+    #         courseList += (c.name + '\n')
+    #     return courseList
 
     def login(self, cmd: [str]):
         if len(cmd) != 2:

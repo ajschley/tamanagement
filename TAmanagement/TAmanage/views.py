@@ -1,4 +1,4 @@
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 from django.views import View
 from django.template import loader
 from .commands import *
@@ -52,6 +52,29 @@ class CreateCourse(View):
             context['form'] = form
         context['cmds'] = cmds.getCmds(req.session['current_role'])
 
+        return HttpResponse(template.render(context, req))
+
+
+class EditCourse(View):
+
+    def get(self, req):
+        template = loader.get_template('form.html')
+        context = {}
+        context['form'] = EditCourseForm()
+        context['cmds'] = cmds.getCmds(req.session['current_role'])
+        return HttpResponse(template.render(context, req))
+
+    def post(self, req):
+        form = EditCourseForm(req.POST)
+        template = loader.get_template('form.html')
+        context = {}
+        if form.is_valid():
+            ch = CommandWorker(req.session['current_user'])
+            context['out'] = ch.executeCommand(f'edit course "{form.cleaned_data["name"]}"')
+            context['form'] = EditCourseForm()
+        else:
+            context['form'] = form
+        context['cmds'] = cmds.getCmds(req.session['current_role'])
         return HttpResponse(template.render(context, req))
 
 

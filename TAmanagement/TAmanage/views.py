@@ -70,11 +70,36 @@ class EditCourse(View):
         context = {}
         if form.is_valid():
             ch = CommandWorker(req.session['current_user'])
-            context['out'] = ch.executeCommand(f'edit course "{form.cleaned_data["name"]}"')
+            context['out'] = ch.executeCommand(f'edit course "{form.cleaned_data["name"]}" '
+                                               f'"{form.cleaned_data["location"]}" '
+                                               f'"{form.cleaned_data["startTime"]}" '
+                                               f'"{form.cleaned_data["endTime"]}" '
+                                               f'"{form.cleaned_data["dates"]}" ')
+
             context['form'] = EditCourseForm()
         else:
             context['form'] = form
         context['cmds'] = cmds.getCmds(req.session['current_role'])
+        return HttpResponse(template.render(context, req))
+
+
+class ListCourses(View):
+
+    def get(self, req):
+        template = loader.get_template('table.html')
+        context = {}
+        ch = CommandWorker(req.session['current_user'])
+        context['courses'] = ch.executeCommand(f'list courses')
+        return HttpResponse(template.render(context, req))
+
+
+class ListUsers(View):
+
+    def get(self, req):
+        template = loader.get_template('userTable.html')
+        context = {}
+        ch = CommandWorker(req.session['current_user'])
+        context['users'] = ch.executeCommand(f'list users')
         return HttpResponse(template.render(context, req))
 
 

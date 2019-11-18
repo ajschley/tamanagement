@@ -171,7 +171,7 @@ class EditCourseTest(TestCase):
         self.course1 = Course.objects.create(name="CS999")
 
     def test_edit_course(self):
-        msg = self.worker.executeCommand("edit course CS999")
+        msg = self.worker.executeCommand("edit course CS999 EMS180")
         self.assertEqual(msg, "Course already up to date")
 
 

@@ -1,10 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+<table>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Phone #</th>
+            <th>Address</th>
+            <th>Office Location</th>
+            <th>Office Hours</th>
+            <th>Office Hour Dates</th>
+        </tr>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.firstName }}</td>
+                <td>{{ user.lastName }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.phone }}</td>
+                <td>{{ user.address }}</td>
+                <td>{{ user.officeLocation }}</td>
+                <td>{{ user.officeHours }}</td>
+                <td>{{ user.officeHoursDates }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock content %}

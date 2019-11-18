@@ -7,7 +7,10 @@ class Commands:
         self.cmdList = []
         self.addCmd(Role.Administrator, "Create Course", "/createCourse")
         self.addCmd(Role.Administrator, "Create User", "/createUser")
-        self.addCmd([Role.Administrator], "Edit Course", "/editCourse")
+        self.addCmd(Role.Administrator, "Edit Course", "/editCourse")
+        self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "List Courses", "listCourses")
+        self.addCmd([Role.Administrator, Role.Instructor], "List Users", "listUsers")
+
 
 
     def addCmd(self, cmdrole: Role, cmdtxt, cmdurl):
@@ -46,6 +49,10 @@ class CommandWorker:
             'edit': {
                 'course': self.edit_course,
             },
+            'list': {
+                'courses': self.list_courses,
+                'users': self.list_users,
+            },
             'login': self.login,
             'logout': self.logout,
         }
@@ -72,34 +79,43 @@ class CommandWorker:
         c.save()
         return 'Course added'
 
-    # def edit_course(self, cmd: [str]):
-    #     if not self.currentUser or not self.currentUser.has_role(Role.Administrator):
-    #         return 'Only an Administrator can edit a course'
-    #     if len(cmd) == 6:
-    #         return 'Invalid number of parameters'
-    #     c = Course.objects.filter(name=cmd[0])
-    #     if c:
-    #         if cmd[1]:
-    #             i = User.objects.filter(email=cmd[1])
-    #             if i:
-    #                 c.instructor = i
-    #                 c.save()
-    #         if cmd[2]:
-    #             c.location = cmd[2]
-    #             c.save()
-    #         if cmd[3]:
-    #             c.startTime = cmd[3]
-    #             c.save()
-    #         if cmd[4]:
-    #             c.endTime = cmd[4]
-    #             c.save()
-    #         if cmd[5]:
-    #             c.dates = cmd[5]
-    #             c.save()
-    #     else:
-    #         return 'Course does not yet exist'
-    #     c.save()
-    #     return 'Course updated'
+    def list_courses(self, cmd: [str]):
+        if not self.currentUser:
+            return 'Need to be logged in to list courses'
+        if len(cmd) != 0:
+            return 'Invalid number of parameters'
+        courses = Course.objects.all()
+        return courses
+
+    def list_users(self, cmd: [str]):
+        if not self.currentUser or self.currentUser.has_role(Role.TA):
+            return 'Only an Administrator or Instructor can list users'
+        if len(cmd) != 0:
+            return 'Invalid number of parameters'
+        users = User.objects.all()
+        return users
+
+    def edit_course(self, cmd: [str]):
+        if not self.currentUser or not self.currentUser.has_role(Role.Administrator):
+            return 'Only an Administrator can edit a course'
+        if len(cmd) < 1 or len(cmd) > 5:
+            return 'Invalid number of parameters'
+        c = Course.objects.get(name=cmd[0])
+
+        if c:
+            if cmd[1]:
+                c.location = cmd[1]
+            if len(cmd) >= 2 and cmd[2]:
+                c.startTime = cmd[2]
+            if len(cmd) >= 3 and cmd[3]:
+                c.endTime = cmd[3]
+            if len(cmd) >= 4 and cmd[4]:
+                c.dates = cmd[4]
+            c.save()
+        else:
+            return 'Course does not yet exist'
+        c.save()
+        return 'Course updated'
 
     def create_user(self, cmd: [str]):
         if not self.currentUser or not self.currentUser.has_role(Role.Administrator):
@@ -112,17 +128,6 @@ class CommandWorker:
         u = User(email=cmd[0], password=cmd[1])
         u.save()
         return 'User added'
-
-    # def list_courses(self, cmd: [str]):
-    #     if not self.currentUser:
-    #         return 'Need to be logged in to list courses'
-    #     if len(cmd) != 0:
-    #         return 'Invalid number of parameters'
-    #     courses = Course.objects.all()
-    #     courseList = ""
-    #     for c in courses:
-    #         courseList += (c.name + '\n')
-    #     return courseList
 
     def login(self, cmd: [str]):
         if len(cmd) != 2:

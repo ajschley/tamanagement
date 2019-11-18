@@ -12,11 +12,12 @@
 <body>
     <header>
         {% if request.session.current_user %}
-            <li >
-                <a href='/logout'>logout</a>
+            <li>
+                <a href='/'>Home</a>
             </li>
-        {% else %}
-            <li><a href='/login' rel="nofollow">Login</a></li>
+            <li >
+                <a href='/logout'>Logout</a>
+            </li>
         {% endif %}
 
     </header>

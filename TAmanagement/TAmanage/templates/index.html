@@ -1,4 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
+    {% if not request.session.current_user %}
+        <script>window.location.href='/login'</script>
+    {% endif %}
+
     <div class="out">{{ out | linebreaks }}</div>
 {% endblock content %}

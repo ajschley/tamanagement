@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello Django</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+</head>
+<body>
+    
+<form action="https://webdevbasics.net/scripts/demo.php">
+    <label id="usernamelabel" for="username">User name:
+    </label><input type="text" id="username" name="username" pattern="[A-Za-z]*"/>
+    <br/>
+    <label id="passwordlabel" for="password">Password:
+    </label><input type="password" id="password" name="password" pattern="^\w*(?=\w*\d)(?=\w*[a-z])(?=\w*[A-Z])\w*$"/>
+    <br>
+    <br>
+    <label id="radioLabel" for="sizeObjects">Object Size
+    </label>
+    <br>
+    
+    <label id="sizeObjectsSmallLabel" for="sizeObjectsSmall">Small: 
+    </label><input type="radio" name="sizeObjects" id="sizeObjectsSmall"><br>
+    
+    <label id="sizeObjectsMediumLabel" for="sizeObjectsMedium">Medium:
+    </label><input type="radio" name="sizeObjects" id="sizeObjectsMedium"><br>
+    
+    <label id="sizeObjectsLargeLabel" for="sizeObjectsLarge">Large:
+    </label><input type="radio" name="sizeObjects" id="sizeObjectsLarge"><br>
+    <br>
+
+
+    <label id="submitLabel" for="submitButton">Submit Form
+    </label><input type="submit" id="submitButton" name="submitButton">
+
+</form> 
+
+
+</body>
+</html>

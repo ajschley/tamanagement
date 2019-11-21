@@ -9,8 +9,7 @@ class Commands:
         self.addCmd(Role.Administrator, "Create User", "/createUser")
         self.addCmd(Role.Administrator, "Edit Course", "/editCourse")
         self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "List Courses", "listCourses")
-        self.addCmd([Role.Administrator, Role.Instructor], "List Users", "listUsers")
-
+        self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "List Users", "listUsers")
 
 
     def addCmd(self, cmdrole: Role, cmdtxt, cmdurl):
@@ -88,7 +87,7 @@ class CommandWorker:
         return courses
 
     def list_users(self, cmd: [str]):
-        if not self.currentUser or self.currentUser.has_role(Role.TA):
+        if not self.currentUser:
             return 'Only an Administrator or Instructor can list users'
         if len(cmd) != 0:
             return 'Invalid number of parameters'
@@ -101,17 +100,18 @@ class CommandWorker:
         if len(cmd) < 1 or len(cmd) > 5:
             return 'Invalid number of parameters'
         c = Course.objects.get(name=cmd[0])
-
+        valid_dates = {"M", "T", "W", "R", "F", "S"}
         if c:
-            if cmd[1]:
-                c.location = cmd[1]
-            if len(cmd) >= 2 and cmd[2]:
-                c.startTime = cmd[2]
-            if len(cmd) >= 3 and cmd[3]:
-                c.endTime = cmd[3]
-            if len(cmd) >= 4 and cmd[4]:
-                c.dates = cmd[4]
+            c.location = cmd[1]
+            c.startTime = cmd[2]
+            c.endTime = cmd[3]
             c.save()
+            for ch in cmd[4]:
+                if valid_dates.intersection(ch):
+                    continue
+                else:
+                    return 'Invalid date(s)'
+            c.dates = cmd[4]
         else:
             return 'Course does not yet exist'
         c.save()

@@ -1,0 +1,72 @@
+
+body{
+	background: linear-gradient(110deg,
+	rgb(253, 205, 59) 60%, rgb(0, 0, 0) 60%);
+}
+
+.input:focus {
+  border: 2px solid green;
+  border-radius: 4px;
+  background-color: lavender;
+
+
+}
+input{
+	  font-size: 20px;
+}
+
+.label1{
+	 font-size: 30px;
+	 font-weight: bold;
+}
+
+.label2{
+	 font-size: 20px;
+	 font-weight: bold;
+}
+
+#form {
+    max-width: 800px;
+    min-width: 100px;
+    width: 100%;
+    margin: 1px auto;
+    border: 5px solid green;
+    background-color: aliceblue;
+    border-radius: 25px;
+    padding: 75px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#command
+{
+    max-width: 800px;
+    min-width: 100px;
+    width: 100%;
+    margin: 10px auto;
+    border: 5px solid green;
+    background-color: aliceblue;
+    border-radius: 25px;
+    padding: 12px 20px 12px 40px;
+
+}
+
+h2{
+    font-style: italic;
+}
+
+h3{
+    font-style: italic;
+}
+
+#DragonText{
+    color: red;
+    position: fixed;
+    bottom: 0;
+    width:100%;
+    text-align: center;
+    font-style: italic;
+    font-size: 20px;
+    font-family: serif;
+    font-weight: bold;
+}

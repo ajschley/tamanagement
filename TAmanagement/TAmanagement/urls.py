@@ -28,5 +28,6 @@ urlpatterns = [
     path('editCourse', views.EditCourse.as_view()),
     path('listCourses', views.ListCourses.as_view()),
     path('listUsers', views.ListUsers.as_view()),
+    path('editProfile', views.EditProfile.as_view()),
 ]
 

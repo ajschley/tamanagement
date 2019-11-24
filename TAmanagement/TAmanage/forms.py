@@ -22,3 +22,6 @@ class EditCourseForm(forms.Form):
     endTime = forms.TimeField(required=True, widget=forms.TimeInput(format='%H:%M'))
     dates = forms.CharField(required=True, max_length=5, widget=forms.TextInput(attrs={'class': 'form-control'}))
 
+
+class EditProfileForm(forms.Form):
+    resume = forms.CharField(required=False, max_length=5000, widget=forms.Textarea(attrs={'class': 'form-control'}))

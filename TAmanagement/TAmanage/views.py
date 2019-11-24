@@ -83,6 +83,30 @@ class EditCourse(View):
         return HttpResponse(template.render(context, req))
 
 
+class EditProfile(View):
+
+    def get(self, req):
+        template = loader.get_template('form.html')
+        context = {}
+        context['form'] = EditProfileForm()
+        context['cmds'] = cmds.getCmds(req.session['current_role'])
+        return HttpResponse(template.render(context, req))
+
+    def post(self, req):
+        form = EditProfileForm(req.POST)
+        template = loader.get_template('form.html')
+        context = {}
+        if form.is_valid():
+            ch = CommandWorker(req.session['current_user'])
+            context['out'] = ch.executeCommand(f'edit profile "{form.cleaned_data["resume"]}" ')
+
+            context['form'] = EditProfileForm()
+        else:
+            context['form'] = form
+        context['cmds'] = cmds.getCmds(req.session['current_role'])
+        return HttpResponse(template.render(context, req))
+
+
 class ListCourses(View):
 
     def get(self, req):
@@ -118,7 +142,8 @@ class CreateUser(View):
         context = {}
         if form.is_valid():
             ch = CommandWorker(req.session['current_user'])
-            context['out'] = ch.executeCommand(f'create user "{form.cleaned_data["email"]}" "{form.cleaned_data["password"]}"')
+            context['out'] = ch.executeCommand(
+                f'create user "{form.cleaned_data["email"]}" "{form.cleaned_data["password"]}"')
             context['form'] = CreateUserForm()
         else:
             context['form'] = form

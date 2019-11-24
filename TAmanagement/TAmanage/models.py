@@ -21,6 +21,7 @@ class User(models.Model):
     officeHoursDates = models.CharField(max_length=6, blank=True, null=True)
     officeLocation = models.CharField(max_length=255, blank=True, null=True)
     role = models.SmallIntegerField(default=1)
+    #resume = models.CharField(max_length=5000, blank=True, null=True)
 
     def has_role(self, *roles: [Role]) -> bool:
         return Role(self.role) in roles
@@ -87,5 +88,3 @@ class Course(models.Model):
 
     def setDates(self, dates):
         self.dates = dates
-
-

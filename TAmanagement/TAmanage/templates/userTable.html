@@ -10,6 +10,7 @@
             <th>Office Location</th>
             <th>Office Hours</th>
             <th>Office Hour Dates</th>
+            <th>Resume</th>
         </tr>
         {% for user in users %}
             <tr>
@@ -21,6 +22,7 @@
                 <td>{{ user.officeLocation }}</td>
                 <td>{{ user.officeHours }}</td>
                 <td>{{ user.officeHoursDates }}</td>
+                <td>{{ user.resume }}</td>
             </tr>
         {% endfor %}
     </table>

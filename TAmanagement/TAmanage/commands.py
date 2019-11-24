@@ -11,7 +11,6 @@ class Commands:
         self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "List Courses", "listCourses")
         self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "List Users", "listUsers")
 
-
     def addCmd(self, cmdrole: Role, cmdtxt, cmdurl):
         if isinstance(cmdrole, list):
             for i in cmdrole:
@@ -30,7 +29,7 @@ class Commands:
 
 
 class CommandWorker:
-    def __init__(self, currentUserEmail = None):
+    def __init__(self, currentUserEmail=None):
         u = User.objects.filter(email=currentUserEmail).first()
         self.currentUser = u
 

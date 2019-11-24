@@ -23,7 +23,7 @@ urlpatterns = [
     path('createCourse', views.CreateCourse.as_view()),
     path('createUser', views.CreateUser.as_view()),
     path('', views.Home.as_view()),
-    path('login', views.Login.as_view()),
+    path('login/', views.Login.as_view()),
     path('logout', views.Logout.as_view()),
     path('editCourse', views.EditCourse.as_view()),
     path('listCourses', views.ListCourses.as_view()),

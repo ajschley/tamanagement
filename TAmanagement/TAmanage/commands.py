@@ -11,6 +11,7 @@ class Commands:
         self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "Edit Profile", "editProfile")
         self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "List Courses", "listCourses")
         self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "List Users", "listUsers")
+        self.addCmd(Role.Administrator, "Edit User", "/editUser")
 
     def addCmd(self, cmdrole: Role, cmdtxt, cmdurl):
         if isinstance(cmdrole, list):
@@ -47,6 +48,7 @@ class CommandWorker:
             },
             'edit': {
                 'course': self.edit_course,
+                'user': self.edit_user,
             },
             'list': {
                 'courses': self.list_courses,
@@ -135,6 +137,25 @@ class CommandWorker:
         u = User(email=cmd[0], password=cmd[1])
         u.save()
         return 'User added'
+
+    def edit_user(self, cmd: [str]):
+        if not self.currentUser or not self.currentUser.has_role(Role.Administrator):
+            return 'Only an Administrator can edit a user'
+        if len(cmd) < 1:
+            return 'Invalid number of parameters'
+        u = User.objects.filter(email=cmd[0])
+        if u:
+            u.firstName = cmd[1]
+            u.lastName = cmd[2]
+            u.phone = cmd[3]
+            u.address = cmd[4]
+            u.officeHours = cmd[5]
+            u.officeHoursDates = cmd[6]
+            u.officeLocation = cmd[7]
+        else:
+            return 'User does not exist'
+        u.save()
+        return 'User updated'
 
     def login(self, cmd: [str]):
         if len(cmd) != 2:

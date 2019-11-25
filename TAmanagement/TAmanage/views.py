@@ -152,6 +152,37 @@ class CreateUser(View):
         return HttpResponse(template.render(context, req))
 
 
+class EditUser(View):
+
+    def get(self, req):
+        template = loader.get_template('form.html')
+        context = {}
+        context['form'] = EditUserForm()
+        context['cmds'] = cmds.getCmds(req.session['current_role'])
+        return HttpResponse(template.render(context, req))
+
+    def post(self, req):
+        form = EditUserForm(req.POST)
+        template = loader.get_template('form.html')
+        context = {}
+        if form.is_valid():
+            ch = CommandWorker(req.session['current_user'])
+            context['out'] = ch.executeCommand(f'edit user "{form.cleaned_data["email"]}" '
+                                               f'"{form.cleaned_data["firstName"]}" '
+                                               f'"{form.cleaned_data["lastName"]}" '
+                                               f'"{form.cleaned_data["phone"]}" '
+                                               f'"{form.cleaned_data["address"]}" '
+                                               f'"{form.cleaned_data["officeLocation"]}" '
+                                               f'"{form.cleaned_data["officeHours"]}" '
+                                               f'"{form.cleaned_data["officeHoursDates"]}" ')
+            context['form'] = EditUserForm()
+        else:
+            context['form'] = form
+        context['cmds'] = cmds.getCmds(req.session['current_role'])
+
+        return HttpResponse(template.render(context, req))
+
+
 class Login(View):
 
     def get(self, req):

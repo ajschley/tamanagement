@@ -2,10 +2,12 @@
 {% block content %}
   <form id="form" method="post" action="">
       {% csrf_token %}
-      {{ form }}
-
-      <input type="submit">
+      {{form}}
+      <br>
+      <br>
+      <input class="input" type="submit">
   </form>
-  <p>{{message}}</p>
-    <p id="DragonText">RED DRAGON</p>
+  <div class="out">{{ out | linebreaks }}</div>
+  <p>{{message}} </p>
+  
 {% endblock content %}

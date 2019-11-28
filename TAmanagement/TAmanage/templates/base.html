@@ -16,7 +16,6 @@
         </labelUWMimage>        
         <br>
         <br>
-        
         {% if request.session.current_user %}
         <form id="home">
                 <a href='/'>Home</a>
@@ -31,12 +30,12 @@
                  </form>
         {% endif %}
 </p>
-<p>{{message}}</p>
-<p id="DragonText">RED DRAGONS</p>
+    <p>{{message}}</p>
+
 
     {% block content %}
     
     {% endblock content %}
-
+    <p id="DragonText">RED DRAGONS</p>
 </body>
 </html>

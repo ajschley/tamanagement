@@ -4,48 +4,45 @@ body{
 	rgb(253, 205, 59) 60%, rgb(0, 0, 0) 60%);
 }
 input{
-	  font-size: 20px;
-}
-
-.classForm{
-    max-width: 1200px;
-}
-.userForm{
-    max-width: 1200px;
-}
-#form {
-    max-width: 1200px;
-    align-self: auto;;
-    min-width: 50px;
-    width: 100%;
-    margin: 1px auto;
-    border: 5px solid green;
-    background-color: aliceblue;
-    border-radius: 25px;
-    padding: 75px;
     font-size: 20px;
-    font-weight: bold;
 }
 
 
+table.classForm{
+    max-width: 1150px;
+    min-width: 50px;
+    margin: 1px auto;
+    table-layout: auto;
+}
+table.userForm{
+    max-width: 1150px;
+    min-width: 50px;
+    margin: 1px auto;
+    table-layout: auto;
+
+}
 table{
-    width:1200px;
+    max-width:1150px;
+    min-width: 50px;
     color: black;
     font-size: 20px;
+    margin: 1px auto;
+    table-layout: auto;
   
 }
 table, th, td{
-
     background-color: rgb(220, 236, 250);
     border: 1px solid blue ;
-    padding: 3px;
+    padding: 1px;
     text-align: center;
+    margin: 1px auto;
+    table-layout: auto;
 }
 
 #DragonText{
     color: red;
-    position: fixed;
-    bottom: 0;
+    position: absolute;
+    vertical-align: super;
     width:100%;
     text-align: center;
     font-style: italic;
@@ -54,7 +51,7 @@ table, th, td{
     font-weight: bold;
 }
 a:link, a:visited {
-    background-color:rgb(131, 131, 197);
+    background-color: rgb(88, 168, 197);
     color: white;
     padding: 14px 25px;
     text-align: center;
@@ -68,7 +65,7 @@ a:link, a:visited {
 
 #home{
     max-width: 1170px ;
-    min-width: 100px;
+    min-width: 50px;
     width:100%;
     margin: 1px auto;
     border: 5px solid green;
@@ -77,6 +74,19 @@ a:link, a:visited {
     font-size: 20px;
     font-weight: bold;
   }
+#form {
+    max-width: 1170px;
+    min-width: 50px;
+    width: 100%;
+    border: 5px solid green;
+    background-color: aliceblue;
+    border-radius: 25px;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 1px auto;
+
+}
 
   .out{
     color: rebeccapurple;

@@ -11,12 +11,11 @@
 </head>
 <body>
     <p>
-        <labelUWMimage>
-                <a href="//uwm.edu" target="_blank"><img src="/static/image/UWM.png" alt="UWMilwaukee"width="350" height="107"></a>
-        </labelUWMimage>        
+        <a href="//uwm.edu" target="_blank"><img src="/static/image/UWM.png" alt="UWMilwaukee"width="350" height="107"></a>  
         <br>
         <br>
-        {% if request.session.current_user %}
+        {% if request.session.current_user %} 
+        <h1>Welcome to TA management Portal</h1>
         <form id="home">
                 <a href='/'>Home</a>
                         {% for cmd in cmds %}
@@ -28,14 +27,14 @@
 
                 <a href='/logout'>Logout</a>
                  </form>
+
         {% endif %}
+        
 </p>
     <p>{{message}}</p>
-
-
     {% block content %}
     
     {% endblock content %}
-    <p id="DragonText">RED DRAGONS</p>
+    <p id="DragonText">THE RED DRAGONS</p>
 </body>
 </html>

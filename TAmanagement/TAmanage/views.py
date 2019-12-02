@@ -103,7 +103,9 @@ class EditProfile(View):
         context = {}
         if form.is_valid():
             ch = CommandWorker(req.session['current_user'])
-            context['out'] = ch.executeCommand(f'edit profile "{form.cleaned_data["resume"]}" ')
+            context['out'] = ch.executeCommand(f'edit profile "{form.cleaned_data["resume"]}" '
+                                               f'"{form.cleaned_data["schedule"]}" '
+                                               f'"{form.cleaned_data["preferences"]}" ')
 
             context['form'] = EditProfileForm()
         else:

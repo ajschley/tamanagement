@@ -121,6 +121,8 @@ class CommandWorker:
         u = self.currentUser
         if u:
             u.resume = cmd[1]
+            u.schedule = cmd[2]
+            u.preferences = cmd[3]
         u.save()
         return 'Profile updated'
 

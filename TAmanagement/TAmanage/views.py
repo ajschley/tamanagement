@@ -28,6 +28,7 @@ class Home(View):
         context = {}
         if 'current_role' in req.session:
             context['cmds'] = cmds.getCmds(req.session['current_role'])
+            context['text'] = "Welcome to the TA Management App."
 
         return HttpResponse(template.render(context, req))
 
@@ -58,7 +59,7 @@ class CreateCourse(View):
 class EditCourse(View):
 
     def get(self, req):
-        template = loader.get_template('form.html')
+        template = loader.get_template('editCourse.html')
         context = {}
         cname = req.GET.get('courseName', '')
         c = Course.objects.get(name=cname)
@@ -72,11 +73,13 @@ class EditCourse(View):
 
         context['form'] = form
         context['cmds'] = cmds.getCmds(req.session['current_role'])
+        ch = CommandWorker(req.session['current_user'])
+        context['courses'] = ch.executeCommand(f'list courses')
         return HttpResponse(template.render(context, req))
 
     def post(self, req):
         form = EditCourseForm(req.POST)
-        template = loader.get_template('form.html')
+        template = loader.get_template('editCourse.html')
         context = {}
         if form.is_valid():
             ch = CommandWorker(req.session['current_user'])
@@ -90,6 +93,8 @@ class EditCourse(View):
         else:
             context['form'] = form
         context['cmds'] = cmds.getCmds(req.session['current_role'])
+        ch = CommandWorker(req.session['current_user'])
+        context['courses'] = ch.executeCommand(f'list courses')
         return HttpResponse(template.render(context, req))
 
 
@@ -108,7 +113,9 @@ class EditProfile(View):
         context = {}
         if form.is_valid():
             ch = CommandWorker(req.session['current_user'])
-            context['out'] = ch.executeCommand(f'edit profile "{form.cleaned_data["resume"]}" ')
+            context['out'] = ch.executeCommand(f'edit profile "{form.cleaned_data["resume"]}" '
+                                               f'"{form.cleaned_data["schedule"]}" '
+                                               f'"{form.cleaned_data["preferences"]}" ')
 
             context['form'] = EditProfileForm()
         else:
@@ -123,6 +130,7 @@ class ListCourses(View):
         template = loader.get_template('table.html')
         context = {}
         ch = CommandWorker(req.session['current_user'])
+        context['cmds'] = cmds.getCmds(req.session['current_role'])
         context['courses'] = ch.executeCommand(f'list courses')
         return HttpResponse(template.render(context, req))
 
@@ -134,6 +142,7 @@ class ListUsers(View):
         context = {}
         ch = CommandWorker(req.session['current_user'])
         context['users'] = ch.executeCommand(f'list users')
+        context['cmds'] = cmds.getCmds(req.session['current_role'])
         return HttpResponse(template.render(context, req))
 
 

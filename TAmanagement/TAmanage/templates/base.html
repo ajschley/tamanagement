@@ -4,35 +4,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>TAManagement</title>
+    <title>TAManagement for UWM</title>
     <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="{% static "css/style.css" %}">
 </head>
 <body>
-    <header>
-        {% if request.session.current_user %}
-            <li>
+    <p>
+        <a href="//uwm.edu" target="_blank"><img src="/static/image/UWM.png" alt="UWMilwaukee"width="350" height="107"></a>  
+        <br>
+        <br>
+        {% if request.session.current_user %} 
+        <h1>Welcome to TA management Portal</h1>
+        <form id="home">
                 <a href='/'>Home</a>
-            </li>
-            <li >
+                        {% for cmd in cmds %}
+                                <a href='{{ cmd.cmdUrl }}'>
+                                    <span>{{ cmd.cmdTxt }} </span>
+                                </a>
+                               
+                        {% endfor %}
+
                 <a href='/logout'>Logout</a>
-            </li>
-        {% endif %}
+                 </form>
 
-    </header>
-        {% if request.session.current_user %}
-            <ul>
-                {% for cmd in cmds %}
-                    <li>
-                        <a href='{{ cmd.cmdUrl }}'>
-                            <span>{{ cmd.cmdTxt }}</span>
-                        </a>
-                    </li>
-                {% endfor %}
-
-            </ul>
         {% endif %}
-    {% block content %}{% endblock content %}
+        
+</p>
+    <p>{{message}}</p>
+    {% block content %}
+    
+    {% endblock content %}
+    <p id="DragonText">THE RED DRAGONS</p>
 </body>
 </html>

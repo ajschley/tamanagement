@@ -8,9 +8,9 @@ class Commands:
         self.addCmd(Role.Administrator, "Create Course", "/createCourse")
         self.addCmd(Role.Administrator, "Create User", "/createUser")
         self.addCmd(Role.Administrator, "Edit Course", "/editCourse")
-        self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "Edit Profile", "editProfile")
-        self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "List Courses", "listCourses")
-        self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "List Users", "listUsers")
+        self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "Edit Profile", "/editProfile")
+        self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "List Courses", "/listCourses")
+        self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "List Users", "/listUsers")
 
     def addCmd(self, cmdrole: Role, cmdtxt, cmdurl):
         if isinstance(cmdrole, list):

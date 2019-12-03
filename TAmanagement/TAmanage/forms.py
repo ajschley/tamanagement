@@ -16,6 +16,7 @@ class CreateUserForm(forms.Form):
 
 
 class EditCourseForm(forms.Form):
+
     name = forms.CharField(required=True, max_length=50, widget=forms.TextInput(attrs={'class': 'form-control'}))
     location = forms.CharField(required=True, max_length=50, widget=forms.TextInput(attrs={'class': 'form-control'}))
     startTime = forms.TimeField(required=True, widget=forms.TimeInput(format='%H:%M'))

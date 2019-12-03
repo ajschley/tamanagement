@@ -60,7 +60,17 @@ class EditCourse(View):
     def get(self, req):
         template = loader.get_template('form.html')
         context = {}
-        context['form'] = EditCourseForm()
+        cname = req.GET.get('courseName', '')
+        c = Course.objects.get(name=cname)
+
+        form = EditCourseForm()
+        form.initial['name'] = c.name
+        form.initial['dates'] = c.dates
+        form.initial['location'] = c.location
+        form.initial['startTime'] = c.startTime
+        form.initial['endTime'] = c.endTime
+
+        context['form'] = form
         context['cmds'] = cmds.getCmds(req.session['current_role'])
         return HttpResponse(template.render(context, req))
 

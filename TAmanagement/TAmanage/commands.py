@@ -12,6 +12,9 @@ class Commands:
         self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "List Courses", "listCourses")
         self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "List Users", "listUsers")
 
+        self.addCmd(Role.Administrator, "View Profile", "viewProfile")
+        self.addCmd(Role.TA, "View self", "viewSelf")
+
     def addCmd(self, cmdrole: Role, cmdtxt, cmdurl):
         if isinstance(cmdrole, list):
             for i in cmdrole:
@@ -54,6 +57,7 @@ class CommandWorker:
             },
             'login': self.login,
             'logout': self.logout,
+            'view': self.view_profile,
         }
         while type(worker) is dict:
             try:
@@ -93,6 +97,20 @@ class CommandWorker:
             return 'Invalid number of parameters'
         users = User.objects.all()
         return users
+
+    def view_profile(self, cmd: [str]):
+        if len(cmd) != 2:
+            "Invalid number of parameters"
+        if cmd[0] == "viewSelf":
+            if not self.currentUser.has_role(Role.TA):
+                return "You don't have access to this command only for TA"
+        elif cmd[0] == "viewProfile":
+            if not self.currentUser.has_role(Role.Administrator):
+                return "You don't have access to this command only for Admin"
+        if not self.currentUser:
+            return "no user is logged in"
+        user = User.objects.get(cmd[1])
+        return user
 
     def edit_course(self, cmd: [str]):
         if not self.currentUser or not self.currentUser.has_role(Role.Administrator):

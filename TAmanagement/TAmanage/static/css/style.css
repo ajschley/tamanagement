@@ -55,8 +55,8 @@ table, th, td{
     font-weight: bold;
 }
 a:link, a:visited {
-    background-color: rgb(88, 168, 197);
-    color: white;
+    background-color: rgb(253, 205, 59);
+    color: black;
     padding: 14px 25px;
     text-align: center;
     text-decoration: none;
@@ -64,7 +64,7 @@ a:link, a:visited {
     font-size: 20px;
   }
   a:hover, a:active {
-    background-color: red;
+    background-color: #ad7e17;
   }
 
 #home{
@@ -73,7 +73,7 @@ a:link, a:visited {
     width:100%;
     margin: 1px auto;
     border: 5px solid black;
-    background-color: aliceblue;
+    background-color: white;
     padding: 5px;
     font-size: 20px;
     font-weight: bold;
@@ -93,7 +93,7 @@ a:link, a:visited {
 }
 
   .out{
-    color: red;
+    color: black;
     position: fixed;
     bottom: 0;
     width:100%;
@@ -105,7 +105,7 @@ a:link, a:visited {
   h3{
       margin: 1px auto;
       text-align: center;
-      color: red;
+      color: black;
   }
   textarea{
       width:1000px;
@@ -118,3 +118,11 @@ h1 {
     text-shadow: 1px 1px darkgray, 2px 2px gray, 3px 3px black;
     margin: 0 0 20px 0;
  }
+
+.image {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+    width: 100%;
+        background-color: rgb(253, 205, 59);
+}

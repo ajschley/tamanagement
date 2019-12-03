@@ -29,6 +29,9 @@ class User(models.Model):
     def has_role(self, *roles: [Role]) -> bool:
         return Role(self.role) in roles
 
+    def userEmail(self):
+        return self.email
+
 
 class Lab(models.Model):
     location = models.CharField(max_length=255, null=True, blank=True)

@@ -28,9 +28,9 @@
                 <td>{{ user.officeHours }}</td>
                 <td>{{ user.officeHoursDates }}</td>
                 {% if request.session.current_role == 3  %}
-                    <td><a href='/editUser?userName={{ user.lastName }}'>Edit</a></td>
-                    <td><a href='/deleteUser?userName={{ user.lastName }}'>Delete</a></td>
-                    <td><a href='/viewProfile?userName={{ user.lastName }}'>Profile</a></td>
+                    <td><a href='/editUser?email={{ user.email }}'>Edit</a></td>
+                    <td><a href='/deleteUser?email={{ user.email }}'>Delete</a></td>
+                    <td><a href='/viewProfile?email={{ user.email }}'>Profile</a></td>
                 {% endif %}
             </tr>
         {% endfor %}

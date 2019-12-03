@@ -13,7 +13,7 @@ class Commands:
         self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "List Users", "listUsers")
 
         self.addCmd(Role.Administrator, "View Profile", "viewProfile")
-        self.addCmd(Role.TA, "View self", "viewSelf")
+        self.addCmd(Role.TA, "View Profile", "viewSelf")
 
     def addCmd(self, cmdrole: Role, cmdtxt, cmdurl):
         if isinstance(cmdrole, list):
@@ -57,7 +57,7 @@ class CommandWorker:
             },
             'login': self.login,
             'logout': self.logout,
-            'view': self.view_profile,
+            'view profile': self.view_profile,
         }
         while type(worker) is dict:
             try:

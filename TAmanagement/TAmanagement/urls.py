@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from TAmanage import views
 
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     path('createCourse', views.CreateCourse.as_view()),
@@ -29,5 +30,7 @@ urlpatterns = [
     path('listCourses', views.ListCourses.as_view()),
     path('listUsers', views.ListUsers.as_view()),
     path('editProfile', views.EditProfile.as_view()),
+    path('viewProfile', views.ViewProfile.as_view),
+    path('viewSelf', views.ViewProfile.as_view),
 ]
 

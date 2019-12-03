@@ -116,7 +116,7 @@ h1 {
     color: white;
     font: bold 52px Helvetica, Arial, Sans-Serif;
     text-shadow: 1px 1px darkgray, 2px 2px gray, 3px 3px black;
-    margin: 0 0 20px 0;
+    text-align: center;
  }
 
 .image {

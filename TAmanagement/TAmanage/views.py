@@ -178,7 +178,6 @@ class EditUser(View):
         context = {}
         eml = req.GET.get('email', '')
         u = User.objects.get(email=eml)
-
         form = EditUserForm()
         form.initial['email'] = u.email
         form.initial['firstName'] = u.firstName
@@ -188,7 +187,7 @@ class EditUser(View):
         form.initial['officeLocation'] = u.officeLocation
         form.initial['officeLHours'] = u.officeHours
         form.initial['officeHoursDates'] = u.officeHoursDates
-        context['form'] = EditUserForm()
+        context['form'] = form
         context['cmds'] = cmds.getCmds(req.session['current_role'])
         ch = CommandWorker(req.session['current_user'])
         context['users'] = ch.executeCommand(f'list users')

@@ -146,7 +146,7 @@ class CommandWorker:
         if len(cmd) < 1:
             return 'Invalid number of parameters'
         valid_dates = {"M", "T", "W", "R", "F", "S"}
-        u = User.objects.filter(email=cmd[0])
+        u = User.objects.get(email=cmd[0])
         if u:
             u.firstName = cmd[1]
             u.lastName = cmd[2]

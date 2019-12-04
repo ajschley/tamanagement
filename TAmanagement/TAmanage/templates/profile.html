@@ -1,14 +1,32 @@
 {% extends "base.html" %}
 {% block content %}
-{% if request.session.current_user %}
+    {% if request.session.current_user %}
+<form id="form" class="userForm" >
+        <h3>Profile</h3>
+<table id="userProfile">
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Phone #</th>
+            <th>Address</th>
+            <th>Office Location</th>
+            <th>Office Hours</th>
+            <th>Office Hour Dates</th>
+        </tr>
+            <tr>
+                <td>{{ user.firstName }}</td>
+                <td>{{ user.lastName }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.phone }}</td>
+                <td>{{ user.address }}</td>
+                <td>{{ user.officeLocation }}</td>
+                <td>{{ user.officeHours }}</td>
+                <td>{{ user.officeHoursDates }}</td>
+            </tr>
 
-  <h1>Profile</h1>
-<p>username:{{ user.usrername }}</p>
-    <p>First Name:{{ user.firstName }}</p>
-    <p>Last Name:{{ user.firstName }}</p>
-    <p>Email:{{ user.email }}</p>
-    <p>Office Location:{{ user.officeLocation }}</p>
-    <p>Office Hours:{{ user.officeLocation }}</p>
-
+    </table>
+    <br><br>
+</form>
     {% endif %}
 {% endblock content %}

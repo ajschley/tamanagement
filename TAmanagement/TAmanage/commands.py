@@ -117,6 +117,16 @@ class CommandWorker:
         c.save()
         return 'Course updated'
 
+
+    def delete_course(self,cmd:[str]):
+        if not self.currentUser or not self.currentUser.has_role(Role.Administrator):
+            return 'Only an Administrator can edit a course'
+
+        c = Course.objects.get(course.name)
+        c.delete()
+        return 'Course Deleted'
+
+
     def edit_profile(self, cmd: [str]):
         u = self.currentUser
         if u:

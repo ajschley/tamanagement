@@ -43,7 +43,7 @@ class CreateCourse(View):
 
     def post(self, req):
         form = CreateCourseForm(req.POST)
-        template = loader.get_template('form.html')
+        template = loader.get_template('table.html')
         context = {}
         if form.is_valid():
             ch = CommandWorker(req.session['current_user'])
@@ -52,6 +52,9 @@ class CreateCourse(View):
         else:
             context['form'] = form
         context['cmds'] = cmds.getCmds(req.session['current_role'])
+       
+     
+        context['courses'] = ch.executeCommand(f'list courses')
 
         return HttpResponse(template.render(context, req))
 
@@ -79,7 +82,7 @@ class EditCourse(View):
 
     def post(self, req):
         form = EditCourseForm(req.POST)
-        template = loader.get_template('editCourse.html')
+        template = loader.get_template('table.html')
         context = {}
         if form.is_valid():
             ch = CommandWorker(req.session['current_user'])
@@ -135,6 +138,16 @@ class ListCourses(View):
         return HttpResponse(template.render(context, req))
 
 
+class DeleteCourse(View):
+    def get(self, req):
+        template = loader.get_template('table.html')
+        context = {}
+        ch = CommandWorker(req.session['current_user'])
+        context['cmds'] = cmds.getCmds(req.session['current_role'])
+        context['courses'] = ch.executeCommand(f'list courses')
+        return HttpResponse(template.render(context, req))
+
+
 class ListUsers(View):
 
     def get(self, req):
@@ -157,7 +170,7 @@ class CreateUser(View):
 
     def post(self, req):
         form = CreateUserForm(req.POST)
-        template = loader.get_template('form.html')
+        template = loader.get_template('userTable.html')
         context = {}
         if form.is_valid():
             ch = CommandWorker(req.session['current_user'])
@@ -167,6 +180,7 @@ class CreateUser(View):
         else:
             context['form'] = form
         context['cmds'] = cmds.getCmds(req.session['current_role'])
+        context['users'] = ch.executeCommand(f'list users')
 
         return HttpResponse(template.render(context, req))
 
@@ -195,7 +209,7 @@ class EditUser(View):
 
     def post(self, req):
         form = EditUserForm(req.POST)
-        template = loader.get_template('editUser.html')
+        template = loader.get_template('userTable.html')
         context = {}
         if form.is_valid():
             ch = CommandWorker(req.session['current_user'])

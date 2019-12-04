@@ -6,18 +6,19 @@
             {{form}}
         </table>
       <br>
-      <br>
-      <input class="input" type="submit">
+      <div id="submitButton">
+      <input id="input" class="input" type="submit">
+      </div>
   </form>
 
   <p>{{message}} </p>
-  
+
   {% if request.session.current_user %}
   <form id="form" class="classForm">
     <h3>List of courses</h3>
-      <table id="courseTable">      
+      <table id="courseTable">
           <tr>
-              <th>Course Name </th> 
+              <th>Course Name </th>
               <th>Location </th>
               <th>Start time </th>
               <th>End time </th>
@@ -32,13 +33,13 @@
                 <td>{{ course.endTime }}</td>
                 <td>{{ course.dates }}</td>
             </tr>
-              
+
           {% endfor %}
-         
+
       </table>
   </form>
-  
-  
+
+
   {% endif %}
 
 

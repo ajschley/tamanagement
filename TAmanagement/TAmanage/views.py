@@ -204,9 +204,10 @@ class EditUser(View):
                                                f'"{form.cleaned_data["lastName"]}" '
                                                f'"{form.cleaned_data["phone"]}" '
                                                f'"{form.cleaned_data["address"]}" '
-                                               f'"{form.cleaned_data["officeLocation"]}" '
                                                f'"{form.cleaned_data["officeHours"]}" '
-                                               f'"{form.cleaned_data["officeHoursDates"]}" ')
+                                               f'"{form.cleaned_data["officeHoursDates"]}" '
+                                               f'"{form.cleaned_data["officeLocation"]}" '
+                                               )
             context['form'] = EditUserForm()
         else:
             context['form'] = form

@@ -2,40 +2,38 @@
 body{
 	background: linear-gradient(110deg,
 	rgb(253, 205, 59) 60%, rgb(0, 0, 0) 60%);
+
 }
 input{
     font-size: 20px;
-   
-
-
-
+    align-self: center;
 }
 
 
 table.classForm{
-    max-width: 1150px;
+    max-width: fit-content;
     min-width: 50px;
     margin: 1px auto;
     table-layout: auto;
 }
 table.userForm{
-    max-width: 1150px;
+    max-width: fit-content;
     min-width: 50px;
     margin: 1px auto;
     table-layout: auto;
 
 }
 table{
-    max-width:1150px;
+    max-width:fit-content;
     min-width: 50px;
     color: black;
     font-size: 20px;
     margin: 1px auto;
     table-layout: auto;
-  
+
 }
 table, th, td{
-    background-color: rgb(220, 236, 250);
+    background-color: white;
     border: 1px solid black ;
     padding: 1px;
     text-align: center;
@@ -55,8 +53,8 @@ table, th, td{
     font-weight: bold;
 }
 a:link, a:visited {
-    background-color: rgb(88, 168, 197);
-    color: white;
+    background-color: rgb(253, 205, 59);
+    color: black;
     padding: 14px 25px;
     text-align: center;
     text-decoration: none;
@@ -64,27 +62,27 @@ a:link, a:visited {
     font-size: 20px;
   }
   a:hover, a:active {
-    background-color: red;
+    background-color: rgb(192, 138, 23);
   }
 
 #home{
-    max-width: 1170px ;
+    max-width: fit-content ;
     min-width: 50px;
-    width:100%;
+
     margin: 1px auto;
     border: 5px solid black;
-    background-color: aliceblue;
+    background-color: white;
     padding: 5px;
     font-size: 20px;
     font-weight: bold;
   }
 #form {
-    max-width: 1170px;
+    max-width: fit-content;
     min-width: 50px;
-    width: 100%;
+
     border: 5px solid black;
     background-color: aliceblue;
-    border-radius: 10px;
+    border-radius: 5px;
     padding: 10px;
     font-size: 20px;
     font-weight: bold;
@@ -93,7 +91,7 @@ a:link, a:visited {
 }
 
   .out{
-    color: red;
+    color: black;
     position: fixed;
     bottom: 0;
     width:100%;
@@ -105,7 +103,7 @@ a:link, a:visited {
   h3{
       margin: 1px auto;
       text-align: center;
-      color: red;
+      color: black;
   }
   textarea{
       width:1000px;
@@ -115,6 +113,157 @@ a:link, a:visited {
 h1 {
     color: white;
     font: bold 52px Helvetica, Arial, Sans-Serif;
-    text-shadow: 1px 1px darkgray, 2px 2px gray, 3px 3px black;
-    margin: 0 0 20px 0;
+    text-shadow: 1px 1px #e5e5e5, 2px 2px #6a6a6a, 3px 3px black;
+    text-align: center;
  }
+
+.image {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+    width: 100%;
+    background-color: rgb(253, 205, 59);
+}
+
+#submitButton {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.input{
+    background-color: rgb(253, 205, 59);
+  border: none;
+  color: black;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 20px;
+  margin: 4px 2px;
+  cursor: pointer;
+    font-weight: bold;
+}
+ .input:hover, .input:active {
+    background-color: rgb(192, 138, 23);
+  }
+
+
+/*body{*/
+/*	background: linear-gradient(110deg,*/
+/*	rgb(253, 205, 59) 60%, rgb(0, 0, 0) 60%);*/
+/*}*/
+/*input{*/
+/*    font-size: 20px;*/
+/*   */
+
+
+
+/*}*/
+
+
+/*table.classForm{*/
+/*    max-width: 1150px;*/
+/*    min-width: 50px;*/
+/*    margin: 1px auto;*/
+/*    table-layout: auto;*/
+/*}*/
+/*table.userForm{*/
+/*    max-width: 1150px;*/
+/*    min-width: 50px;*/
+/*    margin: 1px auto;*/
+/*    table-layout: auto;*/
+
+/*}*/
+/*table{*/
+/*    max-width:1150px;*/
+/*    min-width: 50px;*/
+/*    color: black;*/
+/*    font-size: 20px;*/
+/*    margin: 1px auto;*/
+/*    table-layout: auto;*/
+/*  */
+/*}*/
+/*table, th, td{*/
+/*    background-color: rgb(220, 236, 250);*/
+/*    border: 1px solid black ;*/
+/*    padding: 1px;*/
+/*    text-align: center;*/
+/*    margin: 1px auto;*/
+/*    table-layout: auto;*/
+/*}*/
+
+/*#DragonText{*/
+/*    color: red;*/
+/*    position: absolute;*/
+/*    vertical-align: super;*/
+/*    width:100%;*/
+/*    text-align: center;*/
+/*    font-style: italic;*/
+/*    font-size: 20px;*/
+/*    font-family: serif;*/
+/*    font-weight: bold;*/
+/*}*/
+/*a:link, a:visited {*/
+/*    background-color: rgb(88, 168, 197);*/
+/*    color: white;*/
+/*    padding: 14px 25px;*/
+/*    text-align: center;*/
+/*    text-decoration: none;*/
+/*    display: inline-block;*/
+/*    font-size: 20px;*/
+/*  }*/
+/*  a:hover, a:active {*/
+/*    background-color: red;*/
+/*  }*/
+
+/*#home{*/
+/*    max-width: 1170px ;*/
+/*    min-width: 50px;*/
+/*    width:100%;*/
+/*    margin: 1px auto;*/
+/*    border: 5px solid black;*/
+/*    background-color: aliceblue;*/
+/*    padding: 5px;*/
+/*    font-size: 20px;*/
+/*    font-weight: bold;*/
+/*  }*/
+/*#form {*/
+/*    max-width: 1170px;*/
+/*    min-width: 50px;*/
+/*    width: 100%;*/
+/*    border: 5px solid black;*/
+/*    background-color: aliceblue;*/
+/*    border-radius: 10px;*/
+/*    padding: 10px;*/
+/*    font-size: 20px;*/
+/*    font-weight: bold;*/
+/*    margin: 1px auto;*/
+
+/*}*/
+
+/*  .out{*/
+/*    color: red;*/
+/*    position: fixed;*/
+/*    bottom: 0;*/
+/*    width:100%;*/
+/*    text-align: left;*/
+/*    font-style: italic;*/
+/*    font-size: 20px;*/
+/*    font-family: serif;*/
+/*  }*/
+/*  h3{*/
+/*      margin: 1px auto;*/
+/*      text-align: center;*/
+/*      color: red;*/
+/*  }*/
+/*  textarea{*/
+/*      width:1000px;*/
+/*      height: 30px;*/
+/*  }*/
+
+/*h1 {*/
+/*    color: white;*/
+/*    font: bold 52px Helvetica, Arial, Sans-Serif;*/
+/*    text-shadow: 1px 1px darkgray, 2px 2px gray, 3px 3px black;*/
+/*    margin: 0 0 20px 0;*/
+/* }*/

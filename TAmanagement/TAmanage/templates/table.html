@@ -8,60 +8,32 @@
     <table border="1px solid black">
         <tr>
             <th>Course Name </th>
+            <th>Section </th>
             <th>Location </th>
             <th>Start time </th>
             <th>End time </th>
             <th>Dates </th>
-            <th>Edit </th>
-            <th>Delete </th>
+            {% if request.session.current_role == 3  %}
+                <th>Edit </th>
+            {% endif %}
         </tr>
         {% for course in courses %}
             <tr>
-{#               <td><input type="radio" name="select"></td>#}
                 <td>{{ course.name }}</td>
+                <td>{{ course.section }}</td>
                 <td>{{ course.location }}</td>
                 <td>{{ course.startTime }}</td>
                 <td>{{ course.endTime }}</td>
                 <td>{{ course.dates }}</td>
                 {% if request.session.current_role == 3  %}
-                    <td><a href='/editCourse?courseName={{ course.name }}'>Edit</a></td>
-                    <td><a href='/deleteCourse?courseName={{ course.name }}'>Delete</a></td>
+                    <td><a href='/editCourse?courseName={{ course.name }}&courseSection={{ course.section }}'>Edit</a></td>
                 {% endif %}
             </tr>
         {% endfor %}
+    </table>
     </table>
 </form>
 
 
 {% endif %}
 {% endblock content %}
-{#{% extends "base.html" %}#}
-{#{% block content %}#}
-{#<table border="1px solid black">#}
-{#        <tr>#}
-{#            <th>Name</th>#}
-{#            <th>Location</th>#}
-{#            <th>Start time</th>#}
-{#            <th>End time</th>#}
-{#            <th>Dates</th>#}
-{#            {% if request.session.current_role == 3  %}#}
-{#            <th>Edit</th>#}
-{#            <th>Delete</th>#}
-{#            {% endif %}#}
-{#        </tr>#}
-{#        {% for course in courses %}#}
-{#            <tr>#}
-{#                <td>{{ course.name }}</td>#}
-{#                <td>{{ course.location }}</td>#}
-{#                <td>{{ course.startTime }}</td>#}
-{#                <td>{{ course.endTime }}</td>#}
-{#                <td>{{ course.dates }}</td>#}
-{#                {% if request.session.current_role == 3  %}#}
-{#                    <td><a href='/editCourse?courseName={{ course.name }}'>Edit</a></td>#}
-{#                    <td><a href='/deleteCourse?courseName={{ course.name }}'>Delete</a></td>#}
-{#                {% endif %}#}
-{#            </tr>#}
-{#        {% endfor %}#}
-{#    </table>#}
-{##}
-{#{% endblock content %}#}

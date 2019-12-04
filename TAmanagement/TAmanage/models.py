@@ -13,25 +13,29 @@ class Role(IntEnum):
 class User(models.Model):
     email = models.CharField(max_length=50, blank=False, null=False)
     password = models.CharField(max_length=100, blank=False, null=False)
-    firstName = models.CharField(max_length=50, blank=True, null=True)
-    lastName = models.CharField(max_length=50, blank=True, null=True)
-    phone = models.CharField(max_length=15, blank=True, null=True)
-    address = models.CharField(max_length=255, blank=True, null=True)
-    officeHours = models.CharField(max_length=15, blank=True, null=True)
-    officeHoursDates = models.CharField(max_length=6, blank=True, null=True)
-    officeLocation = models.CharField(max_length=255, blank=True, null=True)
+    firstName = models.CharField(max_length=50, default='None', blank=True, null=True)
+    lastName = models.CharField(max_length=50, default='None', blank=True, null=True)
+    phone = models.CharField(max_length=15, default='None', blank=True, null=True)
+    address = models.CharField(max_length=255, default='None', blank=True, null=True)
+    officeHours = models.CharField(max_length=15, default='None', blank=True, null=True)
+    officeHoursDates = models.CharField(max_length=6, default='None', blank=True, null=True)
+    officeLocation = models.CharField(max_length=255, default='None', blank=True, null=True)
     role = models.SmallIntegerField(default=1)
     #TODO: Can't uncomment these for some reason, gives errors when trying to add these fields
-    #resume = models.CharField(max_length=5000, blank=True, null=True)
-    #schedule = models.CharField(max_length=5000, blank=True, null=True)
-    #preferences = models.CharField(max_length=5000, blank=True, null=True)
+    resume = models.CharField(max_length=5000, blank=True, null=True)
+    schedule = models.CharField(max_length=5000, blank=True, null=True)
+    preferences = models.CharField(max_length=5000, blank=True, null=True)
 
     def has_role(self, *roles: [Role]) -> bool:
         return Role(self.role) in roles
 
+    def userEmail(self):
+        return self.email
+
 
 class Lab(models.Model):
     location = models.CharField(max_length=255, null=True, blank=True)
+    section = models.CharField(max_length=20, default='000')
 
     # Start and End Times for Each Lab
     startTime = models.TimeField('Start Time:', default=datetime.now, blank=True, null=True)
@@ -47,8 +51,9 @@ class Lab(models.Model):
 class Course(models.Model):
     instructor = models.ForeignKey("User", null=True, blank=True, on_delete=models.SET_NULL)
     # Each course has a name
-    name = models.CharField(max_length=20, default='CS361')
-    location = models.CharField(max_length=255, null=True, blank=True)
+    name = models.CharField(max_length=20, default='CS000')
+    section = models.CharField(max_length=20, default='000', null=False, blank=False)
+    location = models.CharField(max_length=255, default='Online', null=True, blank=True)
 
     # Start and End Times for Each Course
     startTime = models.TimeField('Start Time:', default=datetime.now, null=True, blank=True)

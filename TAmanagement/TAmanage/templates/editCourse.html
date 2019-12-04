@@ -6,8 +6,9 @@
             {{form}}
         </table>
       <br>
-      <br>
-      <input class="input" type="submit">
+       <div id="submitButton">
+      <input id="input" class="input" type="submit">
+      </div>
   </form>
 
   <p>{{message}} </p>
@@ -17,7 +18,8 @@
     <h3>List of courses</h3>
       <table id="courseTable">      
           <tr>
-              <th>Course Name </th> 
+              <th>Course Name </th>
+              <th>Section </th>
               <th>Location </th>
               <th>Start time </th>
               <th>End time </th>
@@ -27,6 +29,7 @@
             <tr>
 
                 <td>{{ course.name }}</td>
+                <td>{{ course.section }}</td>
                 <td>{{ course.location }}</td>
                 <td>{{ course.startTime }}</td>
                 <td>{{ course.endTime }}</td>

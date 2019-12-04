@@ -138,6 +138,11 @@ class CommandWorker:
         u.save()
         return 'User added'
 
+    def assign_ta(self, cmd: [str]):
+        if not self.currentUser or not self.currentUser.has_role(Role.Administrator):
+            return 'Only an Administrator can create a user'
+        #TODO
+
     def login(self, cmd: [str]):
         if len(cmd) != 2:
             return 'Invalid number of parameters'

@@ -216,3 +216,10 @@ class Logout(View):
         req.session['current_role'] = None
         context['cmds'] = cmds.addCmd(req.session['current_role'])
         return HttpResponse(template.render(context, req))
+
+class AssignTa(View):
+    def get(self, req):
+        print()
+    def post(self, req):
+        print()
+        #TODO

@@ -1,4 +1,5 @@
 from django import forms
+from .models import *
 
 
 class LoginForm(forms.Form):
@@ -8,12 +9,12 @@ class LoginForm(forms.Form):
 
 class CreateCourseForm(forms.Form):
     name = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class': 'form-control'}))
-#TODO
+
 
 class CreateUserForm(forms.Form):
     email = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class': 'form-control'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
-#TODO
+
 
 class EditCourseForm(forms.Form):
     name = forms.CharField(required=True, max_length=50, widget=forms.TextInput(attrs={'class': 'form-control'}))
@@ -29,8 +30,19 @@ class EditProfileForm(forms.Form):
     preferences = forms.CharField(required=False, max_length=5000, widget=forms.Textarea(attrs={'class': 'form-control'}))
 
 
+class EditUserForm(forms.Form):
+    email = forms.CharField(required=True, max_length=50, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    firstName = forms.CharField(required=True, max_length=50, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    lastName = forms.CharField(required=True, max_length=50, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    phone = forms.CharField(required=False, max_length=15, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    address = forms.CharField(required=False, max_length=255, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    officeHours = forms.CharField(required=False, max_length=15, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    officeHoursDates = forms.CharField(required=False, max_length=6, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    officeLocation = forms.CharField(required=False, max_length=255, widget=forms.TextInput(attrs={'class': 'form-control'}))
+
+
 class AssignTaForm(forms.Form):
-    ta = forms.CharField(required=True, max_length=50, widget=forms.TextInput(attrs={'class': 'form-control'}))
-    course = forms.CharField(required=True, max_length=50, widget=forms.TextInput(attrs={'class': 'form-control'}))
-    #TODO
+    tas = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple, queryset=User.objects.all())
+    courses = forms.ModelChoiceField(widget=forms.RadioSelect, queryset=Course.objects.all())
+
 

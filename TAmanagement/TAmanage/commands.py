@@ -3,14 +3,13 @@ import shlex
 
 
 class Commands:
-    def __init__(self):
+    def __init__(self):  # These are the main links for all the pages. These are on top of the pages
         self.cmdList = []
         self.addCmd(Role.Administrator, "Create Course", "/createCourse")
         self.addCmd(Role.Administrator, "Create User", "/createUser")
-        self.addCmd(Role.Administrator, "Edit Course", "/editCourse")
-        self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "Edit Profile", "editProfile")
-        self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "List Courses", "listCourses")
-        self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "List Users", "listUsers")
+        self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "Edit Profile", "/editProfile")
+        self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "List Courses", "/listCourses")
+        self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "List Users", "/listUsers")
 
     def addCmd(self, cmdrole: Role, cmdtxt, cmdurl):
         if isinstance(cmdrole, list):
@@ -47,6 +46,7 @@ class CommandWorker:
             },
             'edit': {
                 'course': self.edit_course,
+                'user': self.edit_user,
             },
             'list': {
                 'courses': self.list_courses,
@@ -54,6 +54,7 @@ class CommandWorker:
             },
             'login': self.login,
             'logout': self.logout,
+            'assignTa' : self.assign_ta,
         }
         while type(worker) is dict:
             try:
@@ -117,6 +118,16 @@ class CommandWorker:
         c.save()
         return 'Course updated'
 
+
+    def delete_course(self,cmd:[str]):
+        if not self.currentUser or not self.currentUser.has_role(Role.Administrator):
+            return 'Only an Administrator can edit a course'
+
+        c = Course.objects.get(course.name)
+        c.delete()
+        return 'Course Deleted'
+
+
     def edit_profile(self, cmd: [str]):
         u = self.currentUser
         if u:
@@ -139,9 +150,47 @@ class CommandWorker:
         return 'User added'
 
     def assign_ta(self, cmd: [str]):
+        if not self.currentUser.has_role(Role.Administrator):
+            return 'Only an Administrator can assign TAs'
+        if len(cmd) < 1:
+            return 'Invalid number of parameters'
+
+        tas = list()
+        course = Course.objects.get(name=cmd[0])
+        for i in cmd:
+            if i == course:
+                continue
+            tas.__add__(User.objects.get(email=cmd[i]))
+        course.graderTAs = tas
+
+        return 'TAs assigned'
+
+
+    def edit_user(self, cmd: [str]):
         if not self.currentUser or not self.currentUser.has_role(Role.Administrator):
-            return 'Only an Administrator can create a user'
-        #TODO
+            return 'Only an Administrator can edit a user'
+        if len(cmd) < 1:
+            return 'Invalid number of parameters'
+        valid_dates = {"M", "T", "W", "R", "F", "S"}
+        u = User.objects.get(email=cmd[0])
+        if u:
+            u.firstName = cmd[1]
+            u.lastName = cmd[2]
+            u.phone = cmd[3]
+            u.address = cmd[4]
+            u.officeHours = cmd[5]
+            u.save()
+            for ch in cmd[6]:
+                if valid_dates.intersection(ch):
+                    continue
+                else:
+                    return 'Invalid date(s)'
+            u.officeHoursDates = cmd[6]
+            u.officeLocation = cmd[7]
+        else:
+            return 'User does not exist'
+        u.save()
+        return 'User updated'
 
     def login(self, cmd: [str]):
         if len(cmd) != 2:

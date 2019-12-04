@@ -2,9 +2,8 @@
 {% block content %}
 <form id="form" class="userForm" >
         <h3>List of Users</h3>
-<table id="userTable">
+<table border="1px solid black">
         <tr>
-            <th>Remove</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email</th>
@@ -13,11 +12,10 @@
             <th>Office Location</th>
             <th>Office Hours</th>
             <th>Office Hour Dates</th>
-            <th>Resume</th>
+            <th colspan="3">Modify</th>
         </tr>
         {% for user in users %}
             <tr>
-                <td><input type="radio" name="select"></td>
                 <td>{{ user.firstName }}</td>
                 <td>{{ user.lastName }}</td>
                 <td>{{ user.email }}</td>
@@ -26,12 +24,14 @@
                 <td>{{ user.officeLocation }}</td>
                 <td>{{ user.officeHours }}</td>
                 <td>{{ user.officeHoursDates }}</td>
-                <td>{{ user.resume }}</td>
+                {% if request.session.current_role == 3  %}
+                    <td><a href='/editUser?email={{ user.email }}'>Edit</a></td>
+                    <td><a href='/deleteUser?email={{ user.email }}'>Delete</a></td>
+                    <td><a href='/viewProfile?email={{ user.email }}'>Profile</a></td>
+                {% endif %}
             </tr>
         {% endfor %}
     </table>
-    <br><br>
-    <input class="input"type="submit" value="Remove User">
 </form>
 
 {% endblock content %}

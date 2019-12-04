@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.shortcuts import render
 from django.views import View
 from django.template import loader
 from .commands import *
@@ -43,7 +44,7 @@ class CreateCourse(View):
 
     def post(self, req):
         form = CreateCourseForm(req.POST)
-        template = loader.get_template('form.html')
+        template = loader.get_template('table.html')
         context = {}
         if form.is_valid():
             ch = CommandWorker(req.session['current_user'])
@@ -52,6 +53,9 @@ class CreateCourse(View):
         else:
             context['form'] = form
         context['cmds'] = cmds.getCmds(req.session['current_role'])
+       
+     
+        context['courses'] = ch.executeCommand(f'list courses')
 
         return HttpResponse(template.render(context, req))
 
@@ -61,7 +65,17 @@ class EditCourse(View):
     def get(self, req):
         template = loader.get_template('editCourse.html')
         context = {}
-        context['form'] = EditCourseForm()
+        cname = req.GET.get('courseName', '')
+        c = Course.objects.get(name=cname)
+
+        form = EditCourseForm()
+        form.initial['name'] = c.name
+        form.initial['dates'] = c.dates
+        form.initial['location'] = c.location
+        form.initial['startTime'] = c.startTime
+        form.initial['endTime'] = c.endTime
+
+        context['form'] = form
         context['cmds'] = cmds.getCmds(req.session['current_role'])
         ch = CommandWorker(req.session['current_user'])
         context['courses'] = ch.executeCommand(f'list courses')
@@ -69,7 +83,7 @@ class EditCourse(View):
 
     def post(self, req):
         form = EditCourseForm(req.POST)
-        template = loader.get_template('editCourse.html')
+        template = loader.get_template('table.html')
         context = {}
         if form.is_valid():
             ch = CommandWorker(req.session['current_user'])
@@ -125,6 +139,16 @@ class ListCourses(View):
         return HttpResponse(template.render(context, req))
 
 
+class DeleteCourse(View):
+    def get(self, req):
+        template = loader.get_template('table.html')
+        context = {}
+        ch = CommandWorker(req.session['current_user'])
+        context['cmds'] = cmds.getCmds(req.session['current_role'])
+        context['courses'] = ch.executeCommand(f'list courses')
+        return HttpResponse(template.render(context, req))
+
+
 class ListUsers(View):
 
     def get(self, req):
@@ -147,7 +171,7 @@ class CreateUser(View):
 
     def post(self, req):
         form = CreateUserForm(req.POST)
-        template = loader.get_template('form.html')
+        template = loader.get_template('userTable.html')
         context = {}
         if form.is_valid():
             ch = CommandWorker(req.session['current_user'])
@@ -157,7 +181,54 @@ class CreateUser(View):
         else:
             context['form'] = form
         context['cmds'] = cmds.getCmds(req.session['current_role'])
+        context['users'] = ch.executeCommand(f'list users')
 
+        return HttpResponse(template.render(context, req))
+
+
+class EditUser(View):
+
+    def get(self, req):
+        template = loader.get_template('editUser.html')
+        context = {}
+        eml = req.GET.get('email', '')
+        u = User.objects.get(email=eml)
+        form = EditUserForm()
+        form.initial['email'] = u.email
+        form.initial['firstName'] = u.firstName
+        form.initial['lastName'] = u.lastName
+        form.initial['phone'] = u.phone
+        form.initial['address'] = u.address
+        form.initial['officeLocation'] = u.officeLocation
+        form.initial['officeLHours'] = u.officeHours
+        form.initial['officeHoursDates'] = u.officeHoursDates
+        context['form'] = form
+        context['cmds'] = cmds.getCmds(req.session['current_role'])
+        ch = CommandWorker(req.session['current_user'])
+        context['users'] = ch.executeCommand(f'list users')
+        return HttpResponse(template.render(context, req))
+
+    def post(self, req):
+        form = EditUserForm(req.POST)
+        template = loader.get_template('userTable.html')
+        context = {}
+        if form.is_valid():
+            ch = CommandWorker(req.session['current_user'])
+            context['out'] = ch.executeCommand(f'edit user "{form.cleaned_data["email"]}" '
+                                               f'"{form.cleaned_data["firstName"]}" '
+                                               f'"{form.cleaned_data["lastName"]}" '
+                                               f'"{form.cleaned_data["phone"]}" '
+                                               f'"{form.cleaned_data["address"]}" '
+                                               f'"{form.cleaned_data["officeHours"]}" '
+                                               f'"{form.cleaned_data["officeHoursDates"]}" '
+                                               f'"{form.cleaned_data["officeLocation"]}" '
+                                               )
+            context['form'] = EditUserForm()
+        else:
+            context['form'] = form
+        context['cmds'] = cmds.getCmds(req.session['current_role'])
+        ch = CommandWorker(req.session['current_user'])
+        context['users'] = ch.executeCommand(f'list users')
         return HttpResponse(template.render(context, req))
 
 
@@ -217,9 +288,24 @@ class Logout(View):
         context['cmds'] = cmds.addCmd(req.session['current_role'])
         return HttpResponse(template.render(context, req))
 
+
 class AssignTa(View):
+
     def get(self, req):
-        print()
+        template = loader.get_template('getAssignTa.html')
+        context = {'form': AssignTaForm(), 'cmds': cmds.getCmds(req.session['current_role'])}
+        return HttpResponse(template.render(context, req))
+
     def post(self, req):
-        print()
-        #TODO
+        template = loader.get_template('postAssignTa.html')
+        form = AssignTaForm(req.POST)
+        context = {}
+        if form.is_valid():
+            ch = CommandWorker(req.session['current_user'])
+            courses = AssignTaForm.cleaned_data["courses"]
+            tas = AssignTaForm.cleaned_data["tas"]
+            context['out'] = ch.executeCommand(f'assignTas "{tas.cou}" '
+                                               f'tas"{tas.choices}')
+
+        return HttpResponse(template.render(context, req))
+

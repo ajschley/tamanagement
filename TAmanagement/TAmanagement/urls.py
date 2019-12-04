@@ -29,5 +29,8 @@ urlpatterns = [
     path('listCourses', views.ListCourses.as_view()),
     path('listUsers', views.ListUsers.as_view()),
     path('editProfile', views.EditProfile.as_view()),
+    path('editUser', views.EditUser.as_view()),
+    path('deleteCourse', views.DeleteCourse.as_view()),
+    path('assignTas', views.AssignTa.as_view()),
 ]
 

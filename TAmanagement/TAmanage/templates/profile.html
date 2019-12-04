@@ -2,15 +2,36 @@
 {% block content %}
 {% if request.session.current_user %}
 
-  <h1>Profile</h1>
-    <p>First Name: {{ user.firstName }}</p>
-    <p>Last Name: {{ user.lastName }}</p>
-    <p>Email: {{ user.email }}</p>
-    <p>Phone Number: {{ user.phone }}</p>
-    <p>Address: {{ user.address }}</p>
-    <p>Office Location: {{ user.officeLocation }}</p>
-    <p>Office Hours: {{ user.officeHours }}</p>
-    <p>Office Dates: {{ user.officeHoursDates }}</p>
+  
+<form id="form" class="userForm" >
+    <h3>Profile</h3>
+  <table>
+    <tr>
+      <th>First Name: </th> <td>{{ user.firstName }}</td>
+    </tr>
+    <tr>
+      <th>Last Name: </th> <td>{{ user.lastName }}</td>
+    </tr>
+    <tr>
+      <th>Email: </th> <td>{{ user.email }}</td>
+    </tr>
+    <tr>
+      <th>Phone Number: </th> <td>{{ user.phone }}</td>
+    </tr>
+    <tr>
+      <th>Address: </th> <td>{{ user.address }}</td>
+    </tr>
+    <tr>
+      <th>Office Location: </th> <td>{{ user.officeLocation }}</td>
+    </tr>
+    <tr>
+      <th>Office Hours: </th> <td>{{ user.officeHours }}</td>
+    </tr>
+    <tr>
+      <th>Office Dates: </th> <td>{{ user.officeDates }}</td>
+    </tr>
+  </table>
+</form>
 
     {% endif %}
 {% endblock content %}

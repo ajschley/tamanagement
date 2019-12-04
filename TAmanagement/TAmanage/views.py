@@ -191,11 +191,24 @@ class DeleteCourse(View):
     def get(self, req):
         template = loader.get_template('table.html')
         context = {}
+        cname = req.GET.get('courseName', '')
+        c = Course.objects.get(name=cname).delete()
         ch = CommandWorker(req.session['current_user'])
         context['cmds'] = cmds.getCmds(req.session['current_role'])
         context['courses'] = ch.executeCommand(f'list courses')
         return HttpResponse(template.render(context, req))
 
+
+class DeleteUser(View):
+    def get(self, req):
+        template = loader.get_template('userTable.html')
+        context = {}
+        cname = req.GET.get('email', '')
+        c = User.objects.get(email=cname).delete()
+        ch = CommandWorker(req.session['current_user'])
+        context['cmds'] = cmds.getCmds(req.session['current_role'])
+        context['users'] = ch.executeCommand(f'list users')
+        return HttpResponse(template.render(context, req))
 
 class ListUsers(View):
 

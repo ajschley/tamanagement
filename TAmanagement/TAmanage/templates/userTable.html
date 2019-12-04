@@ -2,7 +2,7 @@
 {% block content %}
 <form id="form" class="userForm" >
         <h3>List of Users</h3>
-<table id="userTable">
+
 <table border="1px solid black">
         <tr>
             <th>First Name</th>
@@ -20,6 +20,9 @@
             {% if request.session.current_role == 2 or request.session.current_role == 3 %}
                 <th>Profile </th>
             {% endif %}
+            {% if request.session.current_role == 3  %}
+            <th>Delete</th>
+        {% endif %}
         </tr>
         {% for user in users %}
             <tr>
@@ -43,6 +46,9 @@
                 {% endif %}
                 {% if request.session.current_role == 2 or request.session.current_role == 3 %}
                     <td><a href='/viewUser?email={{ user.email }}'>Profile</a></td>
+                {% endif %}
+                {% if request.session.current_role == 3  %}
+                <td><a href='/deleteUser?email={{ user.email }}'>Delete</a></td>
                 {% endif %}
             </tr>
         {% endfor %}

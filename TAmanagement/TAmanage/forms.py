@@ -42,6 +42,8 @@ class EditUserForm(forms.Form):
     address = forms.CharField(required=False, max_length=255, widget=forms.TextInput(attrs={'class': 'form-control'}))
     officeHours = forms.CharField(required=False, max_length=15, widget=forms.TextInput(attrs={'class': 'form-control'}))
     officeHoursDates = forms.CharField(required=False, max_length=6, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    officeLocation = forms.CharField(required=False, max_length=6, widget=forms.TextInput(attrs={'class': 'form-control'}))
+
 
 
 class EditProfileForm(forms.Form):

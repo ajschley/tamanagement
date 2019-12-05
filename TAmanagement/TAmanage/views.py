@@ -139,9 +139,10 @@ class EditUser(View):
                                                f'"{form.cleaned_data["lastName"]}" '
                                                f'"{form.cleaned_data["phone"]}" '
                                                f'"{form.cleaned_data["address"]}" '
+                                               f'"{form.cleaned_data["officeLocation"]}" '
                                                f'"{form.cleaned_data["officeHours"]}" '
                                                f'"{form.cleaned_data["officeHoursDates"]}" '
-                                               f'"{form.cleaned_data["officeLocation"]}" ')
+                                               )
             context['form'] = EditUserForm()
         else:
             context['form'] = form
@@ -161,8 +162,10 @@ class EditProfile(View):
         return HttpResponse(template.render(context, req))
 
     def post(self, req):
+        template = loader.get_template('profile.html')
         form = EditProfileForm(req.POST)
-        template = loader.get_template('form.html')
+
+        
         context = {}
         if form.is_valid():
             ch = CommandWorker(req.session['current_user'])
@@ -174,8 +177,8 @@ class EditProfile(View):
         else:
             context['form'] = form
         context['cmds'] = cmds.getCmds(req.session['current_role'])
+        context['user'] = ch.executeCommand(f'view profile')
         return HttpResponse(template.render(context, req))
-
 
 class ListCourses(View):
 
@@ -400,6 +403,7 @@ class AssignTa(View):
 
             context['course'] = course
             context['tas'] = tasEmailList
+
 
         return HttpResponse(template.render(context, req))
 

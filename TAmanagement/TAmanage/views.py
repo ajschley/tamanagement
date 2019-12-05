@@ -379,6 +379,8 @@ class AssignTa(View):
 
     def get(self, req):
         template = loader.get_template('getAssignTa.html')
+        #courseNames = AssignTaForm.cleaned_data["courses"].values_list('name', flat=True)
+        #taEmails = AssignTaForm.cleaned_data["tas"].values_list('email', flat=True)
         context = {'form': AssignTaForm(), 'cmds': cmds.getCmds(req.session['current_role'])}
         return HttpResponse(template.render(context, req))
 
@@ -390,7 +392,13 @@ class AssignTa(View):
             ch = CommandWorker(req.session['current_user'])
             tas = form.cleaned_data["tas"]
             course = form.cleaned_data["course"]
-            context['course'] = ch.assign_ta(course=course, tas=tas)
+
+            ch.assign_ta(course=course, tas=tas)
+
+            tasEmailList = tas.values_list('email', flat=True)
+
+            context['course'] = course
+            context['tas'] = tasEmailList
 
         return HttpResponse(template.render(context, req))
 

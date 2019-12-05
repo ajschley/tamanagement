@@ -32,6 +32,9 @@ class User(models.Model):
     def userEmail(self):
         return self.email
 
+    def __str__(self):
+        return self.userEmail()
+
 
 class Lab(models.Model):
     location = models.CharField(max_length=255, null=True, blank=True)
@@ -96,3 +99,6 @@ class Course(models.Model):
 
     def setDates(self, dates):
         self.dates = dates
+
+    def __str__(self):
+        return self.courseName()

@@ -51,6 +51,8 @@ class EditProfileForm(forms.Form):
 
 
 class AssignTaForm(forms.Form):
-    tas = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple, queryset=User.objects.all())
-    course = forms.ModelChoiceField(widget=forms.RadioSelect, queryset=Course.objects.all())
+    tas = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple, queryset=User.objects.all(), to_field_name="email")
+    course = forms.ModelChoiceField(widget=forms.RadioSelect, queryset=Course.objects.all(), to_field_name="name")
+
+
 

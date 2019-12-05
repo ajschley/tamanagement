@@ -9,9 +9,13 @@
     <tr>
       <th>Course: </th> <td>{{ course.name }}</td>
     </tr>
+      {% for e in tas %}
     <tr>
-      <th>TAs: </th> <td>{{ course.graderTAs }}</td>
+      <th>TA: </th>
+      <td> {{ e }} </td>
     </tr>
+   {% endfor %}
+
   </table>
 </form>
 

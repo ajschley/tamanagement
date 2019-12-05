@@ -160,6 +160,7 @@ class CreateUserTest(TestCase):
         self.assertEqual(msg, "User already exists")
 
 
+# Alec - Edit Course tests
 class EditCourseTest(TestCase):
 
     def setUp(self):
@@ -178,7 +179,30 @@ class EditCourseTest(TestCase):
         msg = self.worker.executeCommand("edit course CS900 001 EMS180 11:00 11:55 MW")
         self.assertEqual("Course does not yet exist", msg)
 
+    def test_edit_course_3(self):
+        msg = self.worker.executeCommand("edit course CS999 001 EMS180 11:00 11:55")
+        self.assertEqual("Invalid number of parameters", msg)
 
+    def test_edit_course_4(self):
+        msg = self.worker.executeCommand("edit course CS999 001 EMS180 11:00 11:55 MW MW")
+        self.assertEqual("Invalid number of parameters", msg)
+
+    def test_edit_course_5(self):
+        msg = self.worker.executeCommand("edit course CS999 001 EMS180 11:00 11:55 X")
+        self.assertEqual("Invalid date(s)", msg)
+
+    def test_edit_course_6(self):
+        self.worker.currentUser = self.ta
+        msg = self.worker.executeCommand("edit course CS999 001 EMS180 11:00 11:55 M")
+        self.assertEqual("Only an Administrator can edit a course", msg)
+
+    def test_edit_course_7(self):
+        self.worker.currentUser = self.prof
+        msg = self.worker.executeCommand("edit course CS999 001 EMS180 11:00 11:55 M")
+        self.assertEqual("Only an Administrator can edit a course", msg)
+
+
+# Alec - Edit User tests
 class EditUserTest(TestCase):
 
     def setUp(self):
@@ -197,4 +221,24 @@ class EditUserTest(TestCase):
         msg = self.worker.executeCommand("edit user ta@uwm.com Alec Schley 555-555-5555 roof 2pm MW EMS")
         self.assertEqual("User does not exist", msg)
 
+    def test_edit_user_3(self):
+        msg = self.worker.executeCommand("edit user ta@uwm.com Alec Schley 555-555-5555 roof 2pm MW")
+        self.assertEqual("Invalid number of parameters", msg)
 
+    def test_edit_user_4(self):
+        msg = self.worker.executeCommand("edit user ta@uwm.com Alec Schley 555-555-5555 roof 2pm MW EMS EMS")
+        self.assertEqual("Invalid number of parameters", msg)
+
+    def test_edit_user_5(self):
+        msg = self.worker.executeCommand("edit user ta@uwm.com Alec Schley 555-555-5555 roof 2pm X EMS")
+        self.assertEqual("Invalid date(s)", msg)
+
+    def test_edit_user_6(self):
+        self.worker.currentUser = self.ta
+        msg = self.worker.executeCommand("edit user ta@uwm.com Alec Schley 555-555-5555 roof 2pm M EMS")
+        self.assertEqual("Only an Administrator can edit a user", msg)
+
+    def test_edit_user_7(self):
+        self.worker.currentUser = self.prof
+        msg = self.worker.executeCommand("edit user ta@uwm.com Alec Schley 555-555-5555 roof 2pm M EMS")
+        self.assertEqual("Only an Administrator can edit a user", msg)

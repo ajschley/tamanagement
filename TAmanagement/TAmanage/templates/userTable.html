@@ -2,36 +2,61 @@
 {% block content %}
 <form id="form" class="userForm" >
         <h3>List of Users</h3>
-<table id="userTable">
+
+<table border="1px solid black">
         <tr>
-            <th>Remove</th>
             <th>First Name</th>
             <th>Last Name</th>
+            <th>Role</th>
             <th>Email</th>
             <th>Phone #</th>
             <th>Address</th>
-            <th>Office Location</th>
             <th>Office Hours</th>
             <th>Office Hour Dates</th>
-            <th>Resume</th>
+            <th>Office Location</th>
+            
+            
+            {% if request.session.current_role == 3  %}
+                <th>Edit </th>
+            {% endif %}
+            {% if request.session.current_role == 2 or request.session.current_role == 3 %}
+                <th>Profile </th>
+            {% endif %}
+            {% if request.session.current_role == 3  %}
+            <th>Delete</th>
+        {% endif %}
         </tr>
         {% for user in users %}
             <tr>
-                <td><input type="radio" name="select"></td>
                 <td>{{ user.firstName }}</td>
                 <td>{{ user.lastName }}</td>
+                {% if user.role == 1 %}
+                    <td>TA</td>
+                {% elif user.role == 2 %}
+                    <td>Instructor</td>
+                {% elif user.role == 3 %}
+                    <td>Admin</td>
+                {% endif %}
                 <td>{{ user.email }}</td>
                 <td>{{ user.phone }}</td>
                 <td>{{ user.address }}</td>
-                <td>{{ user.officeLocation }}</td>
                 <td>{{ user.officeHours }}</td>
                 <td>{{ user.officeHoursDates }}</td>
-                <td>{{ user.resume }}</td>
+                <td>{{ user.officeLocation }}</td>
+                
+                
+                {% if request.session.current_role == 3  %}
+                    <td><a href='/editUser?email={{ user.email }}'>Edit</a></td>
+                {% endif %}
+                {% if request.session.current_role == 2 or request.session.current_role == 3 %}
+                    <td><a href='/viewUser?email={{ user.email }}'>Profile</a></td>
+                {% endif %}
+                {% if request.session.current_role == 3  %}
+                <td><a href='/deleteUser?email={{ user.email }}'>Delete</a></td>
+                {% endif %}
             </tr>
         {% endfor %}
     </table>
-    <br><br>
-    <input class="input"type="submit" value="Remove User">
 </form>
-
+<div class="out">{{ out | linebreaks }}</div>
 {% endblock content %}

@@ -4,33 +4,38 @@
 {% if request.session.current_user %}
 <form id="form" class="classForm">
     <h3>List of courses</h3>
-    <table id="courseTable">   
 
+    <table border="1px solid black">
         <tr>
-            <th>Remove</th>
-            <th>Course Name </th> 
+            <th>Course Name </th>
+            <th>Section </th>
             <th>Location </th>
             <th>Start time </th>
             <th>End time </th>
             <th>Dates </th>
+            {% if request.session.current_role == 3  %}
+            <th colspan="2">Modify</th>
+            {% endif %}
         </tr>
         {% for course in courses %}
             <tr>
-               <td><input type="radio" name="select"></td>
                 <td>{{ course.name }}</td>
+                <td>{{ course.section }}</td>
                 <td>{{ course.location }}</td>
                 <td>{{ course.startTime }}</td>
                 <td>{{ course.endTime }}</td>
                 <td>{{ course.dates }}</td>
+                {% if request.session.current_role == 3  %}
+                    <td><a href='/editCourse?courseName={{ course.name }}&courseSection={{ course.section }}'>Edit</a></td>
+                    <td><a href='/deleteCourse?courseName={{ course.name }}'>Delete</a></td>
+                {% endif %}
             </tr>
-            
         {% endfor %}
-       
     </table>
-    <br><br>
-    <input class="input"type="submit" value="Remove Course">
+    </table>
 </form>
 
 
 {% endif %}
+<div class="out">{{ out | linebreaks }}</div>
 {% endblock content %}

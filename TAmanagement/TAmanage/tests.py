@@ -1,17 +1,68 @@
 from django.test import TestCase
+from datetime import datetime
 from .models import Course, User
 
 
 class CourseTestCase(TestCase):
     # Simon: Course Test Cases
     def setUp(self):
-        Course.objects.create(name="CS361", dates="TR", startTime='11:00', endTime='11:50')
-        Course.objects.create(name="CS395", dates="MW", startTime='1:00', endTime='2:00')
-        Course.objects.create(name="CS482", dates="Online")
+        Course.objects.create(name="CS361", section="001", dates="TR", startTime='11:00:00', endTime='11:55:00')
+        Course.objects.create(name="CS395", section="001", dates="MW", startTime='1:00', endTime='2:00')
+        Course.objects.create(name="CS482", section="001", dates="Online")
 
-    def test_course_return(self):
+    def test_course_1(self):
         course361 = Course.objects.get(name="CS361")
         self.assertEqual(course361.courseName(), 'CS361')
+
+    def test_course_2(self):
+        course361 = Course.objects.get(name="CS395")
+        self.assertEqual(course361.courseName(), 'CS395')
+
+    def test_course_3(self):
+        course361 = Course.objects.get(name="CS482")
+        self.assertEqual(course361.courseName(), 'CS482')
+
+    def test_course_4(self):
+        course361 = Course.objects.get(name="CS361")
+        self.assertNotEqual(course361.courseName(), 'CS362')
+
+    def test_course_5(self):
+        course361 = Course.objects.get(name="CS395")
+        self.assertNotEqual(course361.courseName(), 'CS396')
+
+    def test_course_6(self):
+        course361 = Course.objects.get(name="CS482")
+        self.assertNotEqual(course361.courseName(), 'CS483')
+
+    def test_course_7(self):
+        course361 = Course.objects.get(name="CS361")
+        self.assertEqual(course361.section, '001')
+
+    def test_course_8(self):
+        course361 = Course.objects.get(name="CS395")
+        self.assertEqual(course361.section, '001')
+
+    def test_course_9(self):
+        course361 = Course.objects.get(name="CS482")
+        self.assertEqual(course361.section, '001')
+
+    def test_course_10(self):
+        course361 = Course.objects.get(name="CS361")
+        self.assertNotEqual(course361.section, 'CS362')
+
+    def test_course_11(self):
+        course361 = Course.objects.get(name="CS395")
+        self.assertNotEqual(course361.section, 'CS396')
+
+    def test_course_12(self):
+        course361 = Course.objects.get(name="CS482")
+        self.assertNotEqual(course361.section, 'CS483')
+
+    def test_course_13(self):
+        course361 = Course.objects.get(name="CS361")
+        self.assertEqual(course361.startTime.strftime('%H:%M:%S'), '11:00:00')
+
+
 
     def test_course_not_full(self):
         course361 = Course.objects.get(name="CS361")
@@ -151,4 +202,22 @@ class LoginTestCase(TestCase):
 class EditCourseTestCase(TestCase):
 
     def setUp(self):
-        User.objects
+        Course.objects.create(name="CS361", section="001", dates="TR", startTime='11:00:00', endTime='11:55:00')
+        Course.objects.create(name="CS395", section="001", dates="MW", startTime='1:00', endTime='2:00')
+        Course.objects.create(name="CS482", section="001", dates="Online")
+
+    def test_edit_course_section(self):
+        course = Course.objects.get(name="CS361")
+        course.section = "002"
+        course.save()
+        self.assertEqual("002", course.section)
+
+    def test_edit_course_dates(self):
+        course = Course.objects.get(name="CS361")
+        course.dates = "MW"
+        course.save()
+        self.assertEqual("MW", course.dates)
+
+    def test_edit_course_start_time(self):
+        course = Course.objects.get(name="CS361")
+        course.startTime = "11:30:00"

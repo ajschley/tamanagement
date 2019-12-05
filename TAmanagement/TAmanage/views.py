@@ -263,7 +263,7 @@ class EditUser(View):
         form.initial['phone'] = u.phone
         form.initial['address'] = u.address
         form.initial['officeLocation'] = u.officeLocation
-        form.initial['officeLHours'] = u.officeHours
+        form.initial['officeHours'] = u.officeHours
         form.initial['officeHoursDates'] = u.officeHoursDates
         context['form'] = form
         context['cmds'] = cmds.getCmds(req.session['current_role'])
@@ -311,6 +311,7 @@ class ViewUser(View):
         template = loader.get_template('Profile.html')
         context = {}
         eml = req.GET.get('email', '')
+        c = User.objects.get(email=eml)
         ch = CommandWorker(req.session['current_user'])
         context['user'] = ch.executeCommand(f'view user')
         context['cmds'] = cmds.getCmds(req.session['current_role'])

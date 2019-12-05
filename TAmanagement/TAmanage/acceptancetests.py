@@ -170,8 +170,31 @@ class EditCourseTest(TestCase):
         self.ta = User.objects.create(email='ta@uwm.com', role=1)
         self.course1 = Course.objects.create(name="CS999")
 
-    def test_edit_course(self):
-        msg = self.worker.executeCommand("edit course CS999 EMS180")
-        self.assertEqual(msg, "Course already up to date")
+    def test_edit_course_1(self):
+        msg = self.worker.executeCommand("edit course CS999 001 EMS180 11:00 11:55 MW")
+        self.assertEqual("Course updated", msg)
+
+    def test_edit_course_2(self):
+        msg = self.worker.executeCommand("edit course CS900 001 EMS180 11:00 11:55 MW")
+        self.assertEqual("Course does not yet exist", msg)
+
+
+class EditUserTest(TestCase):
+
+    def setUp(self):
+        self.worker = CommandWorker()
+        self.ta = User.objects.create(email='ta@test.com', firstName='Alec', lastName='Schley', phone='555-555-5555', address='roof', officeHours='2pm', officeHoursDates='MW', officeLocation='EMS', role=1)
+        self.prof = User.objects.create(email='prof@uwm.edu', role=2)
+        self.admin = User.objects.create(email='admin@uwm.com', role=3)
+        self.worker.currentUser = self.admin
+        self.course1 = Course.objects.create(name="CS999")
+
+    def test_edit_user_1(self):
+        msg = self.worker.executeCommand("edit user ta@test.com Alec Schley 555-555-5555 roof 2pm MW EMS")
+        self.assertEqual("User updated", msg)
+
+    def test_edit_user_2(self):
+        msg = self.worker.executeCommand("edit user ta@uwm.com Alec Schley 555-555-5555 roof 2pm MW EMS")
+        self.assertEqual("User does not exist", msg)
 
 

@@ -11,9 +11,11 @@
             <th>Email</th>
             <th>Phone #</th>
             <th>Address</th>
-            <th>Office Location</th>
             <th>Office Hours</th>
             <th>Office Hour Dates</th>
+            <th>Office Location</th>
+            
+            
             {% if request.session.current_role == 3  %}
                 <th>Edit </th>
             {% endif %}
@@ -38,9 +40,11 @@
                 <td>{{ user.email }}</td>
                 <td>{{ user.phone }}</td>
                 <td>{{ user.address }}</td>
-                <td>{{ user.officeLocation }}</td>
                 <td>{{ user.officeHours }}</td>
                 <td>{{ user.officeHoursDates }}</td>
+                <td>{{ user.officeLocation }}</td>
+                
+                
                 {% if request.session.current_role == 3  %}
                     <td><a href='/editUser?email={{ user.email }}'>Edit</a></td>
                 {% endif %}
@@ -54,5 +58,5 @@
         {% endfor %}
     </table>
 </form>
-
+<div class="out">{{ out | linebreaks }}</div>
 {% endblock content %}

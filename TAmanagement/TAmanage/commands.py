@@ -7,6 +7,7 @@ class Commands:
         self.cmdList = []
         self.addCmd(Role.Administrator, "Create Course", "/createCourse")
         self.addCmd(Role.Administrator, "Create User", "/createUser")
+        self.addCmd(Role.Administrator, "Assign TAs", "/assignTas")
         self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "View Profile", "/viewProfile")
         self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "Edit Profile", "/editProfile")
         self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "List Courses", "/listCourses")
@@ -59,6 +60,7 @@ class CommandWorker:
             },
             'login': self.login,
             'logout': self.logout,
+            'assignTa' : self.assign_ta,
         }
         while type(worker) is dict:
             try:
@@ -138,6 +140,16 @@ class CommandWorker:
             return 'Course does not yet exist'
         c.save()
         return 'Course updated'
+
+    def assign_ta(self, course, tas):
+        if not self.currentUser.has_role(Role.Administrator):
+            return 'Only an Administrator can assign TAs'
+
+        tas_list = list(tas)
+        for x in tas_list:
+            course.graderTAs.add(x)
+
+        return course
 
     def edit_user(self, cmd: [str]):
         if not self.currentUser or not self.currentUser.has_role(Role.Administrator):

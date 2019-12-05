@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.shortcuts import render
 from django.views import View
 from django.template import loader
 from .commands import *
@@ -373,3 +374,32 @@ class Logout(View):
         req.session['current_role'] = None
         context['cmds'] = cmds.addCmd(req.session['current_role'])
         return HttpResponse(template.render(context, req))
+
+
+class AssignTa(View):
+
+    def get(self, req):
+        template = loader.get_template('getAssignTa.html')
+        #courseNames = AssignTaForm.cleaned_data["courses"].values_list('name', flat=True)
+        #taEmails = AssignTaForm.cleaned_data["tas"].values_list('email', flat=True)
+        context = {'form': AssignTaForm(), 'cmds': cmds.getCmds(req.session['current_role'])}
+        return HttpResponse(template.render(context, req))
+
+    def post(self, req):
+        template = loader.get_template('postAssignTa.html')
+        form = AssignTaForm(req.POST)
+        context = {}
+        if form.is_valid():
+            ch = CommandWorker(req.session['current_user'])
+            tas = form.cleaned_data["tas"]
+            course = form.cleaned_data["course"]
+
+            ch.assign_ta(course=course, tas=tas)
+
+            tasEmailList = tas.values_list('email', flat=True)
+
+            context['course'] = course
+            context['tas'] = tasEmailList
+
+        return HttpResponse(template.render(context, req))
+

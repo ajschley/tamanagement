@@ -22,16 +22,17 @@
       <th>Address: </th> <td>{{ user.address }}</td>
     </tr>
     <tr>
-      <th>Office Location: </th> <td>{{ user.officeLocation }}</td>
-    </tr>
-    <tr>
       <th>Office Hours: </th> <td>{{ user.officeHours }}</td>
     </tr>
     <tr>
-      <th>Office Dates: </th> <td>{{ user.officeDates }}</td>
+      <th>Office Dates: </th> <td>{{ user.officeHoursDates }}</td>
+    </tr>
+    <tr>
+      <th>Office Location: </th> <td>{{ user.officeLocation }}</td>
     </tr>
   </table>
 </form>
 
     {% endif %}
+    <div class="out">{{ out | linebreaks }}</div>
 {% endblock content %}

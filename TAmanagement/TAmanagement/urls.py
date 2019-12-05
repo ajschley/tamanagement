@@ -33,6 +33,7 @@ urlpatterns = [
     path('viewProfile', views.ViewProfile.as_view()),
     path('viewUser', views.ViewUser.as_view()),
     path('deleteCourse', views.DeleteCourse.as_view()),
+    path('assignTas', views.AssignTa.as_view()),
     path('deleteUser', views.DeleteUser.as_view()),
 
 ]

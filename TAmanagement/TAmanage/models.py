@@ -21,7 +21,6 @@ class User(models.Model):
     officeHoursDates = models.CharField(max_length=6, default='None', blank=True, null=True)
     officeLocation = models.CharField(max_length=255, default='None', blank=True, null=True)
     role = models.SmallIntegerField(default=1)
-    #TODO: Can't uncomment these for some reason, gives errors when trying to add these fields
     resume = models.CharField(max_length=5000, blank=True, null=True)
     schedule = models.CharField(max_length=5000, blank=True, null=True)
     preferences = models.CharField(max_length=5000, blank=True, null=True)
@@ -31,6 +30,9 @@ class User(models.Model):
 
     def userEmail(self):
         return self.email
+
+    def __str__(self):
+        return self.userEmail()
 
 
 class Lab(models.Model):
@@ -49,6 +51,7 @@ class Lab(models.Model):
 
 
 class Course(models.Model):
+    isCourseFull = models.BooleanField(default=False)
     instructor = models.ForeignKey("User", null=True, blank=True, on_delete=models.SET_NULL)
     # Each course has a name
     name = models.CharField(max_length=20, default='CS000')
@@ -67,6 +70,14 @@ class Course(models.Model):
     # Return the course name
     def courseName(self):
         return self.name
+
+    def isFull(self):
+        return self.isCourseFull
+
+    # Set the course to be full or not
+    # b is a Boolean value
+    def setIsFull(self, b):
+        self.isCourseFull = b
 
     # Check if a course is online or not
     def isOnline(self):
@@ -96,3 +107,6 @@ class Course(models.Model):
 
     def setDates(self, dates):
         self.dates = dates
+
+    def __str__(self):
+        return self.courseName()

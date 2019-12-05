@@ -7,6 +7,7 @@ class Commands:
         self.cmdList = []
         self.addCmd(Role.Administrator, "Create Course", "/createCourse")
         self.addCmd(Role.Administrator, "Create User", "/createUser")
+        self.addCmd(Role.Administrator, "Assign TAs", "/assignTas")
         self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "View Profile", "/viewProfile")
         self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "Edit Profile", "/editProfile")
         self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "List Courses", "/listCourses")
@@ -48,6 +49,7 @@ class CommandWorker:
             'edit': {
                 'course': self.edit_course,
                 'user': self.edit_user,
+                'profile': self.edit_profile,
             },
             'list': {
                 'courses': self.list_courses,
@@ -59,6 +61,7 @@ class CommandWorker:
             },
             'login': self.login,
             'logout': self.logout,
+            'assignTa' : self.assign_ta,
         }
         while type(worker) is dict:
             try:
@@ -139,6 +142,16 @@ class CommandWorker:
         c.save()
         return 'Course updated'
 
+    def assign_ta(self, course, tas):
+        if not self.currentUser.has_role(Role.Administrator):
+            return 'Only an Administrator can assign TAs'
+
+        tas_list = list(tas)
+        for x in tas_list:
+            course.graderTAs.add(x)
+
+        return course
+
     def edit_user(self, cmd: [str]):
         if not self.currentUser or not self.currentUser.has_role(Role.Administrator):
             return 'Only an Administrator can edit a user'
@@ -168,9 +181,9 @@ class CommandWorker:
     def edit_profile(self, cmd: [str]):
         u = self.currentUser
         if u:
-            u.resume = cmd[1]
-            u.schedule = cmd[2]
-            u.preferences = cmd[3]
+            u.resume = cmd[0]
+            u.schedule = cmd[1]
+            u.preferences = cmd[2]
         u.save()
         return 'Profile updated'
 

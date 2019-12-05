@@ -6,8 +6,8 @@ from .models import Course, User
 class CourseTestCase(TestCase):
     # Simon: Course Test Cases
     def setUp(self):
-        Course.objects.create(name="CS361", section="001", dates="TR", startTime='11:00:00', endTime='11:55:00')
-        Course.objects.create(name="CS395", section="001", dates="MW", startTime='1:00', endTime='2:00')
+        Course.objects.create(name="CS361", isCourseFull=False, section="001", dates="TR", startTime='11:00:00', endTime='11:55:00')
+        Course.objects.create(name="CS395", isCourseFull=True, section="001", dates="MW", startTime='1:00', endTime='2:00')
         Course.objects.create(name="CS482", section="001", dates="Online")
 
     def test_course_1(self):
@@ -62,8 +62,6 @@ class CourseTestCase(TestCase):
         course361 = Course.objects.get(name="CS361")
         self.assertEqual(course361.startTime.strftime('%H:%M:%S'), '11:00:00')
 
-
-
     def test_course_not_full(self):
         course361 = Course.objects.get(name="CS361")
         self.assertFalse(course361.isFull())
@@ -80,10 +78,6 @@ class CourseTestCase(TestCase):
     def test_course_not_online(self):
         course395 = Course.objects.get(name="CS395")
         self.assertFalse(course395.isOnline())
-
-    def test_course_dates(self):
-        course361 = Course.objects.get(name="CS361")
-        self.assertEqual(course361.getDates(), 'TR')
 
     # Alec: Course Test Cases
     # test start time for a course
@@ -108,17 +102,11 @@ class CourseTestCase(TestCase):
         self.assertEqual(course482.getStartTime(), None)
         self.assertEqual(course482.getEndTime(), None)
 
-    # test the online class doesn't have dates
-    def test_course_online_dates(self):
-        course = Course.objects.get(name='CS361')
-        dates = course.getDates()
-        self.assertEqual(dates, None)
-
     # test invalid start time for course
     def test_course_start_invalid(self):
         course = Course.objects.get(name='CS395')
         start = course.getStartTime()
-        course.setStartTime('13:00')
+        course.setStartTime('25:00')
         self.assertEqual(course.getStartTime(), start)
 
     # test invalid end time for course
@@ -138,21 +126,21 @@ class CourseTestCase(TestCase):
 
 class UserTestCase(TestCase):
     # Arif: User Unit Tests
-    def test_user(self):
+    def test_user_email(self):
         user11 = User()
-        user11.userEmail = "hossain8@uwm.edu"
-        self.assertEqual(user11.getUsername(), "hossain8@uwm.edu")
-        self.assertNotEqual(user11.getUsername(), "pqr@uwm.edu")
+        user11.email = "hossain8@uwm.edu"
+        self.assertEqual(user11.email, "hossain8@uwm.edu")
+        self.assertNotEqual(user11.email, "pqr@uwm.edu")
 
-    def test_userType(self):
+    def test_user_type(self):
         user21 = User()
-        user21.user_type = 'MA'
-        self.assertEqual(user21.USER_TYPES.__contains__(user21.userType()), False)
-        user21.user_type = ('TA', 'TA / Grader')
-        self.assertTrue(user21.USER_TYPES.__contains__(user21.userType()))
-        self.assertFalse(user21.USER_TYPES.__contains__(('MA', 'ma')))
-        self.assertFalse(user21.USER_TYPES.__contains__(('ta', 'TA')))
-        self.assertNotEqual(user21.userType(), ('ADMIN', 'Admin'))
+        user21.role = 'MA'
+        self.assertEqual(False, user21.user_type.__contains__(user21.role))
+        user21.role = 'TA'
+        self.assertTrue(user21.USER_TYPES.__contains__(user21.role))
+        self.assertFalse(user21.USER_TYPES.__contains__('MA'))
+        self.assertFalse(user21.USER_TYPES.__contains__('X'))
+        self.assertNotEqual('Admin', user21.role)
 
     def test_loggedIn(self):
         user31 = User()
@@ -163,17 +151,17 @@ class UserTestCase(TestCase):
     # Saad: more user Unit test
 
     # test for setting a password for a new user
-    def test_password(self):
+    def test_reset_password(self):
         user41 = User()
-        user41.userPassword = "Stc123"
-        self.assertEqual(user41.resetPassword(), "Stc123")
-        self.assertNotEqual(user41.resetPassword(), "Stc124")
+        user41.password = "Stc123"
+        self.assertEqual("Stc123", user41.resetPassword())
+        self.assertNotEqual("Stc124", user41.resetPassword())
         user41.userPassword = None
         self.assertFalse(user41.resetPassword(), "error: enter a password")
 
     # test user email only valid uwm email
 
-    def test_userEmail(self):
+    def test_user_email_2(self):
         user51 = User()
         user51.userEmail = "saad_q95@gamil.com"
         self.assertFalse(user51.getUsername(), "use a valid uwm email")
@@ -184,40 +172,103 @@ class UserTestCase(TestCase):
         self.assertFalse(user51.getUsername(), "error: enter a valid email")
 
 
-class LoginTestCase(TestCase):
-    # Chris: Login Test Cases
-    def setUp(self):
-        User.objects.create(userEmail="test@test.com", userPassword="test")
-        User.objects.create(userEmail="email", userPassword="password")
+# class LoginTestCase(TestCase):
+#     # Chris: Login Test Cases
+#     def setUp(self):
+#         User.objects.create(email="test@test.com", password="test")
+#         User.objects.create(email="email", password="password")
+#
+#     def test_login(self):
+#         user = User.objects.get(email="test@test.com")
+#         self.assertFalse(user.loggedIn)
+#         user.setLoginState(True)
+#         self.assertTrue(user.loggedIn)
+#         user.setLoginState(False)
+#         self.assertFalse(user.loggedIn)
 
-    def test_login(self):
-        testUser = User.objects.get(userEmail="test@test.com")
-        self.assertFalse(testUser.loggedIn)
-        testUser.setLoginState(True)
-        self.assertTrue(testUser.loggedIn)
-        testUser.setLoginState(False)
-        self.assertFalse(testUser.loggedIn)
 
-
+# Alec - Edit Course tests
 class EditCourseTestCase(TestCase):
 
     def setUp(self):
-        Course.objects.create(name="CS361", section="001", dates="TR", startTime='11:00:00', endTime='11:55:00')
-        Course.objects.create(name="CS395", section="001", dates="MW", startTime='1:00', endTime='2:00')
+        Course.objects.create(name="CS361", section="001", location="Roof", dates="TR", startTime='11:00:00', endTime='11:55:00')
+        Course.objects.create(name="CS361", section="002", location="Basement", dates="MW", startTime='1:00:00', endTime='2:00:00')
         Course.objects.create(name="CS482", section="001", dates="Online")
 
     def test_edit_course_section(self):
-        course = Course.objects.get(name="CS361")
+        course = Course.objects.get(name="CS361", section='001')
         course.section = "002"
-        course.save()
         self.assertEqual("002", course.section)
 
+    def test_edit_course_section_already_exists(self):
+        course = Course.objects.get(name="CS361", section='002')
+        course.section = "001"
+        self.assertEqual("Course section already exists", course.section)
+
+    def test_edit_course_location(self):
+        course = Course.objects.get(name="CS361", section='001')
+        course.location = "Basement"
+        self.assertEqual("Basement", course.location)
+
     def test_edit_course_dates(self):
-        course = Course.objects.get(name="CS361")
+        course = Course.objects.get(name="CS361", section='001')
         course.dates = "MW"
-        course.save()
         self.assertEqual("MW", course.dates)
 
     def test_edit_course_start_time(self):
-        course = Course.objects.get(name="CS361")
+        course = Course.objects.get(name="CS361", section='001')
         course.startTime = "11:30:00"
+        self.assertEqual("11:30:00", course.startTime)
+
+    def test_edit_course_end_time(self):
+        course = Course.objects.get(name="CS361", section='001')
+        course.endTime = "12:00:00"
+        self.assertEqual("12:00:00", course.endTime)
+
+# Alec - Edit User tests
+class EditUserTestCase(TestCase):
+
+    def setUp(self):
+        User.objects.create(email="admin@example.com", firstName='Bob', lastName='Bobble', phone='555-555-5555',
+                            address='Roof', officeHours="2pm-3pm", officeHoursDates='MW', officeLocation='Jupiter')
+        User.objects.create(email="instructor@example.com", firstName='Jim', lastName='Jimbles', phone='999-999-9999',
+                            address='Basement', officeHours="4pm-5pm", officeHoursDates='TR',
+                            officeLocation='Rain forest')
+        User.objects.create(email="ta@example.com", firstName='Marky', lastName='Mark', phone='000-000-0000',
+                            address='the void', officeHours="11am-12pm", officeHoursDates='F', officeLocation='Moon')
+
+    def test_edit_user_first_name(self):
+        user = User.objects.get(email="admin@example.com")
+        user.firstName = "Rob"
+        self.assertEqual("Rob", user.firstName)
+
+    def test_edit_user_last_name(self):
+        user = User.objects.get(email="admin@example.com")
+        user.lastName = "Robble"
+        self.assertEqual("Robble", user.lastName)
+
+    def test_edit_user_phone(self):
+        user = User.objects.get(email="admin@example.com")
+        user.phone = "666-666-6666"
+        self.assertEqual("666-666-6666", user.phone)
+
+    def test_edit_user_address(self):
+        user = User.objects.get(email="admin@example.com")
+        user.address = "the void"
+        self.assertEqual("the void", user.address)
+
+    def test_edit_user_office_hours(self):
+        user = User.objects.get(email="admin@example.com")
+        user.officeHours = "6pm-7pm"
+        self.assertEqual("6pm-7pm", user.officeHours)
+
+    def test_edit_user_office_hours_dates(self):
+        user = User.objects.get(email="admin@example.com")
+        user.officeHoursDates = "T"
+        self.assertEqual("T", user.officeHoursDates)
+
+    def test_edit_user_office_location(self):
+        user = User.objects.get(email="admin@example.com")
+        user.officeHoursDates = "Mars"
+        self.assertEqual("Mars", user.officeHoursDates)
+

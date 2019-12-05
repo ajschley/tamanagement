@@ -307,7 +307,7 @@ class ViewProfile(View):
 class ViewUser(View):
 
     def get(self, req):
-        template = loader.get_template('userProfile.html')
+        template = loader.get_template('Profile.html')
         context = {}
         eml = req.GET.get('email', '')
         ch = CommandWorker(req.session['current_user'])

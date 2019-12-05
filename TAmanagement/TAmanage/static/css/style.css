@@ -90,6 +90,14 @@ a:link, a:visited {
 
 }
 
+#id_role{
+    background-color: white;
+    color: rgb(192, 138, 23);
+    font-size: 20px;
+    width: 248px;
+}
+
+
   .out{
     color: black;
     position: fixed;

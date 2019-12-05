@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
 {% if request.session.current_user %}
-
-  
 <form id="form" class="userForm" >
     <h3>Profile</h3>
   <table>
@@ -33,6 +31,6 @@
   </table>
 </form>
 
-    {% endif %}
     <div class="out">{{ out | linebreaks }}</div>
+    {% endif %}
 {% endblock content %}

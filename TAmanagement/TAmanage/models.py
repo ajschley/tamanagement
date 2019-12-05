@@ -21,7 +21,6 @@ class User(models.Model):
     officeHoursDates = models.CharField(max_length=6, default='None', blank=True, null=True)
     officeLocation = models.CharField(max_length=255, default='None', blank=True, null=True)
     role = models.SmallIntegerField(default=1)
-    #TODO: Can't uncomment these for some reason, gives errors when trying to add these fields
     resume = models.CharField(max_length=5000, blank=True, null=True)
     schedule = models.CharField(max_length=5000, blank=True, null=True)
     preferences = models.CharField(max_length=5000, blank=True, null=True)

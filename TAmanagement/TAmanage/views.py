@@ -139,8 +139,7 @@ class ViewProfile(View):
         template = loader.get_template('profile.html')
         context = {}
         ch = CommandWorker(req.session['current_user'])
-        context['user'] = ch.executeCommand(f'ViewSelf')
-        context['user'] = ch.executeCommand(f'ViewProfile')
+        context['user'] = ch.executeCommand(f'view profile')
         context['cmds'] = cmds.getCmds(req.session['current_role'])
         return HttpResponse(template.render(context, req))
 

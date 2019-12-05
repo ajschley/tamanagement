@@ -49,6 +49,7 @@ class CommandWorker:
             'edit': {
                 'course': self.edit_course,
                 'user': self.edit_user,
+                'profile': self.edit_profile,
             },
             'list': {
                 'courses': self.list_courses,
@@ -180,9 +181,9 @@ class CommandWorker:
     def edit_profile(self, cmd: [str]):
         u = self.currentUser
         if u:
-            u.resume = cmd[1]
-            u.schedule = cmd[2]
-            u.preferences = cmd[3]
+            u.resume = cmd[0]
+            u.schedule = cmd[1]
+            u.preferences = cmd[2]
         u.save()
         return 'Profile updated'
 

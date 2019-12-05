@@ -52,7 +52,6 @@ class Lab(models.Model):
 
 
 class Course(models.Model):
-    isCourseFull = models.BooleanField(default=False)
     instructor = models.ForeignKey("User", null=True, blank=True, on_delete=models.SET_NULL)
     # Each course has a name
     name = models.CharField(max_length=20, default='CS000')
@@ -71,14 +70,6 @@ class Course(models.Model):
     # Return the course name
     def courseName(self):
         return self.name
-
-    def isFull(self):
-        return self.isCourseFull
-
-    # Set the course to be full or not
-    # b is a Boolean value
-    def setIsFull(self, b):
-        self.isCourseFull = b
 
     # Check if a course is online or not
     def isOnline(self):

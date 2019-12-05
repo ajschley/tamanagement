@@ -1,5 +1,6 @@
 from django.test import TestCase
 from .models import Course, User
+from .commands import *
 
 
 class CourseTestCase(TestCase):
@@ -90,24 +91,24 @@ class UserTestCase(TestCase):
     def test_user1(self):
         user11 = User()
         user11.userEmail = "hossain8@uwm.edu"
-        self.assertEqual(user11.getUsername(), "hossain8@uwm.edu")
-        self.assertNotEqual(user11.getUsername(), "pqr@uwm.edu")
+        self.assertEqual(user11.userEmail, "hossain8@uwm.edu")
+        self.assertNotEqual(user11.userEmail, "pqr@uwm.edu")
 
     def test_user2(self):
         user31 = User()
         user31.userEmail = None
-        self.assertRaises(Exception, user31.getUsername())
+        self.assertRaises(Exception, user31.userEmail)
         user31.userEmail = "hossain8"
-        self.assertEqual(user31.getUsername(), "hossain8@uwm.edu", 'Not valid username')
+        self.assertEqual(user31.userEmail, "hossain8@uwm.edu", 'Not valid username')
         user31.userEmail = 5
-        self.assertRaises(Exception, user31.getUsername())
+        self.assertRaises(Exception, user31.userEmail)
 
     def test_userType(self):
         user21 = User()
         user21.user_type = 'MA'
-        self.assertEqual(user21.USER_TYPES.__contains__(user21.userType()), False)
+        self.assertEqual(user21.USER_TYPES.__contains__(user21.userEmail), False)
         user21.user_type = ('TA', 'TA / Grader')
-        self.assertTrue(user21.USER_TYPES.__contains__(user21.userType()))
+        self.assertTrue(user21.USER_TYPES.__contains__(user21.userEmail))
 
     def test_userType2(self):
         user41 = User()
@@ -119,9 +120,9 @@ class UserTestCase(TestCase):
     def test_userType3(self):
         user51 = User()
         user51.user_type = None
-        self.assertRaises(Exception, user51.getUsername())
+        self.assertRaises(Exception, user51.getUsername)
         user51.user_type = 5
-        self.assertRaises(TypeError, user51.getUsername())
+        self.assertRaises(TypeError, user51.getUsername)
 
     def test_loggedIn(self):
         user31 = User()
@@ -151,6 +152,15 @@ class UserTestCase(TestCase):
         user51.userEmail = None
         self.assertRaises(user51.getUsername(), TypeError)
         self.assertFalse(user51.getUsername(), "error: enter a valid email")
+
+
+class assignTaTestCase(TestCase):
+    def assignTA(self):
+        testUser = User
+        testCourse = Course
+        worker = CommandWorker()
+        #worker.assign_ta(course=testCourse, user=testUser)
+
 
 
 class LoginTestCase(TestCase):

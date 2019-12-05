@@ -323,7 +323,7 @@ class ViewUser(View):
         eml = req.GET.get('email', '')
         c = User.objects.get(email=eml)
         ch = CommandWorker(req.session['current_user'])
-        context['user'] = ch.executeCommand(f'view user')
+        context['user'] = ch.executeCommand('view user {}'.format(c))
         context['cmds'] = cmds.getCmds(req.session['current_role'])
 
         return HttpResponse(template.render(context, req))

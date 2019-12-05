@@ -9,25 +9,29 @@ class LoginForm(forms.Form):
 
 class CreateCourseForm(forms.Form):
     name = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    section = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class': 'form-control'}))
+
+
+CHOICES = [
+        (1, 'TA'),
+        (2, 'Instructor'),
+        (3, 'Administrator'),
+    ]
 
 
 class CreateUserForm(forms.Form):
     email = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class': 'form-control'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    role = forms.CharField(widget=forms.Select(choices=CHOICES))
 
 
 class EditCourseForm(forms.Form):
     name = forms.CharField(required=True, max_length=50, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    section = forms.CharField(required=True, max_length=50, widget=forms.TextInput(attrs={'class': 'form-control'}))
     location = forms.CharField(required=True, max_length=50, widget=forms.TextInput(attrs={'class': 'form-control'}))
     startTime = forms.TimeField(required=True, widget=forms.TimeInput(format='%H:%M'))
     endTime = forms.TimeField(required=True, widget=forms.TimeInput(format='%H:%M'))
-    dates = forms.CharField(required=True, max_length=5, widget=forms.TextInput(attrs={'class': 'form-control'}))
-
-
-class EditProfileForm(forms.Form):
-    resume = forms.CharField(required=False, max_length=5000, widget=forms.Textarea(attrs={'class': 'form-control'}))
-    schedule = forms.CharField(required=False, max_length=5000, widget=forms.Textarea(attrs={'class': 'form-control'}))
-    preferences = forms.CharField(required=False, max_length=5000, widget=forms.Textarea(attrs={'class': 'form-control'}))
+    dates = forms.CharField(required=True, max_length=6, widget=forms.TextInput(attrs={'class': 'form-control'}))
 
 
 class EditUserForm(forms.Form):
@@ -38,11 +42,15 @@ class EditUserForm(forms.Form):
     address = forms.CharField(required=False, max_length=255, widget=forms.TextInput(attrs={'class': 'form-control'}))
     officeHours = forms.CharField(required=False, max_length=15, widget=forms.TextInput(attrs={'class': 'form-control'}))
     officeHoursDates = forms.CharField(required=False, max_length=6, widget=forms.TextInput(attrs={'class': 'form-control'}))
-    officeLocation = forms.CharField(required=False, max_length=255, widget=forms.TextInput(attrs={'class': 'form-control'}))
+
+
+class EditProfileForm(forms.Form):
+    resume = forms.CharField(required=False, max_length=5000, widget=forms.Textarea(attrs={'class': 'form-control'}))
+    schedule = forms.CharField(required=False, max_length=5000, widget=forms.Textarea(attrs={'class': 'form-control'}))
+    preferences = forms.CharField(required=False, max_length=5000, widget=forms.Textarea(attrs={'class': 'form-control'}))
 
 
 class AssignTaForm(forms.Form):
     tas = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple, queryset=User.objects.all())
-    courses = forms.ModelChoiceField(widget=forms.RadioSelect, queryset=Course.objects.all())
-
+    course = forms.ModelChoiceField(widget=forms.RadioSelect, queryset=Course.objects.all())
 

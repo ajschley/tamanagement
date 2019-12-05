@@ -3,10 +3,12 @@ import shlex
 
 
 class Commands:
-    def __init__(self):  # These are the main links for all the pages. These are on top of the pages
+    def __init__(self):
         self.cmdList = []
         self.addCmd(Role.Administrator, "Create Course", "/createCourse")
         self.addCmd(Role.Administrator, "Create User", "/createUser")
+        self.addCmd(Role.Administrator, "Assign TAs", "/assignTas")
+        self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "View Profile", "/viewProfile")
         self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "Edit Profile", "/editProfile")
         self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "List Courses", "/listCourses")
         self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "List Users", "/listUsers")
@@ -52,6 +54,10 @@ class CommandWorker:
                 'courses': self.list_courses,
                 'users': self.list_users,
             },
+            'view': {
+                'profile': self.view_profile,
+                'user': self.view_user,
+            },
             'login': self.login,
             'logout': self.logout,
             'assignTa' : self.assign_ta,
@@ -70,12 +76,12 @@ class CommandWorker:
     def create_course(self, cmd: [str]):
         if not self.currentUser or not self.currentUser.has_role(Role.Administrator):
             return 'Only an Administrator can create a course'
-        if len(cmd) != 1:
+        if len(cmd) != 2:
             return 'Invalid number of parameters'
-        c = Course.objects.filter(name=cmd[0])
+        c = Course.objects.filter(name=cmd[0], section=cmd[1])
         if c:
             return 'Course already exists'
-        c = Course(name=cmd[0])
+        c = Course(name=cmd[0], section=cmd[1])
         c.save()
         return 'Course added'
 
@@ -89,82 +95,61 @@ class CommandWorker:
 
     def list_users(self, cmd: [str]):
         if not self.currentUser:
-            return 'Only an Administrator or Instructor can list users'
+            return 'Only a current user can list users'
         if len(cmd) != 0:
             return 'Invalid number of parameters'
         users = User.objects.all()
         return users
 
+    def view_profile(self, cmd: [str]):
+        if not self.currentUser:
+            return 'Only a current user can view profile'
+        if len(cmd) != 0:
+            "Invalid number of parameters"
+        user = User.objects.get(email=self.currentUser.email)
+        return user
+
+    def view_user(self, cmd: [str]):
+        if not self.currentUser:
+            return 'Only a current user can view user'
+        if len(cmd) < 1:
+            "Invalid number of parameters"
+        user = User.objects.get(email=cmd[0])
+        return user
+
     def edit_course(self, cmd: [str]):
         if not self.currentUser or not self.currentUser.has_role(Role.Administrator):
             return 'Only an Administrator can edit a course'
-        if len(cmd) < 1 or len(cmd) > 5:
+        if len(cmd) < 1:
             return 'Invalid number of parameters'
         c = Course.objects.get(name=cmd[0])
-        valid_dates = {"M", "T", "W", "R", "F", "S"}
+        valid_dates = {"M", "T", "W", "R", "F", "S", "Online"}
         if c:
-            c.location = cmd[1]
-            c.startTime = cmd[2]
-            c.endTime = cmd[3]
+            c.section = cmd[1]
+            c.location = cmd[2]
+            c.startTime = cmd[3]
+            c.endTime = cmd[4]
             c.save()
-            for ch in cmd[4]:
+            for ch in cmd[5]:
                 if valid_dates.intersection(ch):
                     continue
                 else:
                     return 'Invalid date(s)'
-            c.dates = cmd[4]
+            c.dates = cmd[5]
         else:
             return 'Course does not yet exist'
         c.save()
         return 'Course updated'
 
-
-    def delete_course(self,cmd:[str]):
-        if not self.currentUser or not self.currentUser.has_role(Role.Administrator):
-            return 'Only an Administrator can edit a course'
-
-        c = Course.objects.get(course.name)
-        c.delete()
-        return 'Course Deleted'
-
-
-    def edit_profile(self, cmd: [str]):
-        u = self.currentUser
-        if u:
-            u.resume = cmd[1]
-            u.schedule = cmd[2]
-            u.preferences = cmd[3]
-        u.save()
-        return 'Profile updated'
-
-    def create_user(self, cmd: [str]):
-        if not self.currentUser or not self.currentUser.has_role(Role.Administrator):
-            return 'Only an Administrator can create a user'
-        if len(cmd) != 2:
-            return 'Invalid number of parameters'
-        u = User.objects.filter(email=cmd[0])
-        if u:
-            return 'User already exists'
-        u = User(email=cmd[0], password=cmd[1])
-        u.save()
-        return 'User added'
-
-    def assign_ta(self, cmd: [str]):
+    def assign_ta(self, course, tas):
         if not self.currentUser.has_role(Role.Administrator):
             return 'Only an Administrator can assign TAs'
-        if len(cmd) < 1:
-            return 'Invalid number of parameters'
 
-        tas = list()
-        course = Course.objects.get(name=cmd[0])
-        for i in cmd:
-            if i == course:
-                continue
-            tas.__add__(User.objects.get(email=cmd[i]))
-        course.graderTAs = tas
+        tas_list = list(tas)
+        for x in tas_list:
+            course.graderTAs.add(x)
 
-        return 'TAs assigned'
-
+        return course
 
     def edit_user(self, cmd: [str]):
         if not self.currentUser or not self.currentUser.has_role(Role.Administrator):
@@ -191,6 +176,27 @@ class CommandWorker:
             return 'User does not exist'
         u.save()
         return 'User updated'
+
+    def edit_profile(self, cmd: [str]):
+        u = self.currentUser
+        if u:
+            u.resume = cmd[1]
+            u.schedule = cmd[2]
+            u.preferences = cmd[3]
+        u.save()
+        return 'Profile updated'
+
+    def create_user(self, cmd: [str]):
+        if not self.currentUser or not self.currentUser.has_role(Role.Administrator):
+            return 'Only an Administrator can create a user'
+        if len(cmd) != 3:
+            return 'Invalid number of parameters'
+        u = User.objects.filter(email=cmd[0])
+        if u:
+            return 'User already exists'
+        u = User(email=cmd[0], password=cmd[1], role=cmd[2])
+        u.save()
+        return 'User added'
 
     def login(self, cmd: [str]):
         if len(cmd) != 2:

@@ -146,3 +146,9 @@ class LoginTestCase(TestCase):
         self.assertTrue(testUser.loggedIn)
         testUser.setLoginState(False)
         self.assertFalse(testUser.loggedIn)
+
+
+class EditCourseTestCase(TestCase):
+
+    def setUp(self):
+        User.objects

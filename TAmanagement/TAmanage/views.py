@@ -403,7 +403,7 @@ class AssignTa(View):
 
             context['course'] = course
             context['tas'] = tasEmailList
-
+            
 
         return HttpResponse(template.render(context, req))
 

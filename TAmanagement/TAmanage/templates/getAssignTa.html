@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
   <div class="form-panel">
-  <form method="post">
+  <form  id="form" method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <div id="sub">

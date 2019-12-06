@@ -26,7 +26,11 @@
                 <td>{{ course.startTime }}</td>
                 <td>{{ course.endTime }}</td>
                 <td>{{ course.dates }}</td>
-                <td> {{ course.graderTAs }} </td>
+                <td>
+                {% for u in course.tas %}
+                     {{ u }} 
+                {% endfor %}
+                </td>
                 {% if request.session.current_role == 3  %}
                     <td><a href='/editCourse?courseName={{ course.name }}&courseSection={{ course.section }}'>Edit</a></td>
                     <td><a href='/deleteCourse?courseName={{ course.name }}'>Delete</a></td>

@@ -165,7 +165,8 @@ class CommandWorker:
             u.phone = cmd[3]
             u.address = cmd[4]
             u.officeHours = cmd[5]
-            u.save()
+            u.officeHoursDates = cmd[6]
+            
             for ch in cmd[6]:
                 if valid_dates.intersection(ch):
                     continue

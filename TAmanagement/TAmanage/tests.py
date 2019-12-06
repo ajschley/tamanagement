@@ -274,6 +274,38 @@ class EditUserTestCase(TestCase):
         user.officeHoursDates = "Mars"
         self.assertEqual("Mars", user.officeHoursDates)
 
+    # Simon - more unit tests
+    def test_profile1(self):
+        user = User.objects.get(email="admin@example.com")
+        user.resume = "a"
+        self.assertEqual("a", user.resume)
+
+    def test_profile2(self):
+        user = User.objects.get(email="admin@example.com")
+        user.preferences = "a"
+        self.assertEqual("a", user.preferences)
+
+    def test_profile3(self):
+        user = User.objects.get(email="admin@example.com")
+        user.schedule = "a"
+        self.assertEqual("a", user.schedule)
+
+    def test_profile4(self):
+        user = User.objects.get(email="admin@example.com")
+        user.resume = "a"
+        self.assertNotEqual("b", user.resume)
+
+    def test_profile5(self):
+        user = User.objects.get(email="admin@example.com")
+        user.schedule = "a"
+        self.assertNotEqual("b", user.schedule)
+
+    def test_profile6(self):
+        user = User.objects.get(email="admin@example.com")
+        user.preferences = "a"
+        self.assertNotEqual("b", user.resume)
+
+
 
 class assignTaTestCase(TestCase):
     def setUp(self):

@@ -4,14 +4,15 @@
 
 
 <form id="form" class="assignTaForm" >
+    {% csrf_token %}
     <h3>Edited Course:</h3>
   <table>
     <tr>
-      <th>Course: </th> <td>{{ course.name }}</td>
+      <th>Course: </th> <th>{{ course.name }}</th>
     </tr>
       {% for e in tas %}
     <tr>
-      <th>TA: </th>
+      <td>TA</td>
       <td> {{ e }} </td>
     </tr>
    {% endfor %}

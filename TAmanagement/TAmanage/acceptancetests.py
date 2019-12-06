@@ -140,7 +140,7 @@ class CreateUserTest(TestCase):
         self.assertEqual(u.count(), 0)
 
     def test_create_a_user_3(self):
-        #u = User.objects.filter(email="user@uwm.edu")
+        # u = User.objects.filter(email="user@uwm.edu")
         msg = self.worker.executeCommand("create user")
         self.assertEqual(msg, "Invalid number of parameters")
 
@@ -207,7 +207,9 @@ class EditUserTest(TestCase):
 
     def setUp(self):
         self.worker = CommandWorker()
-        self.ta = User.objects.create(email='ta@test.com', firstName='Alec', lastName='Schley', phone='555-555-5555', address='roof', officeHours='2pm', officeHoursDates='MW', officeLocation='EMS', role=1)
+        self.ta = User.objects.create(email='ta@test.com', firstName='Alec', lastName='Schley', phone='555-555-5555',
+                                      address='roof', officeHours='2pm', officeHoursDates='MW', officeLocation='EMS',
+                                      role=1)
         self.prof = User.objects.create(email='prof@uwm.edu', role=2)
         self.admin = User.objects.create(email='admin@uwm.com', role=3)
         self.worker.currentUser = self.admin
@@ -242,3 +244,54 @@ class EditUserTest(TestCase):
         self.worker.currentUser = self.prof
         msg = self.worker.executeCommand("edit user ta@uwm.com Alec Schley 555-555-5555 roof 2pm M EMS")
         self.assertEqual("Only an Administrator can edit a user", msg)
+
+
+class ViewUserTest(TestCase):
+    def setUp(self):
+        self.worker = CommandWorker()
+        self.admin = User.objects.create(email="admin@uwm.edu", role=3)
+        self.ta = User.objects.create(email="ta@uwm.edu", role=1)
+        self.instructor = User.objects.create(email="intsructor@uwm.edu", role=2)
+        self.ta2 = User.objects.create(email='ta2@uwm.edu', role=1)
+
+    def test1_view_user(self):
+        user = User.objects.get(email="admin@uwm.edu")
+        self.worker.currentUser = user
+        msg = self.worker.executeCommand('view user someone')
+        self.assertFalse("user does not exist", msg)
+
+    def test2_view_user(self):
+        user = User.objects.get(email="ta@uwm.ed")
+        self.worker.currentUser = user
+        msg = self.worker.executeCommand('view user spider')
+        self.assertEqual('TA can not view other user profile', msg)
+
+    def test3_view_user(self):
+        user = User.objects.get(email="admin@uwm.edu")
+        self.worker.currentUser= user
+        msg = self.worker.executeCommand('view user ta2')
+        self.assertEqual('user profile displayed', msg)
+
+
+class ViewProfileTest(TestCase):
+    def setUp(self) -> None:
+        self.worker = CommandWorker()
+        User.objects.create(email='ta1@uwm.edu', role=1)
+        User.objects.create(email="admin@uwm.edu", role=3)
+        User.objects.create(email="instrc@uwm.edu", role=2)
+
+    def test1_view_profile(self):
+        userTA = User.objects.get(email="ta1@uwm.edu")
+        self.worker.currentUser = userTA
+        msg= self.worker.executeCommand("view self")
+        self.assertEqual("Invalid command", msg)
+
+    def test2_view_profile(self):
+        msg = self.worker.executeCommand("view profile")
+        self.assertEqual(msg, 'no current user')
+
+    def test3_view_profile(self):
+        userInstruc = User.objects.get(email="instrc@uwm.edu")
+        self.worker.currentUser = userInstruc
+        msg = self.worker.executeCommand("view profile")
+        self.assertEqual("profile displayed", msg)

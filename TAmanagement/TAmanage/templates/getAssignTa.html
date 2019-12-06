@@ -4,7 +4,7 @@
   <form  id="form">
   <form method="post">
     {% csrf_token %}
-    {{ form }}
+    {{ form.as_p }}
     <div id="sub">
       <button type="submit" class="button">Assign TAs</button>
     </div>

@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
   <div class="form-panel">
-  <form  id="form">
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
@@ -9,6 +8,5 @@
       <button type="submit" class="button">Assign TAs</button>
     </div>
   </form>
-</form>
 </div>
 {% endblock content %}

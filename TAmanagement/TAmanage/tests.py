@@ -1,5 +1,7 @@
 from django.test import TestCase
 from datetime import datetime
+
+from TAmanage.commands import CommandWorker
 from .models import Course, User
 
 
@@ -272,3 +274,65 @@ class EditUserTestCase(TestCase):
         user.officeHoursDates = "Mars"
         self.assertEqual("Mars", user.officeHoursDates)
 
+    # Simon - more unit tests
+    def test_profile1(self):
+        user = User.objects.get(email="admin@example.com")
+        user.resume = "a"
+        self.assertEqual("a", user.resume)
+
+    def test_profile2(self):
+        user = User.objects.get(email="admin@example.com")
+        user.preferences = "a"
+        self.assertEqual("a", user.preferences)
+
+    def test_profile3(self):
+        user = User.objects.get(email="admin@example.com")
+        user.schedule = "a"
+        self.assertEqual("a", user.schedule)
+
+    def test_profile4(self):
+        user = User.objects.get(email="admin@example.com")
+        user.resume = "a"
+        self.assertNotEqual("b", user.resume)
+
+    def test_profile5(self):
+        user = User.objects.get(email="admin@example.com")
+        user.schedule = "a"
+        self.assertNotEqual("b", user.schedule)
+
+    def test_profile6(self):
+        user = User.objects.get(email="admin@example.com")
+        user.preferences = "a"
+        self.assertNotEqual("b", user.resume)
+
+
+
+class assignTaTestCase(TestCase):
+    def setUp(self):
+        User.objects.create(email="admin@example.com", firstName='Bob', lastName='Bobble', phone='555-555-5555',
+                            address='Roof', officeHours="2pm-3pm", officeHoursDates='MW', officeLocation='Jupiter')
+        User.objects.create(email="instructor@example.com", firstName='Jim', lastName='Jimbles', phone='999-999-9999',
+                            address='Basement', officeHours="4pm-5pm", officeHoursDates='TR',
+                            officeLocation='Rain forest')
+        User.objects.create(email="ta@example.com", firstName='Marky', lastName='Mark', phone='000-000-0000',
+                            address='the void', officeHours="11am-12pm", officeHoursDates='F', officeLocation='Moon')
+
+
+
+
+    def testAssignTAPassing(self):
+        user = User.objects.get(email="admin@example.com")
+        worker = CommandWorker(currentUserEmail="admin@example.com")
+
+        ta = user.clean()
+        testCourse = Course
+        worker.assign_ta(course=testCourse, tas=ta)
+        self.assertEquals(user, Course.graderTAs.get(email="admin@example.com"))
+
+    def testAssignTaBadCurrentUser(self):
+        user = User.objects.get(email="admin@example.com")
+        worker = CommandWorker()
+        ta = user.clean()
+        testCourse = Course
+
+        worker.assign_ta(course=testCourse, tas=ta)

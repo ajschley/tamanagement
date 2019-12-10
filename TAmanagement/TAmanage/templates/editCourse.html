@@ -24,6 +24,7 @@
               <th>Start time </th>
               <th>End time </th>
               <th>Dates </th>
+              <th>Instructor/TA</th>
           </tr>
         {% for course in courses %}
             <tr>
@@ -34,6 +35,7 @@
                 <td>{{ course.startTime }}</td>
                 <td>{{ course.endTime }}</td>
                 <td>{{ course.dates }}</td>
+                <td> {{ course.graderTAs }} </td>
             </tr>
               
           {% endfor %}

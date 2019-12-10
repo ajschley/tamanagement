@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+{% if request.session.current_user %}
+
+
+<form id="form" class="assignTaForm" >
+    {% csrf_token %}
+    <h3>Edited Course:</h3>
+  <table>
+    <tr>
+      <th>Course: </th> <th>{{ course.name }}</th>
+    </tr>
+      {% for e in tas %}
+    <tr>
+      <td>TA</td>
+      <td> {{ e }} </td>
+    </tr>
+   {% endfor %}
+
+  </table>
+</form>
+
+{% endif %}
+{% endblock content %}

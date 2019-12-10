@@ -1,4 +1,5 @@
 from django import forms
+from .models import *
 
 
 class LoginForm(forms.Form):
@@ -41,11 +42,19 @@ class EditUserForm(forms.Form):
     address = forms.CharField(required=False, max_length=255, widget=forms.TextInput(attrs={'class': 'form-control'}))
     officeHours = forms.CharField(required=False, max_length=15, widget=forms.TextInput(attrs={'class': 'form-control'}))
     officeHoursDates = forms.CharField(required=False, max_length=6, widget=forms.TextInput(attrs={'class': 'form-control'}))
-    officeLocation = forms.CharField(required=False, max_length=255, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    officeLocation = forms.CharField(required=False, max_length=6, widget=forms.TextInput(attrs={'class': 'form-control'}))
+
 
 
 class EditProfileForm(forms.Form):
     resume = forms.CharField(required=False, max_length=5000, widget=forms.Textarea(attrs={'class': 'form-control'}))
     schedule = forms.CharField(required=False, max_length=5000, widget=forms.Textarea(attrs={'class': 'form-control'}))
     preferences = forms.CharField(required=False, max_length=5000, widget=forms.Textarea(attrs={'class': 'form-control'}))
+
+
+class AssignTaForm(forms.Form):
+    tas = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple, queryset=User.objects.all(), to_field_name="email")
+    course = forms.ModelChoiceField(widget=forms.RadioSelect, queryset=Course.objects.all(), to_field_name="name")
+
+
 

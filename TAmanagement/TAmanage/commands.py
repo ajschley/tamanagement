@@ -225,3 +225,13 @@ class CommandWorker:
             return 'No user is logged in'
         self.currentUser = None
         return 'Logged out'
+
+    def validate(self, cmd: [str]):
+        if len(cmd) != 1:
+            return 'Invalid number of parameters'
+        c = Course.objects.get(name=cmd[0])
+        courselist = Course.objects.all()
+        for i in courselist:
+            if i.getStartTime() <= c.getStartTime() <= i.getEndTime() or i.getStartTime() <= c.getEndTime() <= i.getEndTime():
+                return 'Courses overlap'
+        return 'Course is valid'

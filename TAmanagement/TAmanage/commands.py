@@ -227,11 +227,16 @@ class CommandWorker:
         return 'You Are Logged out'
 
     def validate(self, cmd: [str]):
-        if len(cmd) != 1:
+        if len(cmd) != 0:
             return 'Invalid number of parameters'
-        c = Course.objects.get(name=cmd[0])
         courselist = Course.objects.all()
         for i in courselist:
-            if i.getStartTime() <= c.getStartTime() <= i.getEndTime() or i.getStartTime() <= c.getEndTime() <= i.getEndTime():
-                return 'Courses overlap'
+            talist = i.graderTAs
+            for j in courselist:
+                # Check if there are any overlapping TAs for courses that occur over the same times.
+                if len(j.graderTAs.intersection(talist)) != 0 and i.name != j.name:
+                    if i.getStartTime() <= j.getStartTime() <= i.getEndTime() or i.getStartTime() <= j.getEndTime() <= i.getEndTime():
+                        return 'TA schedule conflict found'
+                    elif j.getStartTime() <= i.getStartTime() <= j.getEndTime() or j.getStartTime() <= i.getEndTime() <= j.getEndTime():
+                        return 'TA schedule conflict found'
         return 'Course is valid'

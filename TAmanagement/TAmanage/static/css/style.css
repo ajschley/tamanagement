@@ -1,12 +1,9 @@
 
-body{
-	background: linear-gradient(110deg,
-	rgb(253, 205, 59) 60%, rgb(0, 0, 0) 60%);
 
-}
 input{
     font-size: 20px;
     align-self: center;
+    font-family:monospace;
 }
 
 
@@ -49,7 +46,7 @@ table, th, td{
     text-align: center;
     font-style: italic;
     font-size: 20px;
-    font-family: serif;
+    font-family:monospace;
     font-weight: bold;
 }
 a:link, a:visited {
@@ -75,6 +72,7 @@ a:link, a:visited {
     padding: 5px;
     font-size: 20px;
     font-weight: bold;
+    font-family:monospace;
   }
 #form {
     max-width: fit-content;
@@ -87,7 +85,21 @@ a:link, a:visited {
     font-size: 20px;
     font-weight: bold;
     margin: 1px auto;
+    font-family:monospace;
 
+}
+
+#OutForm {
+
+    margin-left: auto;
+    margin-right: auto;
+    max-width: fit-content;
+    /*background-color: rgb(253, 205, 59);*/
+    background-color: rgb(205, 252, 130);
+    font-size: 25px;
+    font-weight: bold;
+    margin: 1px auto;
+    color:rgb(2, 2, 2)
 }
 
 #id_role{
@@ -98,14 +110,11 @@ a:link, a:visited {
 }
 
 
-  .out{
+  label1{
     color: black;
-    position: fixed;
-    bottom: 0;
-    width:100%;
-    text-align: left;
+    text-align: center;
     font-style: italic;
-    font-size: 30px;
+    font-size: 20px;
     font-family: serif;
   }
   h3{
@@ -138,6 +147,7 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
+
 }
 .input{
     background-color: rgb(253, 205, 59);
@@ -150,128 +160,66 @@ h1 {
   margin: 4px 2px;
   cursor: pointer;
     font-weight: bold;
+
 }
  .input:hover, .input:active {
     background-color: rgb(192, 138, 23);
   }
+  
+  
 
-
-/*body{*/
-/*	background: linear-gradient(110deg,*/
-/*	rgb(253, 205, 59) 60%, rgb(0, 0, 0) 60%);*/
-/*}*/
-/*input{*/
-/*    font-size: 20px;*/
-/*   */
-
-
-
-/*}*/
-
-
-/*table.classForm{*/
-/*    max-width: 1150px;*/
-/*    min-width: 50px;*/
-/*    margin: 1px auto;*/
-/*    table-layout: auto;*/
-/*}*/
-/*table.userForm{*/
-/*    max-width: 1150px;*/
-/*    min-width: 50px;*/
-/*    margin: 1px auto;*/
-/*    table-layout: auto;*/
-
-/*}*/
-/*table{*/
-/*    max-width:1150px;*/
-/*    min-width: 50px;*/
-/*    color: black;*/
-/*    font-size: 20px;*/
-/*    margin: 1px auto;*/
-/*    table-layout: auto;*/
-/*  */
-/*}*/
-/*table, th, td{*/
-/*    background-color: rgb(220, 236, 250);*/
-/*    border: 1px solid black ;*/
-/*    padding: 1px;*/
-/*    text-align: center;*/
-/*    margin: 1px auto;*/
-/*    table-layout: auto;*/
-/*}*/
-
-/*#DragonText{*/
-/*    color: red;*/
-/*    position: absolute;*/
-/*    vertical-align: super;*/
-/*    width:100%;*/
-/*    text-align: center;*/
-/*    font-style: italic;*/
-/*    font-size: 20px;*/
-/*    font-family: serif;*/
-/*    font-weight: bold;*/
-/*}*/
-/*a:link, a:visited {*/
-/*    background-color: rgb(88, 168, 197);*/
-/*    color: white;*/
-/*    padding: 14px 25px;*/
-/*    text-align: center;*/
-/*    text-decoration: none;*/
-/*    display: inline-block;*/
-/*    font-size: 20px;*/
-/*  }*/
-/*  a:hover, a:active {*/
-/*    background-color: red;*/
-/*  }*/
-
-/*#home{*/
-/*    max-width: 1170px ;*/
-/*    min-width: 50px;*/
-/*    width:100%;*/
-/*    margin: 1px auto;*/
-/*    border: 5px solid black;*/
-/*    background-color: aliceblue;*/
-/*    padding: 5px;*/
-/*    font-size: 20px;*/
-/*    font-weight: bold;*/
-/*  }*/
-/*#form {*/
-/*    max-width: 1170px;*/
-/*    min-width: 50px;*/
-/*    width: 100%;*/
-/*    border: 5px solid black;*/
-/*    background-color: aliceblue;*/
-/*    border-radius: 10px;*/
-/*    padding: 10px;*/
-/*    font-size: 20px;*/
-/*    font-weight: bold;*/
-/*    margin: 1px auto;*/
-
-/*}*/
-
-/*  .out{*/
-/*    color: red;*/
-/*    position: fixed;*/
-/*    bottom: 0;*/
-/*    width:100%;*/
-/*    text-align: left;*/
-/*    font-style: italic;*/
-/*    font-size: 20px;*/
-/*    font-family: serif;*/
-/*  }*/
-/*  h3{*/
-/*      margin: 1px auto;*/
-/*      text-align: center;*/
-/*      color: red;*/
-/*  }*/
-/*  textarea{*/
-/*      width:1000px;*/
-/*      height: 30px;*/
-/*  }*/
-
-/*h1 {*/
-/*    color: white;*/
-/*    font: bold 52px Helvetica, Arial, Sans-Serif;*/
-/*    text-shadow: 1px 1px darkgray, 2px 2px gray, 3px 3px black;*/
-/*    margin: 0 0 20px 0;*/
-/* }*/
+  
+    html {
+        height:100%;
+      }
+      
+      body {
+        margin:0;
+      }
+      
+      .bg {
+        animation:slide 3s ease-in-out infinite alternate;
+        background-image: linear-gradient(-60deg, rgb(252, 249, 72) 50%,  rgb(143, 141, 24) 50%);
+        bottom:0;
+        left:-50%;
+        opacity:.5;
+        position:fixed;
+        right:-50%;
+        top:0;
+        z-index:-1;
+      }
+      
+      .bg2 {
+        animation-direction:alternate-reverse;
+        animation-duration:4s;
+      }
+      
+      .bg3 {
+        animation-duration:5s;
+      }
+      
+      /*.content {
+        background-color:rgba(255,255,255,.8);
+        border-radius:.25em;
+        box-shadow:0 0 .25em rgba(0,0,0,.25);
+        box-sizing:border-box;
+        left:50%;
+        padding:10vmin;
+        position:fixed;
+        text-align:center;
+        top:50%;
+        transform:translate(-50%, -50%);
+      }*/
+      
+      h1 {
+        font-family:monospace;
+      }
+      
+      @keyframes slide {
+        0% {
+          transform:translateX(-25%);
+        }
+        100% {
+          transform:translateX(25%);
+        }
+      }

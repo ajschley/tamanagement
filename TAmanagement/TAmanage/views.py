@@ -200,6 +200,7 @@ class DeleteCourse(View):
         ch = CommandWorker(req.session['current_user'])
         context['cmds'] = cmds.getCmds(req.session['current_role'])
         context['courses'] = ch.executeCommand(f'list courses')
+        context['out'] = 'Course Deleted'
         return HttpResponse(template.render(context, req))
 
 
@@ -212,6 +213,7 @@ class DeleteUser(View):
         ch = CommandWorker(req.session['current_user'])
         context['cmds'] = cmds.getCmds(req.session['current_role'])
         context['users'] = ch.executeCommand(f'list users')
+        context['out'] = 'User Deleted'
         return HttpResponse(template.render(context, req))
 
 class ListUsers(View):

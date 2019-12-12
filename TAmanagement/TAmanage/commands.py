@@ -81,10 +81,10 @@ class CommandWorker:
             return 'Invalid number of parameters'
         c = Course.objects.filter(name=cmd[0], section=cmd[1])
         if c:
-            return 'Course already exists'
+            return 'Course Already Exists'
         c = Course(name=cmd[0], section=cmd[1])
         c.save()
-        return 'Course added'
+        return 'Course Added'
 
     def list_courses(self, cmd: [str]):
         if not self.currentUser:
@@ -140,7 +140,7 @@ class CommandWorker:
         else:
             return 'Course does not yet exist'
         c.save()
-        return 'Course updated'
+        return 'Course Updated'
 
     def assign_ta(self, course, tas):
         if not self.currentUser.has_role(Role.Administrator):
@@ -177,7 +177,7 @@ class CommandWorker:
         else:
             return 'User does not exist'
         u.save()
-        return 'User updated'
+        return 'User Updated'
 
     def edit_profile(self, cmd: [str]):
         u = self.currentUser
@@ -198,7 +198,7 @@ class CommandWorker:
             return 'User already exists'
         u = User(email=cmd[0], password=cmd[1], role=cmd[2])
         u.save()
-        return 'User added'
+        return 'User Added'
 
     def login(self, cmd: [str]):
         if len(cmd) != 2:
@@ -224,7 +224,7 @@ class CommandWorker:
         if not self.currentUser:
             return 'No user is logged in'
         self.currentUser = None
-        return 'Logged out'
+        return 'You Are Logged out'
 
     def validate(self, cmd: [str]):
         if len(cmd) != 1:

@@ -45,6 +45,7 @@ class CommandWorker:
             'create': {
                 'course': self.create_course,
                 'user': self.create_user,
+                'lab': self.create_lab,
             },
             'edit': {
                 'course': self.edit_course,
@@ -85,6 +86,10 @@ class CommandWorker:
         c = Course(name=cmd[0], section=cmd[1])
         c.save()
         return 'Course added'
+
+    def create_lab(self, cmd: [str]):
+        if not self.currentUser or not self.currentUser.has_role(Role.Administrator):
+            return 'Only an Administrator can create a lab'
 
     def list_courses(self, cmd: [str]):
         if not self.currentUser:

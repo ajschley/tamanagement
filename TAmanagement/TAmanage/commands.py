@@ -82,10 +82,10 @@ class CommandWorker:
             return 'Invalid number of parameters'
         c = Course.objects.filter(name=cmd[0], section=cmd[1])
         if c:
-            return 'Course already exists'
+            return 'Course Already Exists'
         c = Course(name=cmd[0], section=cmd[1])
         c.save()
-        return 'Course added'
+        return 'Course Added'
 
     def create_lab(self, cmd: [str]):
         if not self.currentUser or not self.currentUser.has_role(Role.Administrator):
@@ -145,7 +145,7 @@ class CommandWorker:
         else:
             return 'Course does not yet exist'
         c.save()
-        return 'Course updated'
+        return 'Course Updated'
 
     def assign_ta(self, course, tas):
         if not self.currentUser.has_role(Role.Administrator):
@@ -182,7 +182,7 @@ class CommandWorker:
         else:
             return 'User does not exist'
         u.save()
-        return 'User updated'
+        return 'User Updated'
 
     def edit_profile(self, cmd: [str]):
         u = self.currentUser
@@ -203,7 +203,7 @@ class CommandWorker:
             return 'User already exists'
         u = User(email=cmd[0], password=cmd[1], role=cmd[2])
         u.save()
-        return 'User added'
+        return 'User Added'
 
     def login(self, cmd: [str]):
         if len(cmd) != 2:
@@ -229,4 +229,19 @@ class CommandWorker:
         if not self.currentUser:
             return 'No user is logged in'
         self.currentUser = None
-        return 'Logged out'
+        return 'You Are Logged out'
+
+    def validate(self, cmd: [str]):
+        if len(cmd) != 0:
+            return 'Invalid number of parameters'
+        courselist = Course.objects.all()
+        for i in courselist:
+            talist = i.graderTAs
+            for j in courselist:
+                # Check if there are any overlapping TAs for courses that occur over the same times.
+                if len(j.graderTAs.intersection(talist)) != 0 and i.name != j.name:
+                    if i.getStartTime() <= j.getStartTime() <= i.getEndTime() or i.getStartTime() <= j.getEndTime() <= i.getEndTime():
+                        return 'TA schedule conflict found'
+                    elif j.getStartTime() <= i.getStartTime() <= j.getEndTime() or j.getStartTime() <= i.getEndTime() <= j.getEndTime():
+                        return 'TA schedule conflict found'
+        return 'Course is valid'

@@ -1,8 +1,9 @@
 from django.test import TestCase, Client
 from datetime import datetime
 
-from TAmanagement.TAmanage.commands import CommandWorker
-from TAmanagement.TAmanage.forms import AssignTaForm
+from TAmanage.commands import CommandWorker
+from TAmanage.forms import AssignTaForm
+from TAmanage.views import worker
 from .models import Course, User
 
 
@@ -13,7 +14,7 @@ class CourseTestCase(TestCase):
         Course.objects.create(name="CS361", section="001", dates="TR", startTime='11:00:00', endTime='11:55:00')
         Course.objects.create(name="CS395", section="001", dates="MW", startTime='1:00', endTime='2:00')
         Course.objects.create(name="CS361", isCourseFull=False, section="001", dates="TR", startTime='11:00:00', endTime='11:55:00')
-        Course.objects.create(name="CS395", isCourseFull=True, section="001", dates="MW", startTime='1:00', endTime=e'2:00')
+        Course.objects.create(name="CS395", isCourseFull=True, section="001", dates="MW", startTime='1:00', endTime='2:00')
         Course.objects.create(name="CS482", section="001", dates="Online")
 
     def test_course_1(self):
@@ -301,7 +302,7 @@ class EditUserTestCase(TestCase):
 class assignTaTestCase(TestCase):
     def setUp(self):
         client = Client()
-        client.post('/assignTas', {'form': AssignTaForm(), ''})
+    ###    client.post('/assignTas', {'form': AssignTaForm(), ''})
 
         User.objects.create(email="admin@example.com", firstName='Bob', lastName='Bobble', phone='555-555-5555',
                             address='Roof', officeHours="2pm-3pm", officeHoursDates='MW', officeLocation='Jupiter')

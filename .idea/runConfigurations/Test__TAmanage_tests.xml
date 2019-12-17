@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Test: TAmanage.unitTests" type="DjangoTestsConfigurationType">
+  <configuration default="false" name="Test: TAmanage.tests" type="DjangoTestsConfigurationType">
     <module name="TAwebDev" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />

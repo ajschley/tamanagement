@@ -27,13 +27,11 @@
                 <td>{{ course.endTime }}</td>
                 <td>{{ course.dates }}</td>
                 <td>
-                {% for u in course.tas %}
-                     {{ u }} 
-                {% endfor %}
+                    {{course.graderTAs }}
                 </td>
                 {% if request.session.current_role == 3  %}
                     <td><a href='/editCourse?courseName={{ course.name }}&courseSection={{ course.section }}'>Edit</a></td>
-                    <td><a href='/deleteCourse?courseName={{ course.name }}'onclick="return confirm('Do You Want to Delete the Course?')">Delete</a></td>
+                    <td><a href='/deleteCourse?courseName={{ course.name }}&courseSection={{ course.section }}'onclick="return confirm('Do You Want to Delete the Course?')">Delete</a></td>
                 {% endif %}
             </tr>
         {% endfor %}

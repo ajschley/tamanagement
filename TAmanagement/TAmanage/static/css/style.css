@@ -23,7 +23,16 @@ cursor: pointer;
 }
 
 
+table{
+  max-width:fit-content;
+  min-width: 50px;
+  color: black;
+  font-size: 15px;
+  margin: 1px auto;
+  table-layout: auto;
+ 
 
+}
 table.classForm{
     max-width: fit-content;
     min-width: 50px;
@@ -37,15 +46,6 @@ table.userForm{
     table-layout: auto;
 
 }
-table{
-    max-width:fit-content;
-    min-width: 50px;
-    color: black;
-    font-size: 20px;
-    margin: 1px auto;
-    table-layout: auto;
-
-}
 table, th, td{
     background-color: white;
     border: 1px solid black ;
@@ -53,6 +53,7 @@ table, th, td{
     text-align: center;
     margin: 1px auto;
     table-layout: auto;
+
 }
 
 #DragonText{
@@ -99,7 +100,6 @@ a:link, a:visited {
     background-color: aliceblue;
     border-radius: 5px;
     padding: 10px;
-    font-size: 20px;
     font-weight: bold;
     margin: 1px auto;
     font-family:monospace;
@@ -139,8 +139,8 @@ h3{
       color: black;
 }
 textarea{
-      width:1000px;
-      height: 30px;
+      width:230px;
+      height: 35px;
 }
 
 h1 {

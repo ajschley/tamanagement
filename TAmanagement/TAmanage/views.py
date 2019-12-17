@@ -150,7 +150,10 @@ class DeleteCourse(View):
     def get(self, req):
         template = loader.get_template('table.html')
         context = {}
-        cname = req.GET.get('courseName', '')
+
+        cname = req.GET.get('courseName','')
+        print(cname)
+   
         # this is alternative way to ask for validation
         '''if ctypes.windll.user32.MessageBoxW(0, "Do You Want to Delete the Course", "Course Deletion", 1) ==1:
             c = Course.objects.get(name=cname).delete()
@@ -248,7 +251,7 @@ class EditUser(View):
 
     def post(self, req):
         form = EditUserForm(req.POST)
-        template = loader.get_template('profile.html')
+        template = loader.get_template('userTable.html')
         context = {}
         if form.is_valid():
             ch = CommandWorker(req.session['current_user'])
@@ -269,9 +272,9 @@ class EditUser(View):
             context['form'] = form
         
         ch = CommandWorker(req.session['current_user'])
-        context['user'] = ch.executeCommand(f'view profile')
+       # context['user'] = ch.executeCommand(f'view profile')
         context['cmds'] = cmds.getCmds(req.session['current_role'])
-        #context['users'] = ch.executeCommand(f'list users')
+        context['users'] = ch.executeCommand(f'list users')
         return HttpResponse(template.render(context, req))
 
 

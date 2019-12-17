@@ -60,6 +60,7 @@ class CommandWorker:
                 'profile': self.view_profile,
                 'user': self.view_user,
             },
+            'delete user':self.delete_user,
             'login': self.login,
             'logout': self.logout,
             'assignTa' : self.assign_ta,
@@ -102,6 +103,15 @@ class CommandWorker:
             return 'Invalid number of parameters'
         users = User.objects.all()
         return users
+
+    def delete_user(self):
+        if not self.currentUser or not self.currentUser.has_role(Role.Administrator):
+            return "Only Admin can delete user"
+        
+        v=User.objects.get(self)
+        print(x)
+        v.delete()
+        return "User Deleted"
 
     def view_profile(self, cmd: [str]):
         if not self.currentUser:

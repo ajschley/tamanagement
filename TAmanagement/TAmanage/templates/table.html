@@ -33,7 +33,7 @@
                 </td>
                 {% if request.session.current_role == 3  %}
                     <td><a href='/editCourse?courseName={{ course.name }}&courseSection={{ course.section }}'>Edit</a></td>
-                    <td><a href='/deleteCourse?courseName={{ course.name }}'>Delete</a></td>
+                    <td><a href='/deleteCourse?courseName={{ course.name }}'onclick="return confirm('Do You Want to Delete the Course?')">Delete</a></td>
                 {% endif %}
             </tr>
         {% endfor %}

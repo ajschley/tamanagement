@@ -2,14 +2,15 @@ from .models import *
 import shlex
 
 
+
 class Commands:
     def __init__(self):
         self.cmdList = []
         self.addCmd(Role.Administrator, "Create Course", "/createCourse")
         self.addCmd(Role.Administrator, "Create User", "/createUser")
         self.addCmd(Role.Administrator, "Assign TAs", "/assignTas")
-        self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "View Profile", "/viewProfile")
-        self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "Edit Profile", "/editProfile")
+        self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "View/Edit Profile", "/viewProfile")
+        #self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "Edit Profile", "/editProfile")
         self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "List Courses", "/listCourses")
         self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "List Users", "/listUsers")
 
@@ -111,7 +112,7 @@ class CommandWorker:
         return user
 
     def view_user(self, cmd: [str]):
-        if not self.currentUser:
+        if not self.currentUser.has_role(Role.Administrator):
             return 'Only a current user can view user'
         if len(cmd) < 1:
             "Invalid number of parameters"
@@ -174,6 +175,9 @@ class CommandWorker:
                     return 'Invalid date(s)'
             u.officeHoursDates = cmd[6]
             u.officeLocation = cmd[7]
+            u.resume=cmd[8]
+            u.schedule=cmd[9]
+            u.preferences=cmd[10]
         else:
             return 'User does not exist'
         u.save()

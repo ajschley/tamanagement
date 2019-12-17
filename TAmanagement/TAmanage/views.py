@@ -4,6 +4,7 @@ from django.views import View
 from django.template import loader
 from .commands import *
 from .forms import *
+import ctypes  # An included library with Python install.
 
 # Create your views here.
 
@@ -106,53 +107,7 @@ class EditCourse(View):
         return HttpResponse(template.render(context, req))
 
 
-class EditUser(View):
-
-    def get(self, req):
-        template = loader.get_template('editUser.html')
-        context = {}
-        eml = req.GET.get('email', '')
-        u = User.objects.get(email=eml)
-        form = EditUserForm()
-        form.initial['email'] = u.email
-        form.initial['firstName'] = u.firstName
-        form.initial['lastName'] = u.lastName
-        form.initial['phone'] = u.phone
-        form.initial['address'] = u.address
-        form.initial['officeLocation'] = u.officeLocation
-        form.initial['officeHours'] = u.officeHours
-        form.initial['officeHoursDates'] = u.officeHoursDates
-        context['form'] = form
-        context['cmds'] = cmds.getCmds(req.session['current_role'])
-        ch = CommandWorker(req.session['current_user'])
-        context['users'] = ch.executeCommand(f'list users')
-        return HttpResponse(template.render(context, req))
-
-    def post(self, req):
-        form = EditUserForm(req.POST)
-        template = loader.get_template('editUser.html')
-        context = {}
-        if form.is_valid():
-            ch = CommandWorker(req.session['current_user'])
-            context['out'] = ch.executeCommand(f'edit user "{form.cleaned_data["email"]}" '
-                                               f'"{form.cleaned_data["firstName"]}" '
-                                               f'"{form.cleaned_data["lastName"]}" '
-                                               f'"{form.cleaned_data["phone"]}" '
-                                               f'"{form.cleaned_data["address"]}" '
-                                               f'"{form.cleaned_data["officeLocation"]}" '
-                                               f'"{form.cleaned_data["officeHours"]}" '
-                                               f'"{form.cleaned_data["officeHoursDates"]}" '
-                                               )
-            context['form'] = EditUserForm()
-        else:
-            context['form'] = form
-        context['cmds'] = cmds.getCmds(req.session['current_role'])
-        ch = CommandWorker(req.session['current_user'])
-        context['users'] = ch.executeCommand(f'list users')
-        return HttpResponse(template.render(context, req))
-
-
-class EditProfile(View):
+'''class EditProfile(View):
 
     def get(self, req):
         template = loader.get_template('form.html')
@@ -178,7 +133,7 @@ class EditProfile(View):
             context['form'] = form
         context['cmds'] = cmds.getCmds(req.session['current_role'])
         context['user'] = ch.executeCommand(f'view profile')
-        return HttpResponse(template.render(context, req))
+        return HttpResponse(template.render(context, req))'''
 
 class ListCourses(View):
 
@@ -196,11 +151,17 @@ class DeleteCourse(View):
         template = loader.get_template('table.html')
         context = {}
         cname = req.GET.get('courseName', '')
+        # this is alternative way to ask for validation
+        '''if ctypes.windll.user32.MessageBoxW(0, "Do You Want to Delete the Course", "Course Deletion", 1) ==1:
+            c = Course.objects.get(name=cname).delete()
+            context['out'] = 'Course Deleted'
+        else: 
+            context['out'] = 'Course was not Deleted'''
         c = Course.objects.get(name=cname).delete()
+        context['out'] = 'Course Deleted'
         ch = CommandWorker(req.session['current_user'])
         context['cmds'] = cmds.getCmds(req.session['current_role'])
         context['courses'] = ch.executeCommand(f'list courses')
-        context['out'] = 'Course Deleted'
         return HttpResponse(template.render(context, req))
 
 
@@ -209,11 +170,17 @@ class DeleteUser(View):
         template = loader.get_template('userTable.html')
         context = {}
         cname = req.GET.get('email', '')
+        # this is alternative way to ask for validation
+        '''if ctypes.windll.user32.MessageBoxW(0, "Do You Want to Delete the User", "User Deletion", 1) ==1:
+            c = User.objects.get(email=cname).delete()
+            context['out'] = 'User Deleted'
+        else: 
+            context['out'] = 'User was not Deleted'''
         c = User.objects.get(email=cname).delete()
+        context['out'] = 'User Deleted'
         ch = CommandWorker(req.session['current_user'])
         context['cmds'] = cmds.getCmds(req.session['current_role'])
         context['users'] = ch.executeCommand(f'list users')
-        context['out'] = 'User Deleted'
         return HttpResponse(template.render(context, req))
 
 class ListUsers(View):
@@ -270,6 +237,9 @@ class EditUser(View):
         form.initial['officeLocation'] = u.officeLocation
         form.initial['officeHours'] = u.officeHours
         form.initial['officeHoursDates'] = u.officeHoursDates
+        form.initial['resume'] = u.resume
+        form.initial['schedule'] = u.schedule
+        form.initial['Preferences'] = u.preferences
         context['form'] = form
         context['cmds'] = cmds.getCmds(req.session['current_role'])
         ch = CommandWorker(req.session['current_user'])
@@ -278,7 +248,7 @@ class EditUser(View):
 
     def post(self, req):
         form = EditUserForm(req.POST)
-        template = loader.get_template('userTable.html')
+        template = loader.get_template('profile.html')
         context = {}
         if form.is_valid():
             ch = CommandWorker(req.session['current_user'])
@@ -290,13 +260,18 @@ class EditUser(View):
                                                f'"{form.cleaned_data["officeHours"]}" '
                                                f'"{form.cleaned_data["officeHoursDates"]}" '
                                                f'"{form.cleaned_data["officeLocation"]}" '
+                                               f'"{form.cleaned_data["resume"]}" '
+                                               f'"{form.cleaned_data["schedule"]}" '
+                                               f'"{form.cleaned_data["preferences"]}" '
                                                )
             context['form'] = EditUserForm()
         else:
             context['form'] = form
-        context['cmds'] = cmds.getCmds(req.session['current_role'])
+        
         ch = CommandWorker(req.session['current_user'])
-        context['users'] = ch.executeCommand(f'list users')
+        context['user'] = ch.executeCommand(f'view profile')
+        context['cmds'] = cmds.getCmds(req.session['current_role'])
+        #context['users'] = ch.executeCommand(f'list users')
         return HttpResponse(template.render(context, req))
 
 
@@ -313,7 +288,7 @@ class ViewProfile(View):
 class ViewUser(View):
 
     def get(self, req):
-        template = loader.get_template('Profile.html')
+        template = loader.get_template('profile.html')
         context = {}
         eml = req.GET.get('email', '')
         c = User.objects.get(email=eml)

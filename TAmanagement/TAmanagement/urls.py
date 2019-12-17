@@ -28,7 +28,7 @@ urlpatterns = [
     path('editCourse', views.EditCourse.as_view()),
     path('listCourses', views.ListCourses.as_view()),
     path('listUsers', views.ListUsers.as_view()),
-    path('editProfile', views.EditProfile.as_view()),
+    #path('editProfile', views.EditProfile.as_view()),
     path('editUser', views.EditUser.as_view()),
     path('viewProfile', views.ViewProfile.as_view()),
     path('viewUser', views.ViewUser.as_view()),

@@ -21,14 +21,9 @@
             
             
             {% if request.session.current_role == 3  %}
-                <th>Edit </th>
+            <th colspan="3">Modify</th>
             {% endif %}
-            {% if request.session.current_role == 2 or request.session.current_role == 3 %}
-                <th>Profile </th>
-            {% endif %}
-            {% if request.session.current_role == 3  %}
-            <th>Delete</th>
-        {% endif %}
+
         </tr>
         {% for user in users %}
             <tr>

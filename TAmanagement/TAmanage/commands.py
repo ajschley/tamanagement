@@ -51,7 +51,7 @@ class CommandWorker:
                 'course': self.edit_course,
                 'user': self.edit_user,
                 'profile': self.edit_profile,
-                # 'lab': self.edit_lab,
+                'lab': self.edit_lab,
             },
             'list': {
                 'courses': self.list_courses,
@@ -111,6 +111,33 @@ class CommandWorker:
         c = Lab(course=cs, section=section)
         c.save()
         return "Lab Added"
+
+    def edit_lab(self, cmd: [str]):
+        if not self.currentUser or not self.currentUser.has_role(Role.Administrator):
+            return 'Only an Administrator can edit a lab'
+        # if len(cmd) < 1:
+        #     return 'Invalid number of parameters'
+        # if len(cmd) > 6:
+        #     return 'Invalid number of parameters'
+        c = Course.objects.get(name=cmd[0])
+        l = Lab.objects.get(course=c, section=cmd[1])
+        valid_dates = {"M", "T", "W", "R", "F", "S", "Online"}
+        if l:
+            l.section = cmd[1]
+            l.location = cmd[2]
+            l.startTime = cmd[3]
+            l.endTime = cmd[4]
+            l.save()
+            for ch in cmd[5]:
+                if valid_dates.intersection(ch):
+                    continue
+                else:
+                    return 'Invalid date(s)'
+            l.dates = cmd[5]
+        else:
+            return 'Lab does not yet exist'
+        l.save()
+        return 'Lab Updated'
 
     def list_courses(self, cmd: [str]):
         if not self.currentUser:

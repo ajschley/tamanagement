@@ -97,6 +97,7 @@ class CreateLab(View):
         context['labCourse'] = lcourse
         return HttpResponse(template.render(context, req))
 
+
 class EditLab(View):
 
     def get(self, req):
@@ -104,37 +105,39 @@ class EditLab(View):
         context = {}
         lcourse = req.GET.get('labCourse', '')
         lsec = req.GET.get('labSection', '')
-        l = Lab.objects.get(course=lcourse, section=lsec)
+        c = Course.objects.get(name=lcourse)
+        l = Lab.objects.get(course=c, section=lsec)
         form = EditLabForm()
-        form.initial['course'] = l.course
         form.initial['section'] = l.section
+        form.initial['location'] = l.location
         form.initial['startTime'] = l.startTime
         form.initial['endTime'] = l.endTime
         form.initial['dates'] = l.dates
         context['form'] = form
         context['cmds'] = cmds.getCmds(req.session['current_role'])
         ch = CommandWorker(req.session['current_user'])
-        context['courses'] = ch.executeCommand(f'list courses')
+        context['labs'] = ch.executeCommand(f'view labs ' + lcourse)
         return HttpResponse(template.render(context, req))
-        # context['form'] = form
-        # context['cmds'] = cmds.getCmds(req.session['current_role'])
-        # return HttpResponse(template.render(context, req))
 
     def post(self, req):
         form = EditLabForm(req.POST)
-        template = loader.get_template('table.html')
+        template = loader.get_template('labTable.html')
         context = {}
+        lcourse = req.GET.get('labCourse', '')
         if form.is_valid():
             ch = CommandWorker(req.session['current_user'])
-            context['out'] = ch.executeCommand(f'create lab "{form.cleaned_data["name"]}" '
-                                               f'"{form.cleaned_data["section"]}" ')
-            context['form'] = CreateLabForm()
+            context['out'] = ch.executeCommand(f'edit lab ' + lcourse + " " +
+                                               f'"{form.cleaned_data["section"]}" '
+                                               f'"{form.cleaned_data["location"]}" '
+                                               f'"{form.cleaned_data["startTime"]}" '
+                                               f'"{form.cleaned_data["endTime"]}" '
+                                               f'"{form.cleaned_data["dates"]}" ')
+            context['form'] = EditLabForm()
         else:
             context['form'] = form
         context['cmds'] = cmds.getCmds(req.session['current_role'])
-
-        context['courses'] = ch.executeCommand(f'list courses')
-
+        ch = CommandWorker(req.session['current_user'])
+        context['labs'] = ch.executeCommand(f'view labs ' + lcourse)
         return HttpResponse(template.render(context, req))
 
 
@@ -158,7 +161,7 @@ class EditCourse(View):
         context['form'] = form
         context['cmds'] = cmds.getCmds(req.session['current_role'])
         ch = CommandWorker(req.session['current_user'])
-        context['labs'] = ch.executeCommand(f'view labs')
+        context['courses'] = ch.executeCommand(f'list courses')
         return HttpResponse(template.render(context, req))
 
     def post(self, req):

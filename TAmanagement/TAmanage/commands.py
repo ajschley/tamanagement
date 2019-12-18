@@ -134,6 +134,8 @@ class CommandWorker:
             return 'Only an Administrator can edit a course'
         if len(cmd) < 1:
             return 'Invalid number of parameters'
+        if len(cmd) > 6:
+            return 'Invalid number of parameters'
         c = Course.objects.get(name=cmd[0])
         valid_dates = {"M", "T", "W", "R", "F", "S", "Online"}
         if c:
@@ -238,7 +240,7 @@ class CommandWorker:
         if not self.currentUser:
             return 'No user is logged in'
         self.currentUser = None
-        return 'You Are Logged out'
+        return 'You Are Logged Out'
 
     def validate(self, cmd: [str]):
         if len(cmd) != 0:

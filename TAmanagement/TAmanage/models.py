@@ -36,7 +36,7 @@ class User(models.Model):
 
 
 class Lab(models.Model):
-    location = models.CharField(max_length=255, null=True, blank=True)
+    location = models.CharField(max_length=255, null=True, blank=True, default="Online")
     section = models.CharField(max_length=20, default='000')
 
     # Start and End Times for Each Lab

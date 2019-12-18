@@ -43,20 +43,30 @@ class EditUserForm(forms.Form):
     officeHours = forms.CharField(required=False, max_length=15, widget=forms.TextInput(attrs={'class': 'form-control'}))
     officeHoursDates = forms.CharField(required=False, max_length=6, widget=forms.TextInput(attrs={'class': 'form-control'}))
     officeLocation = forms.CharField(required=False, max_length=6, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    role = forms.CharField(widget=forms.Select(choices=CHOICES))
+
+
+class CreateLabForm(forms.Form):
+    section = forms.CharField(required=True, max_length=50, widget=forms.TextInput(attrs={'class': 'form-control'}))
+
+
+class EditLabForm(forms.Form):
+    section = forms.CharField(required=True, max_length=50, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    location = forms.CharField(required=True, max_length=50, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    startTime = forms.TimeField(required=True, widget=forms.TimeInput(format='%H:%M'))
+    endTime = forms.TimeField(required=True, widget=forms.TimeInput(format='%H:%M'))
+    dates = forms.CharField(required=True, max_length=6, widget=forms.TextInput(attrs={'class': 'form-control'}))
+
+
+class EditProfileForm(forms.Form):
     resume = forms.CharField(required=False, max_length=5000, widget=forms.Textarea(attrs={'class': 'form-control'}))
     schedule = forms.CharField(required=False, max_length=5000, widget=forms.Textarea(attrs={'class': 'form-control'}))
     preferences = forms.CharField(required=False, max_length=5000, widget=forms.Textarea(attrs={'class': 'form-control'}))
 
 
-'''class EditProfileForm(forms.Form):
-    resume = forms.CharField(required=False, max_length=5000, widget=forms.Textarea(attrs={'class': 'form-control'}))
-    schedule = forms.CharField(required=False, max_length=5000, widget=forms.Textarea(attrs={'class': 'form-control'}))
-    preferences = forms.CharField(required=False, max_length=5000, widget=forms.Textarea(attrs={'class': 'form-control'}))'''
-
-
 class AssignTaForm(forms.Form):
+    course = forms.ModelChoiceField(widget=forms.Select, queryset=Course.objects.all(), to_field_name="name")
     tas = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple, queryset=User.objects.all(), to_field_name="email")
-    course = forms.ModelChoiceField(widget=forms.RadioSelect, queryset=Course.objects.all(), to_field_name="name")
 
 
 

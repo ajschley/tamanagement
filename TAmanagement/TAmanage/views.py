@@ -316,12 +316,18 @@ class Login(View):
         return HttpResponse(template.render(context, req))
 
     def post(self, req):
+        context = {}
         form = LoginForm(req.POST)
         if form.is_valid():
-            out = worker.executeCommand(f'login {form.cleaned_data["email"]} "{form.cleaned_data["password"]}"')
+            while True:
+                out = worker.executeCommand(f'login {form.cleaned_data["email"]} "{form.cleaned_data["password"]}"')
+                if out.startswith('Logged in as'):
+                    break
+                else:
+                    out = 'Email and/or password is wrong. Try again'
+
             if out.startswith('Logged in as'):
                 template = loader.get_template('index.html')
-                context = {}
                 context['out'] = out
                 req.session['current_user'] = form.cleaned_data['email']
                 u = User.objects.filter(email=form.cleaned_data['email']).first()

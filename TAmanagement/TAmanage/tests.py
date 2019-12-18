@@ -711,3 +711,33 @@ class EpicTests(TestCase):
         self.user1 = User.objects.create(email="test@gmail.com")
         msg = self.worker.executeCommand("delete user test@gmail.com")
         self.assertEqual("Only Admin Can Delete User", msg)
+
+
+class ValidateTests(TestCase):
+
+    def setUp(self):
+        self.worker = CommandWorker()
+        User.objects.create(email="john@test.com", firstName='John', lastName='Henry')
+        User.objects.create(email="jane@test.com", firstName='Jane', lastName='Doe')
+        cs250 = Course.objects.create(name="CS250", section="001", dates="TR", startTime='11:00:00', endTime='11:55:00')
+        cs251 = Course.objects.create(name="CS251", section="001", dates="MW", startTime='13:00:00', endTime='14:00:00')
+        cs482 = Course.objects.create(name="CS482", section="001", dates="Online")
+        cs250.graderTAs.add(User.objects.get(email="john@test.com"))
+        cs251.graderTAs.add(User.objects.get(email="jane@test.com"))
+        cs482.graderTAs.add(User.objects.get(email="john@test.com"))
+
+    def test_valid(self):
+        ret = self.worker.executeCommand("validate")
+        self.assertEqual("TA assignments are valid", ret)
+
+    def test_invalid_1(self):
+        ph120 = Course.objects.create(name="PH120", section="001", dates="TR", startTime='10:00:00', endTime='11:15:00')
+        ph120.graderTAs.add(User.objects.get(email="john@test.com"))
+        ret = self.worker.executeCommand("validate")
+        self.assertEqual("Error: Overlapping TAs found in conflicting courses CS250 and PH120.", ret)
+
+    def test_invalid_2(self):
+        ph122 = Course.objects.create(name="PH122", section="001", dates="MW", startTime='13:45:00', endTime='14:30:00')
+        ph122.graderTAs.add(User.objects.get(email="jane@test.com"))
+        ret = self.worker.executeCommand("validate")
+        self.assertEqual("Error: Overlapping TAs found in conflicting courses CS251 and PH122.", ret)

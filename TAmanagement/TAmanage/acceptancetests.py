@@ -1,6 +1,7 @@
 from django.test import TestCase
 from .models import Course
 from .models import User
+from .models import Lab
 from .commands import CommandWorker
 
 
@@ -106,6 +107,33 @@ class LoginTest(TestCase):
         msg = self.worker.executeCommand("login ta@uwm.com password")
         self.assertEqual("Logged in as ta@uwm.com", msg)
 
+class CreateLabTest(TestCase):
+    def setUp(self):
+        self.worker = CommandWorker()
+        self.admin = User.objects.create(email='admin@test.com', role=3)
+        self.worker.currentUser = self.admin
+        self.course1 = Course.objects.create(name='CS351', section="001")
+        self.lab1 = Lab.objects.create(course=self.course1, section="801")
+
+
+    def test_create_lab_1(self):
+        msg = self.worker.executeCommand("create lab " + self.course1.name + " 802")
+        self.assertEqual("Lab Added", msg)
+
+
+class ViewLabTest(TestCase):
+
+    def setUp(self):
+        self.worker = CommandWorker()
+        self.admin = User.objects.create(email='admin@test.com', role=3)
+        self.worker.currentUser = self.admin
+        self.course1 = Course.objects.create(name='CS351', section="001")
+        self.lab1 = Lab.objects.create(course=self.course1, section="801")
+
+    def test_view_lab_1(self):
+        l = Lab.objects.filter(course=self.course1)
+        msg = self.worker.executeCommand("view labs " + self.course1.name)
+        self.assertEqual(str(l.get(0)), str(msg.get(0)))
 
 class CreateUserTest(TestCase):
 

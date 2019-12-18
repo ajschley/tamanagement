@@ -2,7 +2,7 @@ from django.test import TestCase
 from datetime import datetime
 
 from TAmanage.commands import CommandWorker
-from .models import Course, User
+from .models import Course, User, Lab
 
 
 class CourseTestCase(TestCase):
@@ -336,3 +336,12 @@ class assignTaTestCase(TestCase):
         testCourse = Course
 
         worker.assign_ta(course=testCourse, tas=ta)
+
+class CreateLabTestCase(TestCase):
+    def setUp(self):
+        Course.objects.create(name="CS351", section="001")
+        Course.objects.create(name="CS999", section="001")
+        Lab.objects.create(course="CS351", section="801")
+        Lab.objects.create(course="CS999", section="001")
+
+

@@ -15,7 +15,7 @@
             <th>Dates </th>
             <th>Instructor/TA</th>
             {% if request.session.current_role == 3  %}
-            <th colspan="2">Modify</th>
+            <th colspan="3">Modify</th>
             {% endif %}
         </tr>
         {% for course in courses %}
@@ -28,13 +28,13 @@
                 <td>{{ course.dates }}</td>
                 <td>
                 {% for u in course.tas %}
-                     {{ u }} 
+                     {{ u }}
                 {% endfor %}
                 </td>
                 {% if request.session.current_role == 3  %}
                     <td><a href='/editCourse?courseName={{ course.name }}&courseSection={{ course.section }}'>Edit</a></td>
                     <td><a href='/deleteCourse?courseName={{ course.name }}'>Delete</a></td>
-                    <td><a href='/createLab?labCourse={{ lab.course }}&labSection={{ lab.section }}'>Create Lab</a></td>
+                    <td><a href='/viewLabs?labCourse={{ course.name }}'>View Labs</a></td>
                 {% endif %}
             </tr>
         {% endfor %}

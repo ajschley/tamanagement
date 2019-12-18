@@ -51,6 +51,7 @@ class CommandWorker:
                 'course': self.edit_course,
                 'user': self.edit_user,
                 'profile': self.edit_profile,
+                # 'lab': self.edit_lab,
             },
             'list': {
                 'courses': self.list_courses,
@@ -59,10 +60,11 @@ class CommandWorker:
             'view': {
                 'profile': self.view_profile,
                 'user': self.view_user,
+                'labs': self.view_labs,
             },
             'login': self.login,
             'logout': self.logout,
-            'assignTa' : self.assign_ta,
+            'assignTa': self.assign_ta,
         }
         while type(worker) is dict:
             try:
@@ -87,9 +89,24 @@ class CommandWorker:
         c.save()
         return 'Course Added'
 
+    def view_labs(self, cmd: [str]):
+        if not self.currentUser:
+            return 'Need to be logged in to list courses'
+        cs = Course.objects.get(name=cmd[0])
+        labs = Lab.objects.filter(course=cs)
+        return labs
+
     def create_lab(self, cmd: [str]):
         if not self.currentUser or not self.currentUser.has_role(Role.Administrator):
             return 'Only an Administrator can create a lab'
+        cs = Course.objects.get(name=cmd[0])
+        c = Lab.objects.filter(course=cs, section=cmd[1])
+        if c:
+            return 'Lab Already Exists'
+        section = cmd[1]
+        c = Lab(course=cs, section=section)
+        c.save()
+        return "Lab Added"
 
     def list_courses(self, cmd: [str]):
         if not self.currentUser:

@@ -7,7 +7,6 @@ from TAmanage.views import worker
 from .models import Course, User
 
 
-
 class CourseTestCase(TestCase):
     # Simon: Course Test Cases
     def setUp(self):
@@ -137,22 +136,22 @@ class UserTestCase(TestCase):
         self.assertTrue(user21.role, 1)
         self.assertNotEqual(3, user21.role)
 
-#    def test_loggedIn(self):
-#        user31 = User()
-#        self.assertFalse(user31.loggedIn)
-#        user31.loggedIn = True
-#        self.assertTrue(user31.loggedIn)
+    #    def test_loggedIn(self):
+    #        user31 = User()
+    #        self.assertFalse(user31.loggedIn)
+    #        user31.loggedIn = True
+    #        self.assertTrue(user31.loggedIn)
 
     # Saad: more user Unit test
 
     # test for setting a password for a new user
-#    def test_reset_password(self):
-#        user41 = User()
-#        user41.password = "Stc123"
-#        self.assertEqual("Stc123", user41.resetPassword())
-#        self.assertNotEqual("Stc124", user41.resetPassword())
-#        user41.userPassword = None
-#        self.assertFalse(user41.resetPassword(), "error: enter a password")
+    #    def test_reset_password(self):
+    #        user41 = User()
+    #        user41.password = "Stc123"
+    #        self.assertEqual("Stc123", user41.resetPassword())
+    #        self.assertNotEqual("Stc124", user41.resetPassword())
+    #        user41.userPassword = None
+    #        self.assertFalse(user41.resetPassword(), "error: enter a password")
 
     # test user email only valid uwm email
 
@@ -183,8 +182,10 @@ class UserTestCase(TestCase):
 class EditCourseTestCase(TestCase):
 
     def setUp(self):
-        Course.objects.create(name="CS361", section="001", location="Roof", dates="TR", startTime='11:00:00', endTime='11:55:00')
-        Course.objects.create(name="CS361", section="002", location="Basement", dates="MW", startTime='1:00:00', endTime='2:00:00')
+        Course.objects.create(name="CS361", section="001", location="Roof", dates="TR", startTime='11:00:00',
+                              endTime='11:55:00')
+        Course.objects.create(name="CS361", section="002", location="Basement", dates="MW", startTime='1:00:00',
+                              endTime='2:00:00')
         Course.objects.create(name="CS482", section="001", dates="Online")
 
     def test_edit_course_section(self):
@@ -192,10 +193,10 @@ class EditCourseTestCase(TestCase):
         course.section = "002"
         self.assertEqual("002", course.section)
 
-#    def test_edit_course_section_already_exists(self):
-#        course = Course.objects.get(name="CS361", section='002')
-#        course.section = "001"
-#        self.assertEqual("Course section already exists", course.section)
+    #    def test_edit_course_section_already_exists(self):
+    #        course = Course.objects.get(name="CS361", section='002')
+    #        course.section = "001"
+    #        self.assertEqual("Course section already exists", course.section)
 
     def test_edit_course_location(self):
         course = Course.objects.get(name="CS361", section='001')
@@ -216,6 +217,7 @@ class EditCourseTestCase(TestCase):
         course = Course.objects.get(name="CS361", section='001')
         course.endTime = "12:00:00"
         self.assertEqual("12:00:00", course.endTime)
+
 
 # Alec - Edit User tests
 class EditUserTestCase(TestCase):
@@ -296,11 +298,10 @@ class EditUserTestCase(TestCase):
         self.assertNotEqual("b", user.resume)
 
 
-
 class assignTaTestCase(TestCase):
     def setUp(self):
         client = Client()
-    ###    client.post('/assignTas', {'form': AssignTaForm(), ''})
+        ###    client.post('/assignTas', {'form': AssignTaForm(), ''})
 
         User.objects.create(email="admin@example.com", firstName='Bob', lastName='Bobble', phone='555-555-5555',
                             address='Roof', officeHours="2pm-3pm", officeHoursDates='MW', officeLocation='Jupiter')
@@ -309,9 +310,6 @@ class assignTaTestCase(TestCase):
                             officeLocation='Rain forest')
         User.objects.create(email="ta@example.com", firstName='Marky', lastName='Mark', phone='000-000-0000',
                             address='the void', officeHours="11am-12pm", officeHoursDates='F', officeLocation='Moon')
-
-
-
 
     def testAssignTAPassing(self):
         user = User.objects.get(email="admin@example.com")
@@ -331,7 +329,8 @@ class assignTaTestCase(TestCase):
     # Simon - Unit Tests (12/17/2019)
 
 
-    # Acceptance Tests
+# Acceptance Tests
+
 class WorkerTest(TestCase):
 
     def setUp(self):
@@ -468,7 +467,7 @@ class CreateUserTest(TestCase):
         self.assertEqual(u.count(), 0)
 
     def test_create_a_user_3(self):
-        #u = User.objects.filter(email="user@uwm.edu")
+        # u = User.objects.filter(email="user@uwm.edu")
         msg = self.worker.executeCommand("create user")
         self.assertEqual("Invalid number of parameters", msg)
 
@@ -535,31 +534,33 @@ class EditUserTest(TestCase):
 
     def setUp(self):
         self.worker = CommandWorker()
-        self.ta = User.objects.create(email='ta@test.com', firstName='Alec', lastName='Schley', phone='555-555-5555', address='roof', officeHours='2pm', officeHoursDates='MW', officeLocation='EMS', role=1)
+        self.ta = User.objects.create(email='ta@test.com', firstName='Alec', lastName='Schley', phone='555-555-5555',
+                                      address='roof', officeHours='2pm', officeHoursDates='MW', officeLocation='EMS',
+                                      role=1)
         self.prof = User.objects.create(email='prof@uwm.edu', role=2)
         self.admin = User.objects.create(email='admin@uwm.com', role=3)
         self.worker.currentUser = self.admin
         self.course1 = Course.objects.create(name="CS999")
 
-#    def test_edit_user_1(self):
-#        msg = self.worker.executeCommand("edit user ta@test.com Alec Schley 555-555-5555 roof 2pm MW EMS")
-#        self.assertEqual("User updated", msg)
-#
+    #    def test_edit_user_1(self):
+    #        msg = self.worker.executeCommand("edit user ta@test.com Alec Schley 555-555-5555 roof 2pm MW EMS")
+    #        self.assertEqual("User updated", msg)
+    #
     def test_edit_user_2(self):
         msg = self.worker.executeCommand("edit user ta@uwm.com Alec Schley 555-555-5555 roof 2pm MW EMS")
         self.assertEqual("error - User matching query does not exist.", msg)
 
-#    def test_edit_user_3(self):
-#        msg = self.worker.executeCommand("edit user ta@uwm.com Alec Schley 555-555-5555 roof 2pm MW")
-#        self.assertEqual("Invalid number of parameters", msg)
-#
-#    def test_edit_user_4(self):
-#        msg = self.worker.executeCommand("edit user ta@uwm.com Alec Schley 555-555-5555 roof 2pm MW EMS EMS")
-#        self.assertEqual("Invalid number of parameters", msg)
-#
-#    def test_edit_user_5(self):
-#        msg = self.worker.executeCommand("edit user ta@uwm.com Alec Schley 555-555-5555 roof 2pm X EMS")
-#        self.assertEqual("Invalid date(s)", msg)
+    #    def test_edit_user_3(self):
+    #        msg = self.worker.executeCommand("edit user ta@uwm.com Alec Schley 555-555-5555 roof 2pm MW")
+    #        self.assertEqual("Invalid number of parameters", msg)
+    #
+    #    def test_edit_user_4(self):
+    #        msg = self.worker.executeCommand("edit user ta@uwm.com Alec Schley 555-555-5555 roof 2pm MW EMS EMS")
+    #        self.assertEqual("Invalid number of parameters", msg)
+    #
+    #    def test_edit_user_5(self):
+    #        msg = self.worker.executeCommand("edit user ta@uwm.com Alec Schley 555-555-5555 roof 2pm X EMS")
+    #        self.assertEqual("Invalid date(s)", msg)
 
     def test_edit_user_6(self):
         self.worker.currentUser = self.ta
@@ -571,3 +572,15 @@ class EditUserTest(TestCase):
         msg = self.worker.executeCommand("edit user ta@uwm.com Alec Schley 555-555-5555 roof 2pm M EMS")
         self.assertEqual("Only an Administrator can edit a user", msg)
 
+
+# Simon - more tests
+
+class EpicTests(TestCase):
+
+    def setUp(self):
+        self.worker = CommandWorker()
+
+    def test_delete_user_not_admin(self):
+        self.user1 = User.objects.create(email="test@gmail.com")
+        msg = self.worker.executeCommand("delete user test@gmail.com")
+        self.assertEqual("Only Admin Can Delete User", msg)

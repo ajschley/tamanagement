@@ -2,7 +2,6 @@ from .models import *
 import shlex
 
 
-
 class Commands:
     def __init__(self):
         self.cmdList = []
@@ -10,7 +9,7 @@ class Commands:
         self.addCmd(Role.Administrator, "Create User", "/createUser")
         self.addCmd(Role.Administrator, "Assign TAs", "/assignTas")
         self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "View/Edit Profile", "/viewProfile")
-        #self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "Edit Profile", "/editProfile")
+        # self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "Edit Profile", "/editProfile")
         self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "List Courses", "/listCourses")
         self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "List Users", "/listUsers")
 
@@ -60,10 +59,13 @@ class CommandWorker:
                 'profile': self.view_profile,
                 'user': self.view_user,
             },
-            'delete user':self.delete_user,
+            'delete': {
+                'user': self.delete_user,
+                'course': self.delete_course,
+            },
             'login': self.login,
             'logout': self.logout,
-            'assignTa' : self.assign_ta,
+            'assignTa': self.assign_ta,
         }
         while type(worker) is dict:
             try:
@@ -104,14 +106,21 @@ class CommandWorker:
         users = User.objects.all()
         return users
 
-    def delete_user(self):
+    def delete_user(self, cmd: [str]):
         if not self.currentUser or not self.currentUser.has_role(Role.Administrator):
-            return "Only Admin can delete user"
-        
-        v=User.objects.get(self)
-        print(x)
+            return "Only Admin Can Delete User"
+        v = User.objects.get(self)
+        if v == self.currentUser:
+            return "Cannot Delete Yourself"
         v.delete()
         return "User Deleted"
+
+    def delete_course(self, cmd: [str]):
+        if not self.currentUser or not self.currentUser.has_role(Role.Administrator):
+            return "Only Admin Can Delete Course"
+        v = Course.objects.get(self)
+        v.delete()
+        return "Course Deleted"
 
     def view_profile(self, cmd: [str]):
         if not self.currentUser:
@@ -179,7 +188,7 @@ class CommandWorker:
             u.address = cmd[4]
             u.officeHours = cmd[5]
             u.officeHoursDates = cmd[6]
-            
+
             for ch in cmd[6]:
                 if valid_dates.intersection(ch):
                     continue
@@ -187,9 +196,9 @@ class CommandWorker:
                     return 'Invalid date(s)'
             u.officeHoursDates = cmd[6]
             u.officeLocation = cmd[7]
-            u.resume=cmd[8]
-            u.schedule=cmd[9]
-            u.preferences=cmd[10]
+            u.resume = cmd[8]
+            u.schedule = cmd[9]
+            u.preferences = cmd[10]
         else:
             return 'User does not exist'
         u.save()

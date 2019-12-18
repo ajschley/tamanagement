@@ -8,8 +8,8 @@ class Commands:
         self.addCmd(Role.Administrator, "Create Course", "/createCourse")
         self.addCmd(Role.Administrator, "Create User", "/createUser")
         self.addCmd(Role.Administrator, "Assign TAs", "/assignTas")
-        self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "View Profile", "/viewProfile")
-        self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "Edit Profile", "/editProfile")
+        self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "View/Edit Profile", "/viewProfile")
+        # self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "Edit Profile", "/editProfile")
         self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "List Courses", "/listCourses")
         self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "List Users", "/listUsers")
 
@@ -61,6 +61,10 @@ class CommandWorker:
                 'profile': self.view_profile,
                 'user': self.view_user,
                 'labs': self.view_labs,
+            },
+            'delete': {
+                'user': self.delete_user,
+                'course': self.delete_course,
             },
             'login': self.login,
             'logout': self.logout,
@@ -124,6 +128,22 @@ class CommandWorker:
         users = User.objects.all()
         return users
 
+    def delete_user(self, cmd: [str]):
+        if not self.currentUser or not self.currentUser.has_role(Role.Administrator):
+            return "Only Admin Can Delete User"
+        v = User.objects.get(self)
+        if v == self.currentUser:
+            return "Cannot Delete Yourself"
+        v.delete()
+        return "User Deleted"
+
+    def delete_course(self, cmd: [str]):
+        if not self.currentUser or not self.currentUser.has_role(Role.Administrator):
+            return "Only Admin Can Delete Course"
+        v = Course.objects.get(self)
+        v.delete()
+        return "Course Deleted"
+
     def view_profile(self, cmd: [str]):
         if not self.currentUser:
             return 'Only a current user can view profile'
@@ -133,7 +153,7 @@ class CommandWorker:
         return user
 
     def view_user(self, cmd: [str]):
-        if not self.currentUser:
+        if not self.currentUser.has_role(Role.Administrator):
             return 'Only a current user can view user'
         if len(cmd) < 1:
             "Invalid number of parameters"
@@ -144,6 +164,8 @@ class CommandWorker:
         if not self.currentUser or not self.currentUser.has_role(Role.Administrator):
             return 'Only an Administrator can edit a course'
         if len(cmd) < 1:
+            return 'Invalid number of parameters'
+        if len(cmd) > 6:
             return 'Invalid number of parameters'
         c = Course.objects.get(name=cmd[0])
         valid_dates = {"M", "T", "W", "R", "F", "S", "Online"}
@@ -188,7 +210,7 @@ class CommandWorker:
             u.address = cmd[4]
             u.officeHours = cmd[5]
             u.officeHoursDates = cmd[6]
-            
+
             for ch in cmd[6]:
                 if valid_dates.intersection(ch):
                     continue
@@ -196,6 +218,9 @@ class CommandWorker:
                     return 'Invalid date(s)'
             u.officeHoursDates = cmd[6]
             u.officeLocation = cmd[7]
+            u.resume = cmd[8]
+            u.schedule = cmd[9]
+            u.preferences = cmd[10]
         else:
             return 'User does not exist'
         u.save()
@@ -246,7 +271,7 @@ class CommandWorker:
         if not self.currentUser:
             return 'No user is logged in'
         self.currentUser = None
-        return 'You Are Logged out'
+        return 'You Are Logged Out'
 
     def validate(self, cmd: [str]):
         if len(cmd) != 0:

@@ -5,8 +5,34 @@ input{
     align-self: center;
     font-family:monospace;
 }
+.input{
+  background-color: rgb(253, 205, 59);
+border: none;
+color: black;
+padding: 15px 32px;
+text-align: center;
+text-decoration: none;
+font-size: 20px;
+margin: 4px 2px;
+cursor: pointer;
+  font-weight: bold;
+
+}
+.input:hover, .input:active {
+  background-color: rgb(192, 138, 23);
+}
 
 
+table{
+  max-width:fit-content;
+  min-width: 50px;
+  color: black;
+  font-size: 15px;
+  margin: 1px auto;
+  table-layout: auto;
+ 
+
+}
 table.classForm{
     max-width: fit-content;
     min-width: 50px;
@@ -20,15 +46,6 @@ table.userForm{
     table-layout: auto;
 
 }
-table{
-    max-width:fit-content;
-    min-width: 50px;
-    color: black;
-    font-size: 20px;
-    margin: 1px auto;
-    table-layout: auto;
-
-}
 table, th, td{
     background-color: white;
     border: 1px solid black ;
@@ -36,6 +53,7 @@ table, th, td{
     text-align: center;
     margin: 1px auto;
     table-layout: auto;
+
 }
 
 #DragonText{
@@ -57,6 +75,7 @@ a:link, a:visited {
     text-decoration: none;
     display: inline-block;
     font-size: 15px;
+ 
   }
   a:hover, a:active {
     background-color: rgb(192, 138, 23);
@@ -76,15 +95,15 @@ a:link, a:visited {
 #form {
     max-width: fit-content;
     min-width: 50px;
-
+    align-self: center;
     border: 5px solid black;
     background-color: aliceblue;
     border-radius: 5px;
     padding: 10px;
-    font-size: 20px;
     font-weight: bold;
     margin: 1px auto;
     font-family:monospace;
+
 
 }
 
@@ -92,7 +111,7 @@ a:link, a:visited {
 
     max-width: fit-content;
     /*background-color: rgb(253, 205, 59);*/
-    background-color: rgb(205, 252, 130);
+    background-color: white;
     font-size: 25px;
     font-weight: bold;
     margin: 1px auto;
@@ -107,27 +126,27 @@ a:link, a:visited {
 }
 
 
-  label1{
+label1{
     color: black;
     text-align: center;
     font-style: italic;
     font-size: 20px;
     font-family: serif;
-  }
-  h3{
+}
+h3{
       margin: 1px auto;
       text-align: center;
       color: black;
-  }
-  textarea{
-      width:1000px;
-      height: 30px;
-  }
+}
+textarea{
+      width:230px;
+      height: 35px;
+}
 
 h1 {
     color: white;
     font: bold 52px Helvetica, Arial, Sans-Serif;
-    text-shadow: 1px 1px #e5e5e5, 2px 2px #6a6a6a, 3px 3px black;
+    text-shadow: 1px 1px #e5e5e5, 2px 2px #6a6a6a, 3px 3px black, 4px 4px black;
     text-align: center;
  }
 
@@ -147,37 +166,21 @@ h1 {
     justify-content: center;
 
 }
-.input{
-    background-color: rgb(253, 205, 59);
-  border: none;
-  color: black;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  font-size: 20px;
-  margin: 4px 2px;
-  cursor: pointer;
-    font-weight: bold;
 
-}
- .input:hover, .input:active {
-    background-color: rgb(192, 138, 23);
-  }
-  
   
 
   
-    html {
+html {
         height:100%;
-      }
+}
       
-      body {
+body {
         margin:0;
-      }
+}
       
-      .bg, .image {
+.bg, .image {
         animation:slide 3s ease-in-out infinite alternate;
-        background-image: linear-gradient(-60deg, rgb(252, 249, 72) 50%,  rgb(143, 141, 24) 50%);
+        background-image: linear-gradient(-60deg, rgb(252, 249, 72) 50%,  rgb(192, 138, 23) 50%);
         bottom:0;
         left:-50%;
         opacity:.5;
@@ -185,16 +188,16 @@ h1 {
         right:-50%;
         top:0;
         z-index:-1;
-      }
+}
       
-      .bg2, .image {
+.bg2, .image {
         animation-direction:alternate-reverse;
         animation-duration:4s;
-      }
+}
       
-      .bg3, .image {
+.bg3, .image {
         animation-duration:5s;
-      }
+}
       
       /*.content {
         background-color:rgba(255,255,255,.8);
@@ -209,15 +212,15 @@ h1 {
         transform:translate(-50%, -50%);
       }*/
       
-      h1 {
+h1 {
         font-family:monospace;
-      }
+}
       
-      @keyframes slide {
+@keyframes slide {
         0% {
           transform:translateX(-25%);
         }
         100% {
           transform:translateX(25%);
         }
-      }
+}

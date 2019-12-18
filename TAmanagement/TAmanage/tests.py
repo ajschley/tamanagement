@@ -298,37 +298,39 @@ class EditUserTestCase(TestCase):
         self.assertNotEqual("b", user.resume)
 
 
-
 class assignTaTestCase(TestCase):
+
     def setUp(self):
-        client = Client()
-    ###    client.post('/assignTas', {'form': AssignTaForm(), ''})
-
-        User.objects.create(email="admin@example.com", firstName='Bob', lastName='Bobble', phone='555-555-5555',
-                            address='Roof', officeHours="2pm-3pm", officeHoursDates='MW', officeLocation='Jupiter')
-        User.objects.create(email="instructor@example.com", firstName='Jim', lastName='Jimbles', phone='999-999-9999',
-                            address='Basement', officeHours="4pm-5pm", officeHoursDates='TR',
-                            officeLocation='Rain forest')
-        User.objects.create(email="ta@example.com", firstName='Marky', lastName='Mark', phone='000-000-0000',
-                            address='the void', officeHours="11am-12pm", officeHoursDates='F', officeLocation='Moon')
-
-
-
+        self.worker = CommandWorker()
+        self.ta = User.objects.create(email='ta@test.com', firstName='Alec', lastName='Schley', phone='555-555-5555',
+                                      address='roof', officeHours='2pm', officeHoursDates='MW', officeLocation='EMS',
+                                      role=1)
+        self.ta2 = User.objects.create(email='ta2@test.com', firstName='Alec', lastName='Schley', phone='555-555-5555',
+                                      address='roof', officeHours='2pm', officeHoursDates='MW', officeLocation='EMS',
+                                      role=1)
+        self.admin = User.objects.create(email='admin@uwm.com', role=3)
+        self.worker.currentUser = self.admin
+        self.course1 = Course.objects.create(name="CS999")
 
     def testAssignTAPassing(self):
-        user = User.objects.get(email="admin@example.com")
+        testCourse = self.course1
+        ta = [self.ta]
+        result = self.worker.assign_ta(course=testCourse, tas=ta)
+        self.assertEquals(testCourse, result)
 
-        ta = user.clean()
-        testCourse = Course
-        worker.assign_ta(course=testCourse, tas=ta)
-        self.assertEquals(user, Course.graderTAs.get(email="admin@example.com"))
+    def testAssignTAMultipleTAs(self):
+        testCourse = self.course1
+        tas = [self.ta, self.ta2]
+        result = self.worker.assign_ta(course=testCourse, tas=tas)
+        self.assertEquals(testCourse, result)
 
     def testAssignTaBadCurrentUser(self):
-        user = User.objects.get(email="admin@example.com")
-        ta = user.clean()
-        testCourse = Course
+        self.worker.currentUser = self.ta
+        testCourse = self.course1
+        ta = [self.ta]
+        result = self.worker.assign_ta(course=testCourse, tas=ta)
+        self.assertEquals('Only an Administrator can assign TAs', result)
 
-        worker.assign_ta(course=testCourse, tas=ta)
 
     # Simon - Unit Tests (12/17/2019)
 

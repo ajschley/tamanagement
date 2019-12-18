@@ -66,6 +66,7 @@ class CommandWorker:
             'login': self.login,
             'logout': self.logout,
             'assignTa': self.assign_ta,
+            'validate': self.validate,
         }
         while type(worker) is dict:
             try:
@@ -256,12 +257,12 @@ class CommandWorker:
             return 'Invalid number of parameters'
         courselist = Course.objects.all()
         for i in courselist:
-            talist = i.graderTAs
             for j in courselist:
                 # Check if there are any overlapping TAs for courses that occur over the same times.
-                if len(j.graderTAs.intersection(talist)) != 0 and i.name != j.name:
+                intersection = set(i.graderTAs.all()).intersection(set(j.graderTAs.all()))
+                if len(intersection) != 0 and i.name != j.name and not i.isOnline() and not j.isOnline():
                     if i.getStartTime() <= j.getStartTime() <= i.getEndTime() or i.getStartTime() <= j.getEndTime() <= i.getEndTime():
-                        return 'TA schedule conflict found'
+                        return 'Error: Overlapping TAs found in conflicting courses ' + i.name + ' and ' + j.name + '.'
                     elif j.getStartTime() <= i.getStartTime() <= j.getEndTime() or j.getStartTime() <= i.getEndTime() <= j.getEndTime():
-                        return 'TA schedule conflict found'
-        return 'Course is valid'
+                        return 'Error: Overlapping TAs found in conflicting courses ' + i.name + ' and ' + j.name + '.'
+        return 'TA assignments are valid'

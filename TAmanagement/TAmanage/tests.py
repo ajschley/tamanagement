@@ -439,6 +439,8 @@ class CreateLabTest(TestCase):
         self.worker = CommandWorker()
         self.admin = User.objects.create(email='admin@test.com', role=3)
         self.worker.currentUser = self.admin
+        self.prof = User.objects.create(email='prof@uwm.edu', role=2)
+        self.ta = User.objects.create(email='ta@uwm.com', role=1)
         self.course1 = Course.objects.create(name='CS351', section="001")
         self.lab1 = Lab.objects.create(course=self.course1, section="801")
 
@@ -447,12 +449,50 @@ class CreateLabTest(TestCase):
         msg = self.worker.executeCommand("create lab " + self.course1.name + " 802")
         self.assertEqual("Lab Added", msg)
 
+    def test_create_lab_2(self):
+        msg = self.worker.executeCommand("create lab " + self.course1.name + " 801")
+        self.assertEqual("Lab Already Exists", msg)
+
+    def test_create_lab_3(self):
+        msg = self.worker.executeCommand("create lab " + self.course1.name + " 801 asdfasdf")
+        self.assertEqual("Invalid number of parameters", msg)
+
+    def test_create_lab_4(self):
+        msg = self.worker.executeCommand("create lab " + self.course1.name + " 801 asdfasdf asdfasdf")
+        self.assertEqual("Invalid number of parameters", msg)
+
+    def test_create_lab_5(self):
+        msg = self.worker.executeCommand("create lab " + self.course1.name)
+        self.assertEqual("Invalid number of parameters", msg)
+
+    def test_create_lab_6(self):
+        self.worker.currentUser = self.prof
+        msg = self.worker.executeCommand("create lab " + self.course1.name + " 802")
+        self.assertEqual("Only an Administrator can create a lab", msg)
+
+    def test_create_lab_7(self):
+        self.worker.currentUser = self.ta
+        msg = self.worker.executeCommand("create lab " + self.course1.name + " 802")
+        self.assertEqual("Only an Administrator can create a lab", msg)
+
+    def test_create_lab_8(self):
+        self.worker.currentUser = self.prof
+        msg = self.worker.executeCommand("create lab " + self.course1.name)
+        self.assertEqual("Only an Administrator can create a lab", msg)
+
+    def test_create_lab_9(self):
+        self.worker.currentUser = self.ta
+        msg = self.worker.executeCommand("create lab " + self.course1.name)
+        self.assertEqual("Only an Administrator can create a lab", msg)
+
 
 class EditLabTest(TestCase):
     def setUp(self):
         self.worker = CommandWorker()
         self.admin = User.objects.create(email='admin@test.com', role=3)
         self.worker.currentUser = self.admin
+        self.prof = User.objects.create(email='prof@uwm.edu', role=2)
+        self.ta = User.objects.create(email='ta@uwm.com', role=1)
         self.course1 = Course.objects.create(name='CS351', section="001")
         self.lab1 = Lab.objects.create(course=self.course1, section="801")
 
@@ -460,6 +500,51 @@ class EditLabTest(TestCase):
     def test_edit_lab_1(self):
         msg = self.worker.executeCommand("edit lab " + self.course1.name + " 801 hell 11:00 11:50 M")
         self.assertEqual("Lab Updated", msg)
+
+    def test_edit_lab_2(self):
+        msg = self.worker.executeCommand("edit lab " + self.course1.name + " 801 hell 11:00 11:50")
+        self.assertEqual("Invalid number of parameters", msg)
+
+    def test_edit_lab_3(self):
+        msg = self.worker.executeCommand("edit lab " + self.course1.name + " 801 hell 11:00 11:50 M M")
+        self.assertEqual("Invalid number of parameters", msg)
+
+    def test_edit_lab_4(self):
+        msg = self.worker.executeCommand("edit lab " + self.course1.name + " 801 hell 11:00 11:50 MX")
+        self.assertEqual("Invalid date(s)", msg)
+
+    def test_edit_lab_5(self):
+        msg = self.worker.executeCommand("edit lab " + self.course1.name + " 801 hell 11:00 11:50 Online")
+        self.assertEqual("Lab Updated", msg)
+
+    def test_edit_lab_6(self):
+        self.worker.currentUser = self.prof
+        msg = self.worker.executeCommand("edit lab " + self.course1.name + " 801 hell 11:00 11:50 M")
+        self.assertEqual("Only an Administrator can edit a lab", msg)
+
+    def test_edit_lab_7(self):
+        self.worker.currentUser = self.ta
+        msg = self.worker.executeCommand("edit lab " + self.course1.name + " 801 hell 11:00 11:50 M")
+        self.assertEqual("Only an Administrator can edit a lab", msg)
+
+    def test_edit_lab_8(self):
+        self.worker.currentUser = self.ta
+        msg = self.worker.executeCommand("edit lab " + self.course1.name + " 801 hell 11:00 11:50")
+        self.assertEqual("Only an Administrator can edit a lab", msg)
+
+    def test_edit_lab_9(self):
+        self.worker.currentUser = self.ta
+        msg = self.worker.executeCommand("edit lab " + self.course1.name + " 801 hell 11:00 11:50")
+        self.assertEqual("Only an Administrator can edit a lab", msg)
+
+    def test_edit_lab_10(self):
+        msg = self.worker.executeCommand("edit lab " + self.course1.name + " 802 hell 11:00 11:50 M")
+        self.assertEqual("error - Lab matching query does not exist.", msg)
+
+    def test_edit_lab_11(self):
+        msg = self.worker.executeCommand("edit lab " + self.course1.name + " 803 hell 11:00 11:50 M")
+        self.assertEqual("error - Lab matching query does not exist.", msg)
+
 
 class ViewLabTest(TestCase):
 

@@ -103,6 +103,10 @@ class CommandWorker:
     def create_lab(self, cmd: [str]):
         if not self.currentUser or not self.currentUser.has_role(Role.Administrator):
             return 'Only an Administrator can create a lab'
+        if len(cmd) < 2:
+            return 'Invalid number of parameters'
+        if len(cmd) > 2:
+            return 'Invalid number of parameters'
         cs = Course.objects.get(name=cmd[0])
         c = Lab.objects.filter(course=cs, section=cmd[1])
         if c:
@@ -115,10 +119,10 @@ class CommandWorker:
     def edit_lab(self, cmd: [str]):
         if not self.currentUser or not self.currentUser.has_role(Role.Administrator):
             return 'Only an Administrator can edit a lab'
-        # if len(cmd) < 1:
-        #     return 'Invalid number of parameters'
-        # if len(cmd) > 6:
-        #     return 'Invalid number of parameters'
+        if len(cmd) < 6:
+            return 'Invalid number of parameters'
+        if len(cmd) > 6:
+            return 'Invalid number of parameters'
         c = Course.objects.get(name=cmd[0])
         l = Lab.objects.get(course=c, section=cmd[1])
         valid_dates = {"M", "T", "W", "R", "F", "S", "Online"}

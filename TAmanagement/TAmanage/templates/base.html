@@ -16,7 +16,7 @@
                 <div class="bg bg2"></div>
                 <div class="bg bg3"></div>
                 <div class="content"></div>
-                        <p>
+                <p>
                                 <a class="image" href="//uwm.edu" target="_blank">
                                     <img src="/static/image/UWM.png" alt="UWMilwaukee"width="350" height="107"></a>
                                 {% if request.session.current_user %}
@@ -30,7 +30,7 @@
                         
                                                 {% endfor %}
                         
-                                        <a href='/logout'>Logout</a>
+                                        <a href='/logout'onclick="return confirm('Do You Want to Logout?')">Logout</a>
                                          </form>
                         
                                 {% endif %}
@@ -41,11 +41,11 @@
                                 </form>
                                 </label1>
                                  
-                        </p>
-                        {% block content %}
+                </p>
+                {% block content %}
                         
-                        {% endblock content %}
-                        <p id="DragonText">RED DRAGON</p>
+                {% endblock content %}
+                <p id="DragonText">RED DRAGON</p>
 
 </body>
 </html>

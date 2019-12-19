@@ -38,5 +38,6 @@ urlpatterns = [
     path('createLab', views.CreateLab.as_view()),
     path('editLab', views.EditLab.as_view()),
     path('viewLabs', views.ViewLabs.as_view()),
+    path('validateCourse', views.Validate.as_view()),
 ]
 

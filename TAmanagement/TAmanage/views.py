@@ -477,3 +477,13 @@ class AssignTa(View):
 
         return HttpResponse(template.render(context, req))
 
+
+class Validate(View):
+    def get(self, req):
+        template = loader.get_template('table.html')
+        context = {}
+        ch = CommandWorker(req.session['current_user'])
+        context['cmds'] = cmds.getCmds(req.session['current_role'])
+        context['courses'] = ch.executeCommand(f'list courses ')
+        context['out'] = ch.executeCommand(f'validate')
+        return HttpResponse(template.render(context, req))

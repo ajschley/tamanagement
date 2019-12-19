@@ -31,14 +31,14 @@
                     {% for u in course.graderTAs.all %}
                     {% if u.role == 2 %}
                         {{ u }} <br>
-                    {% endif %}     
+                    {% endif %}
                     {% endfor %}
                 </td>
                 <td>
                     {% for u in course.graderTAs.all %}
                     {% if u.role == 1 %}
                         {{ u }} <br>
-                    {% endif %}     
+                    {% endif %}
                     {% endfor %}
                 </td>
                 {% if request.session.current_role == 3  %}
@@ -49,7 +49,8 @@
             </tr>
         {% endfor %}
     </table>
-    </table>
+    <br>
+    <a id="validate" href='/validateCourse'>Validate Courses</a>
 </form>
 
 

@@ -339,6 +339,7 @@ class EditUser(View):
             context['out'] = ch.executeCommand(f'edit user "{form.cleaned_data["email"]}" '
                                                f'"{form.cleaned_data["firstName"]}" '
                                                f'"{form.cleaned_data["lastName"]}" '
+                                               f'"{form.cleaned_data["role"]}" '
                                                f'"{form.cleaned_data["phone"]}" '
                                                f'"{form.cleaned_data["address"]}" '
                                                f'"{form.cleaned_data["officeHours"]}" '
@@ -347,7 +348,7 @@ class EditUser(View):
                                                f'"{form.cleaned_data["resume"]}" '
                                                f'"{form.cleaned_data["schedule"]}" '
                                                f'"{form.cleaned_data["preferences"]}" '
-                                               f'"{form.cleaned_data["role"]}" '
+
                                                )
             context['form'] = EditUserForm()
         else:
@@ -379,6 +380,7 @@ class ViewUser(View):
         c = User.objects.get(email=eml)
         ch = CommandWorker(req.session['current_user'])
         context['user'] = ch.executeCommand(f'view user')
+        #context['user'] = ch.view_user(eml)
         context['cmds'] = cmds.getCmds(req.session['current_role'])
 
         return HttpResponse(template.render(context, req))

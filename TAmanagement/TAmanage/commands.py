@@ -238,22 +238,23 @@ class CommandWorker:
         if u:
             u.firstName = cmd[1]
             u.lastName = cmd[2]
-            u.phone = cmd[3]
-            u.address = cmd[4]
-            u.officeHours = cmd[5]
-            u.officeHoursDates = cmd[6]
+            u.role=cmd[3]
+            u.phone = cmd[4]
+            u.address = cmd[5]
+            u.officeHours = cmd[6]
+            u.officeHoursDates = cmd[7]
 
-            for ch in cmd[6]:
+            for ch in cmd[7]:
                 if valid_dates.intersection(ch):
                     continue
                 else:
                     return 'Invalid date(s)'
-            u.officeHoursDates = cmd[6]
-            u.officeLocation = cmd[7]
-            u.resume = cmd[8]
-            u.schedule = cmd[9]
-            u.preferences = cmd[10]
-            u.role=cmd[11]
+            u.officeHoursDates = cmd[7]
+            u.officeLocation = cmd[8]
+            u.resume = cmd[9]
+            u.schedule = cmd[10]
+            u.preferences = cmd[11]
+            
         else:
             return 'User does not exist'
         u.save()

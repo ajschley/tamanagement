@@ -1,8 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
-{% if form.errors %}
-<p class="error">Sorry, that's not a valid username or password</p>
-{% endif %}
+
+
+    {% if form.errors %}
+        <p>Your username and/or password didn't match. Please try again.</p>
+    {% endif %}
+
+
   <form id="form" method="post" action="">
       {% csrf_token %}
       <table class="generalForm">
@@ -12,15 +16,8 @@
       <div id="submitButton">
       <input id="input" class="input" type="submit">
       </div>
-      <label1>
-        <form id='OutForm'>
-                {{ out | linebreaks }}
-        </form>
-</label1>
-
   </form>
- 
+  
 
   
 {% endblock content %}
-

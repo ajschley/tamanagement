@@ -33,8 +33,10 @@
                         
                                         <a href='/logout'onclick="return confirm('Do You Want to Logout?')">Logout</a>
                                          </form>
-                        
                                 {% endif %}
+                </p>
+
+                                
                                 <label1>
                                         <form id='OutForm'>
                                                 {{ out | linebreaks }}
@@ -43,7 +45,7 @@
                                 
                                 
                                  
-                </p>
+               
                 {% block content %}
                         
                 {% endblock content %}

@@ -741,10 +741,10 @@ class ValidateTests(TestCase):
         ph120 = Course.objects.create(name="PH120", section="001", dates="TR", startTime='10:00:00', endTime='11:15:00')
         ph120.graderTAs.add(User.objects.get(email="john@test.com"))
         ret = self.worker.executeCommand("validate")
-        self.assertEqual("Error: Overlapping TAs found in conflicting courses CS250 and PH120.", ret)
+        self.assertEqual("Error: Overlapping TAs found in conflicting course times for <CS250> and <PH120>.", ret)
 
     def test_invalid_2(self):
         ph122 = Course.objects.create(name="PH122", section="001", dates="MW", startTime='13:45:00', endTime='14:30:00')
         ph122.graderTAs.add(User.objects.get(email="jane@test.com"))
         ret = self.worker.executeCommand("validate")
-        self.assertEqual("Error: Overlapping TAs found in conflicting courses CS251 and PH122.", ret)
+        self.assertEqual("Error: Overlapping TAs found in conflicting course times for <CS251> and <PH122>.", ret)

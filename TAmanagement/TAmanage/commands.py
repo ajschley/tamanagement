@@ -317,7 +317,7 @@ class CommandWorker:
                 intersection = set(i.graderTAs.all()).intersection(set(j.graderTAs.all()))
                 if len(intersection) != 0 and i.name != j.name and not i.isOnline() and not j.isOnline():
                     if i.getStartTime() <= j.getStartTime() <= i.getEndTime() or i.getStartTime() <= j.getEndTime() <= i.getEndTime():
-                        return 'Error: Overlapping TAs found in conflicting courses time <' + i.name + '> and <' + j.name + '>.'
+                        return 'Error: Overlapping TAs found in conflicting course times for <' + i.name + '> and <' + j.name + '>.'
                     elif j.getStartTime() <= i.getStartTime() <= j.getEndTime() or j.getStartTime() <= i.getEndTime() <= j.getEndTime():
-                        return 'Error: Overlapping TAs found in conflicting courses time <' + i.name + '> and <' + j.name + '>.'
+                        return 'Error: Overlapping TAs found in conflicting course times for <' + i.name + '> and <' + j.name + '>.'
         return 'TA assignments are valid'

@@ -55,10 +55,89 @@ class CreateCourse(View):
         else:
             context['form'] = form
         context['cmds'] = cmds.getCmds(req.session['current_role'])
-       
-     
         context['courses'] = ch.executeCommand(f'list courses')
+        return HttpResponse(template.render(context, req))
 
+
+class ViewLabs(View):
+    def get(self, req):
+        template = loader.get_template('labTable.html')
+        context = {}
+        lcourse = req.GET.get('labCourse', '')
+        ch = CommandWorker(req.session['current_user'])
+        context['cmds'] = cmds.getCmds(req.session['current_role'])
+        context['labs'] = ch.executeCommand(f'view labs ' + lcourse)
+        context['labCourse'] = lcourse
+        return HttpResponse(template.render(context, req))
+
+
+class CreateLab(View):
+    def get(self, req):
+        template = loader.get_template('form.html')
+        context = {}
+        context['form'] = CreateLabForm()
+        context['c'] = cmds.getCmds(req.session['current_role'])
+        context['labCourse'] = req.GET.get('labCourse', '')
+        return HttpResponse(template.render(context, req))
+
+    def post(self, req):
+        form = CreateLabForm(req.POST)
+        template = loader.get_template('labTable.html')
+        context = {}
+        lcourse = req.GET.get('labCourse', '')
+        if form.is_valid():
+            ch = CommandWorker(req.session['current_user'])
+            context['out'] = ch.executeCommand(f'create lab ' + lcourse + " " +
+                                               f'"{form.cleaned_data["section"]}" ')
+            context['form'] = CreateLabForm()
+        else:
+            context['form'] = form
+        context['cmds'] = cmds.getCmds(req.session['current_role'])
+        context['labs'] = ch.executeCommand(f'view labs ' + lcourse)
+        context['labCourse'] = lcourse
+        return HttpResponse(template.render(context, req))
+
+
+class EditLab(View):
+
+    def get(self, req):
+        template = loader.get_template('editLab.html')
+        context = {}
+        lcourse = req.GET.get('labCourse', '')
+        lsec = req.GET.get('labSection', '')
+        c = Course.objects.get(name=lcourse)
+        l = Lab.objects.get(course=c, section=lsec)
+        form = EditLabForm()
+        form.initial['section'] = l.section
+        form.initial['location'] = l.location
+        form.initial['startTime'] = l.startTime
+        form.initial['endTime'] = l.endTime
+        form.initial['dates'] = l.dates
+        context['form'] = form
+        context['cmds'] = cmds.getCmds(req.session['current_role'])
+        ch = CommandWorker(req.session['current_user'])
+        context['labs'] = ch.executeCommand(f'view labs ' + lcourse)
+        return HttpResponse(template.render(context, req))
+
+    def post(self, req):
+        form = EditLabForm(req.POST)
+        template = loader.get_template('labTable.html')
+        context = {}
+        lcourse = req.GET.get('labCourse', '')
+        if form.is_valid():
+            ch = CommandWorker(req.session['current_user'])
+            context['out'] = ch.executeCommand(f'edit lab ' + lcourse + " " +
+                                               f'"{form.cleaned_data["section"]}" '
+                                               f'"{form.cleaned_data["location"]}" '
+                                               f'"{form.cleaned_data["startTime"]}" '
+                                               f'"{form.cleaned_data["endTime"]}" '
+                                               f'"{form.cleaned_data["dates"]}" ')
+            context['form'] = EditLabForm()
+        else:
+            context['form'] = form
+        context['cmds'] = cmds.getCmds(req.session['current_role'])
+        ch = CommandWorker(req.session['current_user'])
+        context['labs'] = ch.executeCommand(f'view labs ' + lcourse)
         return HttpResponse(template.render(context, req))
 
 
@@ -135,8 +214,8 @@ class EditCourse(View):
         context['user'] = ch.executeCommand(f'view profile')
         return HttpResponse(template.render(context, req))'''
 
-class ListCourses(View):
 
+class ListCourses(View):
     def get(self, req):
         template = loader.get_template('table.html')
         context = {}
@@ -185,6 +264,7 @@ class DeleteUser(View):
         context['cmds'] = cmds.getCmds(req.session['current_role'])
         context['users'] = ch.executeCommand(f'list users')
         return HttpResponse(template.render(context, req))
+
 
 class ListUsers(View):
 
@@ -235,6 +315,7 @@ class EditUser(View):
         form.initial['email'] = u.email
         form.initial['firstName'] = u.firstName
         form.initial['lastName'] = u.lastName
+        form.initial['role'] = u.role
         form.initial['phone'] = u.phone
         form.initial['address'] = u.address
         form.initial['officeLocation'] = u.officeLocation
@@ -258,6 +339,7 @@ class EditUser(View):
             context['out'] = ch.executeCommand(f'edit user "{form.cleaned_data["email"]}" '
                                                f'"{form.cleaned_data["firstName"]}" '
                                                f'"{form.cleaned_data["lastName"]}" '
+                                               f'"{form.cleaned_data["role"]}" '
                                                f'"{form.cleaned_data["phone"]}" '
                                                f'"{form.cleaned_data["address"]}" '
                                                f'"{form.cleaned_data["officeHours"]}" '
@@ -266,6 +348,7 @@ class EditUser(View):
                                                f'"{form.cleaned_data["resume"]}" '
                                                f'"{form.cleaned_data["schedule"]}" '
                                                f'"{form.cleaned_data["preferences"]}" '
+
                                                )
             context['form'] = EditUserForm()
         else:
@@ -297,6 +380,7 @@ class ViewUser(View):
         c = User.objects.get(email=eml)
         ch = CommandWorker(req.session['current_user'])
         context['user'] = ch.executeCommand(f'view user')
+        #context['user'] = ch.view_user(eml)
         context['cmds'] = cmds.getCmds(req.session['current_role'])
 
         return HttpResponse(template.render(context, req))
@@ -316,12 +400,18 @@ class Login(View):
         return HttpResponse(template.render(context, req))
 
     def post(self, req):
+        context = {}
         form = LoginForm(req.POST)
         if form.is_valid():
-            out = worker.executeCommand(f'login {form.cleaned_data["email"]} "{form.cleaned_data["password"]}"')
+            while True:
+                out = worker.executeCommand(f'login {form.cleaned_data["email"]} "{form.cleaned_data["password"]}"')
+                if out.startswith('Logged in as'):
+                    break
+                else:
+                    out = 'Email and/or password is wrong. Try again'
+
             if out.startswith('Logged in as'):
                 template = loader.get_template('index.html')
-                context = {}
                 context['out'] = out
                 req.session['current_user'] = form.cleaned_data['email']
                 u = User.objects.filter(email=form.cleaned_data['email']).first()

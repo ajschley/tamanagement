@@ -21,14 +21,9 @@
             
             
             {% if request.session.current_role == 3  %}
-                <th>Edit </th>
+            <th colspan="3">Modify</th>
             {% endif %}
-            {% if request.session.current_role == 2 or request.session.current_role == 3 %}
-                <th>Profile </th>
-            {% endif %}
-            {% if request.session.current_role == 3  %}
-            <th>Delete</th>
-        {% endif %}
+
         </tr>
         {% for user in users %}
             <tr>
@@ -55,11 +50,11 @@
                 {% if request.session.current_role == 3  %}
                     <td><a href='/editUser?email={{ user.email }}'>Edit</a></td>
                 {% endif %}
-                {% if request.session.current_role == 2 or request.session.current_role == 3 %}
+                {% if request.session.current_role == 3 or request.session.current_role == 2 %}
                     <td><a href='/viewUser?email={{ user.email }}'>Profile</a></td>
                 {% endif %}
                 {% if request.session.current_role == 3  %}
-                <td><a href='/deleteUser?email={{ user.email }}'  onclick="return confirm('Do You Want to Delete the User?')">Delete</a></td>
+                <td><a id="delete" href='/deleteUser?email={{ user.email }}'onclick="return confirm('Do You Want to Delete User: {{user.firstName}} {{user.lastName}} ({{user.email}}) ?')">Delete</a></td>
                 {% endif %}
             </tr>
         {% endfor %}

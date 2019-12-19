@@ -1,38 +1,38 @@
-
-
+/*
+This is the Style page of html. All the modifications are done here. 
+*/
 input{
     font-size: 20px;
     align-self: center;
     font-family:monospace;
 }
 .input{
-  background-color: rgb(253, 205, 59);
-border: none;
-color: black;
-padding: 15px 32px;
-text-align: center;
-text-decoration: none;
-font-size: 20px;
-margin: 4px 2px;
-cursor: pointer;
-  font-weight: bold;
+    background-color: rgb(253, 205, 59);
+    border: none;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 20px;
+    margin: 4px 2px;
+    cursor: pointer;
+    font-weight: bold;
 
 }
 .input:hover, .input:active {
-  background-color: rgb(192, 138, 23);
+    background-color: rgb(192, 138, 23);
 }
 
 
 table{
-  max-width:fit-content;
-  min-width: 50px;
-  color: black;
-  font-size: 15px;
-  margin: 1px auto;
-  table-layout: auto;
- 
-
+    max-width:fit-content;
+    min-width: 50px;
+    color: black;
+    font-size: 15px;
+    margin: 1px auto;
+    table-layout: auto;
 }
+
 table.classForm{
     max-width: fit-content;
     min-width: 50px;
@@ -67,6 +67,32 @@ table, th, td{
     font-family:monospace;
     font-weight: bold;
 }
+#viewLabs:link, #viewLabs:visited{
+    background-color: rgb(132, 233, 132);
+    color: black;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+}
+#viewLabs:hover, #viewLabs:active{
+    background-color: rgb(93, 161, 91);
+}
+
+
+#delete:link, #delete:visited{
+    background-color: rgb(252, 118, 118);
+    color: white;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+}
+#delete:hover, #delete:active{
+    background-color: rgb(173, 95, 95);
+}
 a:link, a:visited {
     background-color: rgb(253, 205, 59);
     color: black;
@@ -76,10 +102,12 @@ a:link, a:visited {
     display: inline-block;
     font-size: 15px;
  
-  }
-  a:hover, a:active {
+}
+a:hover, a:active {
     background-color: rgb(192, 138, 23);
-  }
+}
+
+
 
 #home{
     max-width: fit-content ;
@@ -108,7 +136,6 @@ a:link, a:visited {
 }
 
 #OutForm {
-
     max-width: fit-content;
     /*background-color: rgb(253, 205, 59);*/
     background-color: white;
@@ -122,7 +149,7 @@ a:link, a:visited {
     background-color: white;
     color: rgb(192, 138, 23);
     font-size: 20px;
-    width: 248px;
+    width: 234px;
 }
 
 
@@ -134,13 +161,13 @@ label1{
     font-family: serif;
 }
 h3{
-      margin: 1px auto;
-      text-align: center;
-      color: black;
+    margin: 1px auto;
+    text-align: center;
+    color: black;
 }
 textarea{
-      width:230px;
-      height: 35px;
+    width:230px;
+    height: 35px;
 }
 
 h1 {
@@ -149,57 +176,52 @@ h1 {
     text-shadow: 1px 1px #e5e5e5, 2px 2px #6a6a6a, 3px 3px black, 4px 4px black;
     text-align: center;
  }
-
-/*.image {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+.image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
     width: 100%;
     background-color: rgb(253, 205, 59);
     zoom: 70%;
-}*/
+}
 
 #submitButton {
-
     display: flex;
     align-items: center;
     justify-content: center;
-
 }
 
-  
 
-  
 html {
-        height:100%;
+    height:100%;
 }
       
 body {
-        margin:0;
+    margin:0;
 }
       
-.bg, .image {
-        animation:slide 3s ease-in-out infinite alternate;
-        background-image: linear-gradient(-60deg, rgb(252, 249, 72) 50%,  rgb(192, 138, 23) 50%);
-        bottom:0;
-        left:-50%;
-        opacity:.5;
-        position:fixed;
-        right:-50%;
-        top:0;
-        z-index:-1;
+.bg {
+    animation:slide 3s ease-in-out infinite alternate;
+    background-image: linear-gradient(-60deg, rgb(252, 249, 72) 50%,  rgb(192, 138, 23) 50%);
+    bottom:0;
+    left:-50%;
+    opacity:.5;
+    position:fixed;
+    right:-50%;
+    top:0;
+    z-index:-1;
 }
       
 .bg2, .image {
-        animation-direction:alternate-reverse;
-        animation-duration:4s;
+    animation-direction:alternate-reverse;
+    animation-duration:4s;
 }
       
 .bg3, .image {
-        animation-duration:5s;
+    animation-duration:5s;
 }
       
-      /*.content {
+/*.content {
         background-color:rgba(255,255,255,.8);
         border-radius:.25em;
         box-shadow:0 0 .25em rgba(0,0,0,.25);
@@ -210,17 +232,18 @@ body {
         text-align:center;
         top:50%;
         transform:translate(-50%, -50%);
-      }*/
+}*/
       
 h1 {
-        font-family:monospace;
+    font-family:monospace;
 }
       
 @keyframes slide {
-        0% {
+     0% {
           transform:translateX(-25%);
         }
-        100% {
+    100% {
           transform:translateX(25%);
         }
 }
+

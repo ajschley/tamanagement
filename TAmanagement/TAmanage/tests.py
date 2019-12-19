@@ -299,7 +299,6 @@ class EditUserTestCase(TestCase):
 
 
 class assignTaTestCase(TestCase):
-<<<<<<< HEAD
 
     def setUp(self):
         self.worker = CommandWorker()
@@ -312,19 +311,7 @@ class assignTaTestCase(TestCase):
         self.admin = User.objects.create(email='admin@uwm.com', role=3)
         self.worker.currentUser = self.admin
         self.course1 = Course.objects.create(name="CS999")
-=======
-    def setUp(self):
-        client = Client()
-        ###    client.post('/assignTas', {'form': AssignTaForm(), ''})
 
-        User.objects.create(email="admin@example.com", firstName='Bob', lastName='Bobble', phone='555-555-5555',
-                            address='Roof', officeHours="2pm-3pm", officeHoursDates='MW', officeLocation='Jupiter')
-        User.objects.create(email="instructor@example.com", firstName='Jim', lastName='Jimbles', phone='999-999-9999',
-                            address='Basement', officeHours="4pm-5pm", officeHoursDates='TR',
-                            officeLocation='Rain forest')
-        User.objects.create(email="ta@example.com", firstName='Marky', lastName='Mark', phone='000-000-0000',
-                            address='the void', officeHours="11am-12pm", officeHoursDates='F', officeLocation='Moon')
->>>>>>> 8207b1ba10d286d5f06a9acfbdbd26fad9af7758
 
     def testAssignTAPassing(self):
         testCourse = self.course1

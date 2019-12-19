@@ -67,6 +67,32 @@ table, th, td{
     font-family:monospace;
     font-weight: bold;
 }
+#viewLabs:link, #viewLabs:visited{
+    background-color: rgb(132, 233, 132);
+    color: black;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+}
+#viewLabs:hover, #viewLabs:active{
+    background-color: rgb(93, 161, 91);
+}
+
+
+#delete:link, #delete:visited{
+    background-color: rgb(252, 118, 118);
+    color: white;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+}
+#delete:hover, #delete:active{
+    background-color: rgb(173, 95, 95);
+}
 a:link, a:visited {
     background-color: rgb(253, 205, 59);
     color: black;
@@ -76,10 +102,12 @@ a:link, a:visited {
     display: inline-block;
     font-size: 15px;
  
-  }
+}
 a:hover, a:active {
     background-color: rgb(192, 138, 23);
-  }
+}
+
+
 
 #home{
     max-width: fit-content ;
@@ -121,7 +149,7 @@ a:hover, a:active {
     background-color: white;
     color: rgb(192, 138, 23);
     font-size: 20px;
-    width: 248px;
+    width: 234px;
 }
 
 

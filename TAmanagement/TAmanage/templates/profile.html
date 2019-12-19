@@ -14,6 +14,17 @@
       <th>Email: </th> <td>{{ user.email }}</td>
     </tr>
     <tr>
+      <th>Role: </th> 
+      <td>{% if user.role == 1 %}
+        TA
+        {% elif user.role == 2 %}
+        Instructor
+        {% elif user.role == 3 %}
+        Admin
+        {% endif %}
+      </td>
+    </tr>
+    <tr>
       <th>Phone Number: </th> <td>{{ user.phone }}</td>
     </tr>
     <tr>

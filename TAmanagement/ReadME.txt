@@ -12,3 +12,8 @@ To Login as TA:
     email: ta@example.com
     password: password
 
+To Create User:
+    Give an email address, a password, and Role (TA/Instructor/Admin)
+
+To Create Course:
+    Give a course name and a Lab section number. 

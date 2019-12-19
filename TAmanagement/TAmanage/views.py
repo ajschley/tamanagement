@@ -315,6 +315,7 @@ class EditUser(View):
         form.initial['email'] = u.email
         form.initial['firstName'] = u.firstName
         form.initial['lastName'] = u.lastName
+        form.initial['role'] = u.role
         form.initial['phone'] = u.phone
         form.initial['address'] = u.address
         form.initial['officeLocation'] = u.officeLocation
@@ -346,6 +347,7 @@ class EditUser(View):
                                                f'"{form.cleaned_data["resume"]}" '
                                                f'"{form.cleaned_data["schedule"]}" '
                                                f'"{form.cleaned_data["preferences"]}" '
+                                               f'"{form.cleaned_data["role"]}" '
                                                )
             context['form'] = EditUserForm()
         else:

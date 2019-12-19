@@ -7,7 +7,7 @@ class Commands:
         self.cmdList = []
         self.addCmd(Role.Administrator, "Create Course", "/createCourse")
         self.addCmd(Role.Administrator, "Create User", "/createUser")
-        self.addCmd(Role.Administrator, "Assign TAs", "/assignTas")
+        self.addCmd(Role.Administrator, "Assign Instructors/TAs", "/assignTas")
         self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "View/Edit Profile", "/viewProfile")
         # self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "Edit Profile", "/editProfile")
         self.addCmd([Role.Administrator, Role.Instructor, Role.TA], "List Courses", "/listCourses")
@@ -253,6 +253,7 @@ class CommandWorker:
             u.resume = cmd[8]
             u.schedule = cmd[9]
             u.preferences = cmd[10]
+            u.role=cmd[11]
         else:
             return 'User does not exist'
         u.save()
